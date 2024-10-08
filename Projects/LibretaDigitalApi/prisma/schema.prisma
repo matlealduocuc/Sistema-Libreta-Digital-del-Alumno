@@ -1,0 +1,27 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["ADMLDA", "ADMPER", "ADMUSR"]
+}
+
+model Menor {
+  id              Int      @id @map("iden_menor")
+  nombre          String   @map("desc_nombre")
+  apellidoP       String   @map("desc_apellido_paterno")
+  apellidoM       String?  @map("desc_apellido_materno")
+  fechaNacimiento DateTime @map("fech_nacimiento")
+
+  @@map("lda_menor")
+  @@schema("ADMLDA")
+}
