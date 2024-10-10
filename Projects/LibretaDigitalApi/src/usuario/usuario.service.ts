@@ -12,6 +12,10 @@ export class UsuarioService {
     return `This action returns all usuario`;
   }
 
+  findOneByRun(run: string) {
+    return `This action returns a usuario with RUN ${run}`;
+  }
+
   findOne(id: number) {
     return `This action returns a #${id} usuario`;
   }
