@@ -25,3 +25,11 @@ model Menor {
   @@map("lda_menor")
   @@schema("ADMLDA")
 }
+
+model Grado {
+  id     Int    @id @map("iden_grado")
+  nombre String @map("desc_nombre")
+
+  @@map("lda_grado")
+  @@schema("ADMLDA")
+}
