@@ -17,7 +17,7 @@ export const AppLayout = () => {
         </div>
       </header>
 
-      <section className="max-w-screen-sm lg:max-w-screen-lg xl:max-w-screen-xl 2xl:max-w-screen-2xl mx-auto mt-10 p-5">
+      <section className="max-w-screen-sm lg:max-w-screen-lg xl:max-w-screen-xl 2xl:max-w-screen-2xl mx-auto max-sm:mt-0 mt-10 p-5">
         <Outlet />
       </section>
 

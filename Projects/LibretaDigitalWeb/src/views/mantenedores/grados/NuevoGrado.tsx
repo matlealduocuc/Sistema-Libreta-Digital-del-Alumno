@@ -4,7 +4,7 @@ export const NuevoGrado = () => {
   return (
     <>
       <h1 className="text-5xl font-black">Mantenedor de Grados</h1>
-      <p className="text-2xl font-light text-gray-500 mt-5">
+      <p className="max-sm:text-xl text-2xl font-light text-gray-500 mt-5">
         Llena el formulario para agregar un nuevo grado
       </p>
 
