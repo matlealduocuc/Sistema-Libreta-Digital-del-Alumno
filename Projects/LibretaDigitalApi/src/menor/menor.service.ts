@@ -6,18 +6,13 @@ export class MenorService {
   constructor(private prisma: PrismaService) {}
 
   async getMenores() {
-    console.log('entré');
     let menores = await this.prisma.menor.findMany();
     return menores;
   }
 
   getMenor(id: number) {
-    return {
-      id: id,
-      nombre: 'Alejandro',
-      apellidoP: 'Paterno',
-      apellidoM: 'Materno',
-      edad: '3',
-    };
+    return this.prisma.menor.findUnique({
+      where: { id: id },
+    });
   }
 }
