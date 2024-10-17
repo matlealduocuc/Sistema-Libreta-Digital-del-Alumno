@@ -15,19 +15,18 @@ model Menor {
   apellidoP       String    @map("desc_apellido_paterno") @db.VarChar
   apellidoM       String?   @map("desc_apellido_materno") @db.VarChar
   fechaNacimiento DateTime? @map("fech_nacimiento") @db.Date
-  flag_activo     Boolean?  @default(true)
-  flag_eliminado  Boolean?  @default(false)
+  flag_activo     Boolean   @default(true)
+  flag_eliminado  Boolean   @default(false)
 
   @@map("lda_menor")
   @@schema("ADMLDA")
 }
 
 model TipoIdentificador {
-  id        Int       @id(map: "per_tipo_identificador_pk") @default(autoincrement()) @map("iden_tipo_identificador")
-  tipo      String    @map("desc_tipo_identificador") @db.VarChar
-  activo    Boolean?  @default(true) @map("flag_activo")
-  eliminado Boolean?  @default(false) @map("flag_eliminado")
-  Persona   Persona[]
+  id      Int       @id(map: "per_tipo_identificador_pk") @default(autoincrement()) @map("iden_tipo_identificador")
+  tipo    String    @map("desc_tipo_identificador") @db.VarChar
+  activo  Boolean   @default(true) @map("flag_activo")
+  Persona Persona[]
 
   @@map("per_tipo_identificador")
   @@schema("ADMPER")
@@ -44,9 +43,9 @@ model Persona {
   char_dv           String?           @db.Char(1)
   desc_dni          String?           @db.VarChar
   iden_nacionalidad Int?
-  flag_activo       Boolean?          @default(true)
-  flag_eliminado    Boolean?          @default(false)
-  per_nacionalidad  Nacionalidad? @relation(fields: [iden_nacionalidad], references: [iden_nacionalidad], onDelete: NoAction, onUpdate: NoAction, map: "per_persona_per_nacionalidad_fk")
+  flag_activo       Boolean           @default(true)
+  flag_eliminado    Boolean           @default(false)
+  per_nacionalidad  Nacionalidad?     @relation(fields: [iden_nacionalidad], references: [iden_nacionalidad], onDelete: NoAction, onUpdate: NoAction, map: "per_persona_per_nacionalidad_fk")
   TipoIdentificador TipoIdentificador @relation(fields: [idTipoIden], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "per_persona_per_tipo_identificador_fk")
   Usuario           Usuario[]
 
@@ -55,12 +54,13 @@ model Persona {
 }
 
 model Usuario {
-  id        Int      @id(map: "usr_usuario_pk") @default(autoincrement()) @map("iden_usuario")
-  idPersona Int      @map("iden_persona")
-  password  String   @map("desc_password") @db.VarChar
-  activo    Boolean? @default(true) @map("flag_activo")
-  eliminado Boolean? @default(false) @map("flag_eliminado")
-  persona   Persona  @relation(fields: [idPersona], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "usr_usuario_per_persona_fk")
+  id              Int               @id(map: "usr_usuario_pk") @default(autoincrement()) @map("iden_usuario")
+  idPersona       Int               @map("iden_persona")
+  password        String            @map("desc_password") @db.VarChar
+  activo          Boolean           @default(true) @map("flag_activo")
+  eliminado       Boolean           @default(false) @map("flag_eliminado")
+  usr_rol_usuario usr_rol_usuario[]
+  persona         Persona           @relation(fields: [idPersona], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "usr_usuario_per_persona_fk")
 
   @@map("usr_usuario")
   @@schema("ADMUSR")
@@ -69,10 +69,29 @@ model Usuario {
 model Nacionalidad {
   iden_nacionalidad Int       @id(map: "per_nacionalidad_pk") @default(autoincrement())
   desc_nacionalidad String    @db.VarChar
-  flag_activo       Boolean?  @default(true)
-  flag_eliminado    Boolean?  @default(false)
+  flag_activo       Boolean   @default(true)
   per_persona       Persona[]
 
   @@map("per_nacionalidad")
   @@schema("ADMPER")
+}
+
+model usr_rol {
+  iden_rol        Int               @id(map: "usr_rol_pk") @default(autoincrement())
+  desc_rol        String            @db.VarChar
+  flag_activo     Boolean           @default(true)
+  usr_rol_usuario usr_rol_usuario[]
+
+  @@schema("ADMUSR")
+}
+
+model usr_rol_usuario {
+  iden_rol_usuario Int     @id(map: "usr_rol_usuario_pk") @default(autoincrement())
+  iden_usuario     Int
+  iden_rol         Int
+  flag_activo      Boolean @default(true)
+  usr_rol          usr_rol @relation(fields: [iden_rol], references: [iden_rol], onDelete: NoAction, onUpdate: NoAction, map: "usr_rol_usuario_usr_rol_fk")
+  usr_usuario      Usuario @relation(fields: [iden_usuario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "usr_rol_usuario_usr_usuario_fk")
+
+  @@schema("ADMUSR")
 }

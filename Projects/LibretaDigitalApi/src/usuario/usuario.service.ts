@@ -25,12 +25,26 @@ export class UsuarioService {
     return usuarios;
   }
 
-  findOneByRun(run: string) {
-    return `This action returns a usuario with RUN ${run}`;
+  async findByRun(run: string) {
+    const usuario = await this.prisma.usuario.findFirst({
+      where: {
+        eliminado: false,
+        AND: {
+          persona: {
+            run: run,
+          },
+        },
+      },
+      include: { persona: { include: { TipoIdentificador: true } } },
+    });
+    return usuario;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} usuario`;
+  async findById(id: number) {
+    const usuario = await this.prisma.usuario.findUnique({
+      where: { id: id, AND: { eliminado: false, activo: true } },
+    });
+    return usuario;
   }
 
   update(id: number, updateUsuarioDto: UpdateUsuarioDto) {

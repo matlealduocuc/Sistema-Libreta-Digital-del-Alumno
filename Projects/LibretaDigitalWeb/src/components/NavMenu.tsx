@@ -31,6 +31,10 @@ export const NavMenu = () => {
               to='/Mantenedores/Lista'
               className='block p-2 hover:text-purple-950'
             >Mantenedores</Link>
+            <Link
+              to='/libreta'
+              className='block p-2 hover:text-purple-950'
+            >Ir a Libreta</Link>
             <button
               className='block p-2 hover:text-purple-950'
               type='button'

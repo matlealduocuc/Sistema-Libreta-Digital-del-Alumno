@@ -1,14 +1,19 @@
-import { IsString, MinLength } from "class-validator";
+import { Transform } from 'class-transformer';
+import { IsString, MaxLength, MinLength } from 'class-validator';
 
 export class LoginRutDto {
-    @IsString()
-    @MinLength(7)
-    run: string;
+  @Transform(({ value }) => value.trim())
+  @IsString()
+  @MinLength(7)
+  run: string;
 
-    @IsString()
-    dv: string;
+  @Transform(({ value }) => value.trim())
+  @IsString()
+  @MaxLength(1)
+  dv: string;
 
-    @IsString()
-    @MinLength(4)
-    password: string;
+  @Transform(({ value }) => value.trim())
+  @IsString()
+  @MinLength(4)
+  password: string;
 }

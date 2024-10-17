@@ -1,6 +1,6 @@
 import { AuthService } from "@/services/AuthService";
 import { UserLoginForm } from "@/types/index";
-import { LoginRutDto } from "@/dtos/LoginRutDto";
+import { LoginRutDto } from "@/dtos/Auth/LoginRutDto";
 import { hashSha256 } from "@/lib/crypto";
 
 export class AuthController {
@@ -14,6 +14,14 @@ export class AuthController {
     const runLimpio = run.replace(/\./g, "");
     const passHash = hashSha256(loginForm.password);
     const dto = new LoginRutDto(runLimpio, dv, passHash);
-    return this._authService.login(dto);
+
+    const sesionIniciada = await this._authService.login(dto); 
+    console.log(sesionIniciada);
+    if (!sesionIniciada) {
+      console.error("Error al iniciar sesión");
+      return false;
+    }
+    localStorage.setItem("AUTH_USER", JSON.stringify(sesionIniciada));
+    return sesionIniciada;
   }
 }

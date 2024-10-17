@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import { LoginRutDto } from "dtos/LoginRutDto";
+import { LoginRutDto } from "@/dtos/Auth/LoginRutDto";
 
 export class AuthService {
   async login(loginRutDto: LoginRutDto) {
