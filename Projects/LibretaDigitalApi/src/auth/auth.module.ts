@@ -14,7 +14,7 @@ import { PersonaModule } from 'src/persona/persona.module';
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '1d' },
+      signOptions: { expiresIn: '8h' },
     }),
   ],
   controllers: [AuthController],

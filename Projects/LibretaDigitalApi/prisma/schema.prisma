@@ -45,6 +45,9 @@ model Persona {
   iden_nacionalidad Int?
   flag_activo       Boolean           @default(true)
   flag_eliminado    Boolean           @default(false)
+  desc_email        String?           @db.VarChar
+  desc_tel          String?           @db.VarChar
+  desc_direccion    String?           @db.VarChar
   per_nacionalidad  Nacionalidad?     @relation(fields: [iden_nacionalidad], references: [iden_nacionalidad], onDelete: NoAction, onUpdate: NoAction, map: "per_persona_per_nacionalidad_fk")
   TipoIdentificador TipoIdentificador @relation(fields: [idTipoIden], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "per_persona_per_tipo_identificador_fk")
   Usuario           Usuario[]

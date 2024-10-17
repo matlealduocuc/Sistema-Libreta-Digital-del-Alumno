@@ -26,6 +26,7 @@ export class AuthService {
 
     const persona = usuario.persona;
     const tipoIdentificacion = persona.TipoIdentificador;
+    const rolesUsuario = usuario.usr_rol_usuario;
 
     const personAuthDto = {
       idPersona: persona.id,
@@ -40,7 +41,7 @@ export class AuthService {
     };
 
     const payload: any = {
-      rol: ['admin'],
+      rol: rolesUsuario.map((x) => x.usr_rol.desc_rol),
       idUsuario: usuario.id,
       idPersona: persona.id,
     };
@@ -52,6 +53,11 @@ export class AuthService {
 
     const token = this.jwtService.sign(payload);
 
-    return new AuthorizedUserDto(token, personAuthDto, usuario.id);
+    return new AuthorizedUserDto(
+      token,
+      personAuthDto,
+      usuario.id,
+      rolesUsuario.map((x) => x.usr_rol.desc_rol),
+    );
   }
 }

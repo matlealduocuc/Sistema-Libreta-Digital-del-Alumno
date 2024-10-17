@@ -15,7 +15,9 @@
       "@/types/*": ["types/*"],
       "@/dtos/*": ["dtos/*"],
       "@/lib/*": ["lib/*"],
-      "@/validators/*": ["validators/*"]
+      "@/validators/*": ["validators/*"],
+      "@/common/*": ["common/*"],
+      "@/hooks/*": ["hooks/*"]
     },
 
     /* Bundler mode */

@@ -11,7 +11,7 @@ const LibretaFooter = () => {
 
   return (
     <footer className="fixed bottom-0 left-0 w-full bg-black p-4">
-      <nav className="flex justify-around items-center max-w-md mx-auto">
+      <nav className="flex justify-around items-center max-w-2xl mx-auto">
         <NavLink
           to="/libreta/"
           className="text-white flex flex-col items-center"

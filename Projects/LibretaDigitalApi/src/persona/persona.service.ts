@@ -17,13 +17,23 @@ export class PersonaService {
 
   async findOneById(id: number) {
     const persona = await this.prisma.persona.findUnique({
-      where: { id: id, AND: { flag_eliminado: false } },
+      where: { id: +id, AND: { flag_eliminado: false } },
     });
     return persona;
   }
 
-  update(id: number, updatePersonaDto: UpdatePersonaDto) {
-    return `This action updates a #${id} persona`;
+  async actualizar(id: number, updatePersonaDto: UpdatePersonaDto) {
+    const personaReturn = await this.prisma.persona.update({
+      where: {
+        id: +id,
+      },
+      data: {
+        desc_email: updatePersonaDto.email,
+        desc_tel: updatePersonaDto.phone,
+        desc_direccion: updatePersonaDto.address,
+      },
+    });
+    return personaReturn;
   }
 
   remove(id: number) {
