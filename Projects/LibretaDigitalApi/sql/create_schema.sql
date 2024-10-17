@@ -18,11 +18,13 @@ ALTER TABLE ONLY "ADMPER".per_persona DROP CONSTRAINT per_persona_unique;
 ALTER TABLE ONLY "ADMPER".per_persona DROP CONSTRAINT per_persona_pk;
 ALTER TABLE ONLY "ADMPER".per_nacionalidad DROP CONSTRAINT per_nacionalidad_pk;
 ALTER TABLE ONLY "ADMLDA".lda_menor DROP CONSTRAINT lda_menor_pk;
+ALTER TABLE ONLY "ADMLDA".lda_apoderado DROP CONSTRAINT lda_apoderado_pk;
 ALTER TABLE "ADMUSR".usr_usuario ALTER COLUMN iden_usuario DROP DEFAULT;
 ALTER TABLE "ADMPER".per_tipo_identificador ALTER COLUMN iden_tipo_identificador DROP DEFAULT;
 ALTER TABLE "ADMPER".per_persona ALTER COLUMN iden_persona DROP DEFAULT;
 ALTER TABLE "ADMPER".per_nacionalidad ALTER COLUMN iden_nacionalidad DROP DEFAULT;
 ALTER TABLE "ADMLDA".lda_menor ALTER COLUMN iden_menor DROP DEFAULT;
+ALTER TABLE "ADMLDA".lda_apoderado ALTER COLUMN iden_apoderado DROP DEFAULT;
 DROP SEQUENCE "ADMUSR".usr_usuario_iden_usuario_seq;
 DROP TABLE "ADMUSR".usr_usuario;
 DROP SEQUENCE "ADMPER".per_tipo_identificador_iden_tipo_identificador_seq;
@@ -33,6 +35,8 @@ DROP SEQUENCE "ADMPER".per_nacionalidad_iden_nacionalidad_seq;
 DROP TABLE "ADMPER".per_nacionalidad;
 DROP SEQUENCE "ADMLDA".lda_menor_iden_menor_seq;
 DROP TABLE "ADMLDA".lda_menor;
+DROP SEQUENCE "ADMLDA".lda_apoderado_iden_apoderado_seq;
+DROP TABLE "ADMLDA".lda_apoderado;
 DROP SCHEMA "ADMUSR";
 DROP SCHEMA "ADMPER";
 DROP SCHEMA "ADMLDA";
@@ -76,6 +80,30 @@ CREATE SEQUENCE "ADMLDA".lda_menor_iden_menor_seq
 ALTER TABLE "ADMLDA".lda_menor_iden_menor_seq OWNER TO libreta_digital_sql_user;
 
 ALTER SEQUENCE "ADMLDA".lda_menor_iden_menor_seq OWNED BY "ADMLDA".lda_menor.iden_menor;
+
+CREATE TABLE "ADMLDA".lda_apoderado (
+    iden_menor integer NOT NULL,
+    desc_nombre character varying NOT NULL,
+    desc_apellido_paterno character varying NOT NULL,
+    desc_apellido_materno character varying,
+    fech_nacimiento date,
+    flag_activo boolean DEFAULT true,
+    flag_eliminado boolean DEFAULT false
+);
+
+ALTER TABLE "ADMLDA".lda_apoderado OWNER TO libreta_digital_sql_user;
+
+CREATE SEQUENCE "ADMLDA".lda_apoderado_iden_apoderado_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+ALTER TABLE "ADMLDA".lda_apoderado_iden_apoderado_seq OWNER TO libreta_digital_sql_user;
+
+ALTER SEQUENCE "ADMLDA".lda_apoderado_iden_apoderado_seq OWNED BY "ADMLDA".lda_apoderado.iden_apoderado;
 
 CREATE TABLE "ADMPER".per_nacionalidad (
     iden_nacionalidad integer NOT NULL,

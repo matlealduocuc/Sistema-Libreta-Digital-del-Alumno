@@ -8,9 +8,14 @@
     "baseUrl": "src",
     "paths": {
       "@/components/*": ["components/*"],
+      "@/controllers/*": ["controllers/*"],
+      "@/services/*": ["services/*"],
       "@/views/*": ["views/*"],
       "@/layouts/*": ["layouts/*"],
-      "@/types/*": ["types/*"]
+      "@/types/*": ["types/*"],
+      "@/dtos/*": ["dtos/*"],
+      "@/lib/*": ["lib/*"],
+      "@/validators/*": ["validators/*"]
     },
 
     /* Bundler mode */
@@ -25,7 +30,7 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
   },
   "include": ["src"]
 }

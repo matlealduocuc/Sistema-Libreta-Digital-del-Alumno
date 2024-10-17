@@ -4,7 +4,7 @@ INSERT INTO "ADMPER".per_tipo_identificador VALUES (2, 'DNI');
 INSERT INTO "ADMPER".per_nacionalidad VALUES (1, 'Chilena');
 INSERT INTO "ADMPER".per_nacionalidad VALUES (2, 'Otra');
 INSERT INTO "ADMPER".per_persona VALUES (1, 'Matías', 'Antonio', 'Leal', 'Tapia', 1, '21307803', '8', NULL, 1);
-INSERT INTO "ADMUSR".usr_usuario VALUES (1, 1, '1234');
+INSERT INTO "ADMUSR".usr_usuario VALUES (1, 1, '6081e67d1be75437218f8a27bea0cef21dcf695eeef7892170702ab72bca955f');
 
 SELECT pg_catalog.setval('"ADMLDA".lda_menor_iden_menor_seq', 1, true);
 SELECT pg_catalog.setval('"ADMPER".per_nacionalidad_iden_nacionalidad_seq', 2, false);

@@ -5,6 +5,7 @@ import { AuthLayout } from "./layouts/AuthLayout";
 import { Login } from "./views/auth/login/Login";
 import { ListaGrados } from "./views/mantenedores/grados/ListaGrados";
 import { NuevoGrado } from "./views/mantenedores/grados/NuevoGrado";
+import { ListaMantenedores } from "./views/mantenedores/listado/ListaMantenedores";
 
 export const Router = () => {
   return (
@@ -15,6 +16,7 @@ export const Router = () => {
           <Route path="/home" element={<Home />} />
           <Route path="/mantenedores/grados/lista" element={<ListaGrados />} />
           <Route path="/mantenedores/grados/nuevo" element={<NuevoGrado />} />
+          <Route path="/mantenedores/lista" element={<ListaMantenedores />} />
         </Route>
 
         <Route element={<AuthLayout />}>
