@@ -9,7 +9,6 @@ import {
 } from '@nestjs/common';
 import { PersonaService } from './persona.service';
 import { CreatePersonaDto } from './dto/create-persona.dto';
-import { UpdatePersonaDto } from './dto/update-persona.dto';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { ActiveUser } from 'src/common/decorators/active-user.decorator';
 import { GetPersonaPerfil } from './dto/get-persona-perfil.dto';

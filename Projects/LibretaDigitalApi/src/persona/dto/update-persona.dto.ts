@@ -1,5 +1,5 @@
 export class UpdatePersonaDto {
-  id: string;
+  id: number;
   email: string | null;
   phone: string | null;
   address: string | null;
