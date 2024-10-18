@@ -3,21 +3,14 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   UseGuards,
-  Req,
 } from '@nestjs/common';
 import { PersonaService } from './persona.service';
 import { CreatePersonaDto } from './dto/create-persona.dto';
 import { UpdatePersonaDto } from './dto/update-persona.dto';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
-import RequestWithUser from 'src/auth/interfaces/req-user.interface';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { Rol } from 'src/common/enums/rol.enum';
-import { Auth } from 'src/auth/decorators/auth.decorator';
 import { ActiveUser } from 'src/common/decorators/active-user.decorator';
 import { GetPersonaPerfil } from './dto/get-persona-perfil.dto';
 
@@ -34,14 +27,6 @@ export class PersonaController {
   findAll() {
     return this.personaService.findAll();
   }
-
-  // @Get(':id')
-  // @Roles([Rol.ADMIN, Rol.USER])
-  // @UseGuards(AuthGuard, RolesGuard)
-  // findOneById(@Req() req: RequestWithUser, @Param('id') id: string) {
-  //   console.log(req.user);
-  //   return this.personaService.findOneById(+id);
-  // }
 
   @Get('obtener/:id')
   @UseGuards(AuthGuard)
@@ -61,17 +46,16 @@ export class PersonaController {
     return personaDto;
   }
 
-  @Patch('actualizar/:id')
+  @Post('actualizar')
+  @UseGuards(AuthGuard)
   async actualizar(
-    @Param('id') id: number,
-    @Body() updatePersonaDto: UpdatePersonaDto,
+    @Body()
+    updatedData: any,
   ) {
-    console.log(updatePersonaDto);
-    const personaActualizada = await this.personaService.actualizar(
-      id,
-      updatePersonaDto,
-    );
-    console.log(personaActualizada);
+    console.log('Received updatedData:', updatedData);
+    const personaActualizada =
+      await this.personaService.actualizar(updatedData);
+    console.log('Updated persona:', personaActualizada);
     return personaActualizada;
   }
 

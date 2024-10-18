@@ -9,7 +9,7 @@ import { updatePerfilSchema } from "@/types/PerfilSchema";
 
 const PerfilUsuario = () => {
   const { data, isLoading } = useAuth();
-  const [loadingModal, setLoadingModal] = React.useState<boolean>(true);
+  const [loadingModal, setLoadingModal] = React.useState<boolean>(false);
   const [loadingFull, setLoadingFull] = React.useState<boolean>(true);
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -68,22 +68,27 @@ const PerfilUsuario = () => {
 
   const handleOk = async () => {
     setLoadingModal(true);
+    console.log("editData", editData);
+    console.log("user", user);
     const dataToSend = {
       email: editData.email ?? "",
       phone: editData.phone ?? "",
       address: editData.address ?? "",
     };
     const validatedData = updatePerfilSchema.parse(dataToSend);
+    console.log("validatedData", validatedData);
+    try {
+      await perfilController.updatePerfil(idPersona!, validatedData);
 
-    await perfilController.updatePerfil(idPersona!, validatedData);
-
-    setUser({
-      ...user,
-      ...validatedData, // Actualizar la información visible sin tocar RUT o nombre
-    });
-    message.success("Perfil actualizado exitosamente");
-    setLoadingModal(true);
-    setIsModalOpen(false);
+      setUser({
+        ...user,
+        ...validatedData, // Actualizar la información visible sin tocar RUT o nombre
+      });
+      message.success("Perfil actualizado exitosamente");
+      setIsModalOpen(false);
+    } finally {
+      setLoadingModal(false);
+    }
   };
 
   const handleCancel = () => {
@@ -186,15 +191,17 @@ const PerfilUsuario = () => {
         )}
 
         {/* Modal de edición */}
-        <Spin spinning={loadingModal}>
-          <Modal
-            title="Editar Perfil"
-            open={isModalOpen}
-            onOk={handleOk}
-            onCancel={handleCancel}
-            okText="Guardar"
-            cancelText="Cancelar"
-          >
+        <Modal
+          title="Editar Perfil"
+          open={isModalOpen}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          okText="Guardar"
+          okButtonProps={{ loading: loadingModal }}
+          cancelText="Cancelar"
+          cancelButtonProps={{ disabled: loadingModal }}
+        >
+          <Spin spinning={loadingModal}>
             <div className="space-y-4">
               <div>
                 <label className="block mb-1">Correo Electrónico</label>
@@ -221,8 +228,8 @@ const PerfilUsuario = () => {
                 />
               </div>
             </div>
-          </Modal>
-        </Spin>
+          </Spin>
+        </Modal>
       </div>
     </Spin>
   );

@@ -22,10 +22,10 @@ export class PersonaService {
     return persona;
   }
 
-  async actualizar(id: number, updatePersonaDto: UpdatePersonaDto) {
+  async actualizar(updatePersonaDto: UpdatePersonaDto) {
     const personaReturn = await this.prisma.persona.update({
       where: {
-        id: +id,
+        id: +updatePersonaDto.id,
       },
       data: {
         desc_email: updatePersonaDto.email,

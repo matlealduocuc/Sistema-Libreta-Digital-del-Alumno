@@ -1,4 +1,4 @@
-import { UpdatePerfilDto } from "@/dtos/Perfil/UpdatePerfilDto";
+import { UpdatePersonaDto } from "@/dtos/Perfil/UpdatePerfilDto";
 import api from "@/lib/axios";
 import { isAxiosError } from "axios";
 
@@ -15,16 +15,19 @@ export class PerfilService {
     }
   }
 
-  async updatePerfil(idPersona: number, updatedData: UpdatePerfilDto) {
+  async updatePerfil(updatedData: UpdatePersonaDto) {
     try {
-      const response = await api.patch(
-        `/persona/actualizar/${idPersona}`,
-        updatedData
-      );
+      console.log("Sending updated data:", updatedData);
+      const response = await api.post("persona/actualizar", updatedData);
+      console.log("Response data:", response.data);
       return response.data;
     } catch (error) {
       if (isAxiosError(error) && error.response) {
+        console.error("Error response:", error.response.data);
         throw new Error(error.response.data.error);
+      } else {
+        console.error("Unexpected error:", error);
+        throw new Error("Unexpected error occurred");
       }
     }
   }

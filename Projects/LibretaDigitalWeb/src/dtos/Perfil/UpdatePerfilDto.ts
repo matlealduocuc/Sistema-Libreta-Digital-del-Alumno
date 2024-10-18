@@ -1,9 +1,11 @@
-export class UpdatePerfilDto {
-  email: string;
-  phone: string;
-  address: string;
+export class UpdatePersonaDto {
+  id: string;
+  email: string | null;
+  phone: string | null;
+  address: string | null;
 
-  constructor(email: string, phone: string, address: string) {
+  constructor(id: string, email: string, phone: string, address: string) {
+    this.id = id;
     this.email = email;
     this.phone = phone;
     this.address = address;
