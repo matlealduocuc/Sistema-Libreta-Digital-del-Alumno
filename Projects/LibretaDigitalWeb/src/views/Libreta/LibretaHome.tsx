@@ -11,7 +11,7 @@ const LibretaHome = () => {
     <div className="p-4 max-w-md mx-auto">
       <NavLink
         to={initPathName + "/avisos"}
-        className="block bg-gray-800 text-white rounded-lg p-6 mb-4 border border-gray-300 shadow-sm hover:bg-gray-100 transition"
+        className="block bg-gray-800 hover:bg-gray-700 text-white rounded-lg p-6 mb-4 border border-gray-300 shadow-sm transition"
       >
         <div className="flex items-center">
           <BulbOutlined className="text-2xl mr-4 text-white" />
@@ -26,7 +26,7 @@ const LibretaHome = () => {
 
       <NavLink
         to={initPathName + "/comunicate"}
-        className="block bg-gray-800 text-white rounded-lg p-6 mb-4 border border-gray-300 shadow-sm hover:bg-gray-100 transition"
+        className="block bg-gray-800 hover:bg-gray-700 text-white rounded-lg p-6 mb-4 border border-gray-300 shadow-sm transition"
       >
         <div className="flex items-center">
           <EditOutlined className="text-2xl mr-4 text-white" />
@@ -41,7 +41,7 @@ const LibretaHome = () => {
 
       <NavLink
         to={initPathName + "/informate"}
-        className="block bg-gray-800 text-white rounded-lg p-6 mb-4 border border-gray-300 shadow-sm hover:bg-gray-100 transition"
+        className="block bg-gray-800 hover:bg-gray-700 text-white rounded-lg p-6 mb-4 border border-gray-300 shadow-sm transition"
       >
         <div className="flex items-center">
           <InfoCircleOutlined className="text-2xl mr-4 text-white" />

@@ -79,7 +79,7 @@ export const Login = () => {
         <Spin spinning={loading}>
           <form
             onSubmit={handleSubmit(handleLogin)}
-            className="space-y-8 p-5 sm:p-10 bg-white"
+            className="space-y-8 p-5 sm:p-10 bg-gray-100"
             noValidate
           >
             <div className="flex flex-col gap-5">
@@ -91,7 +91,7 @@ export const Login = () => {
                 placeholder="RUT"
                 value={rut}
                 onInput={(e) => setRut(e.currentTarget.value)}
-                className="w-full p-3  border-gray-300 border"
+                className="w-full p-3 rounded-xl border-gray-300 border"
                 {...register("rut", {
                   required: "El RUT es obligatorio",
                 })}
@@ -107,7 +107,7 @@ export const Login = () => {
                 placeholder="Contraseña"
                 value={password}
                 onInput={(e) => setPassword(e.currentTarget.value)}
-                className="w-full p-3  border-gray-300 border"
+                className="w-full p-3 rounded-xl border-gray-300 border"
                 {...register("password", {
                   required: "La Contraseña es obligatoria",
                   minLength: {
@@ -121,11 +121,13 @@ export const Login = () => {
               )}
             </div>
 
-            <input
-              type="submit"
-              value="Iniciar Sesión"
-              className="bg-fuchsia-600 hover:bg-fuchsia-700 w-full p-3  text-white font-black  text-xl cursor-pointer"
-            />
+            <div className="flex justify-center">
+              <input
+                type="submit"
+                value="Iniciar Sesión"
+                className="bg-gray-800 hover:bg-gray-700 transition-colors w-60 p-3 text-white font-black rounded-xl text-xl cursor-pointer"
+              />
+            </div>
           </form>
         </Spin>
       </Flex>
