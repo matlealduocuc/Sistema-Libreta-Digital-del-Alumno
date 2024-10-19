@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+
+  dev_db:
+    image: postgres:15
+    restart: always
+    container_name: container_dev_db
+    hostname: dev_db
+    environment:
+      POSTGRES_DB: libreta_digital_sql
+      POSTGRES_USER: libreta_digital_sql_user
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - ~/Documents/docker-vol/postgres-volume-lda:/var/lib/postgresql/data
+      - ./sql/create_schema.sql:/docker-entrypoint-initdb.d/create_schema.sql
+      - ./sql/insert_data.sql:/docker-entrypoint-initdb.d/insert_data.sql
+    ports:
+      - "9091:5432"
