@@ -173,7 +173,7 @@ const PerfilUsuario = () => {
           </button>
         </div>
 
-        {!isLoading && data.rol.includes("admin") && (
+        {!isLoading && (data && data.rol.includes("admin")) && (
           <div className="mt-6">
             <hr />
             <div className="flex justify-center mt-6">
