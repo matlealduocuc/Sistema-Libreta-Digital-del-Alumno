@@ -1,14 +1,44 @@
 import { NavLink } from "react-router-dom";
 import {
+  AppstoreOutlined,
   BulbOutlined,
   EditOutlined,
   InfoCircleOutlined,
 } from "@ant-design/icons";
+import { useAuth } from "@/hooks/useAuth";
+import { AuthorizedUserDto } from "@/dtos/Auth/AuthorizedUserDto";
+
+const storedUser = localStorage.getItem("AUTH_USER");
+const usuario: AuthorizedUserDto = storedUser ? JSON.parse(storedUser) : null;
+
+const designadoSexo: string =
+  usuario?.persona.sexo === "F"
+    ? "designada"
+    : usuario?.persona.sexo === "M"
+    ? "designado"
+    : "designad@";
+
+const initPathName: string = "/libreta";
 
 const LibretaHome = () => {
-  const initPathName: string = "/libreta";
+  const { data, isLoading } = useAuth();
+
   return (
     <div className="p-4 max-w-md mx-auto">
+      {!isLoading &&
+        data &&
+        data.rol.includes("apoderado") &&
+        ApoderadoButtons()}
+      {!isLoading && data && data.rol.includes("educador") && EducadorButtons()}
+    </div>
+  );
+};
+
+export default LibretaHome;
+
+const ApoderadoButtons = () => {
+  return (
+    <div>
       <NavLink
         to={initPathName + "/avisos"}
         className="block bg-gray-800 hover:bg-gray-700 text-white rounded-lg p-6 mb-4 border border-gray-300 shadow-sm transition"
@@ -23,7 +53,6 @@ const LibretaHome = () => {
           </div>
         </div>
       </NavLink>
-
       <NavLink
         to={initPathName + "/comunicate"}
         className="block bg-gray-800 hover:bg-gray-700 text-white rounded-lg p-6 mb-4 border border-gray-300 shadow-sm transition"
@@ -57,4 +86,38 @@ const LibretaHome = () => {
   );
 };
 
-export default LibretaHome;
+const EducadorButtons = () => {
+  return (
+    <div>
+      <NavLink
+        to={initPathName + "/mis-grados"}
+        className="block bg-gray-800 hover:bg-gray-700 text-white rounded-lg p-6 mb-4 border border-gray-300 shadow-sm transition"
+      >
+        <div className="flex items-center">
+          <AppstoreOutlined className="text-2xl mr-4 text-white" />
+          <div>
+            <h2 className="text-lg font-bold">Grados</h2>
+            <p className="text-sm">
+              Revisa los grados en los que estás {designadoSexo}.
+            </p>
+          </div>
+        </div>
+      </NavLink>
+      <NavLink
+        to={initPathName + "/educador/comunicados"}
+        className="block bg-gray-800 hover:bg-gray-700 text-white rounded-lg p-6 mb-4 border border-gray-300 shadow-sm transition"
+      >
+        <div className="flex items-center">
+          <EditOutlined className="text-2xl mr-4 text-white" />
+          <div>
+            <h2 className="text-lg font-bold">Comunícate</h2>
+            <p className="text-sm">
+              Comunícate directamente con los apoderados de los grados donde
+              estás {designadoSexo}.
+            </p>
+          </div>
+        </div>
+      </NavLink>
+    </div>
+  );
+};

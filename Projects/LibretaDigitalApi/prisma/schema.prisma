@@ -10,13 +10,12 @@ datasource db {
 }
 
 model Menor {
-  id              Int       @id(map: "lda_menor_pk") @default(autoincrement()) @map("iden_menor")
-  nombre          String    @map("desc_nombre") @db.VarChar
-  apellidoP       String    @map("desc_apellido_paterno") @db.VarChar
-  apellidoM       String?   @map("desc_apellido_materno") @db.VarChar
-  fechaNacimiento DateTime? @map("fech_nacimiento") @db.Date
-  flag_activo     Boolean   @default(true)
-  flag_eliminado  Boolean   @default(false)
+  id              Int               @id(map: "lda_menor_pk") @default(autoincrement()) @map("iden_menor")
+  flag_activo     Boolean           @default(true)
+  flag_eliminado  Boolean           @default(false)
+  iden_persona    Int
+  lda_grado_menor lda_grado_menor[]
+  per_persona     Persona           @relation(fields: [iden_persona], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lda_menor_per_persona_fk")
 
   @@map("lda_menor")
   @@schema("ADMLDA")
@@ -48,7 +47,12 @@ model Persona {
   desc_email        String?           @db.VarChar
   desc_tel          String?           @db.VarChar
   desc_direccion    String?           @db.VarChar
+  fech_nacimiento   DateTime?         @db.Date
+  iden_sexo         Int?
+  lda_educador      lda_educador[]
+  lda_menor         Menor[]
   per_nacionalidad  Nacionalidad?     @relation(fields: [iden_nacionalidad], references: [iden_nacionalidad], onDelete: NoAction, onUpdate: NoAction, map: "per_persona_per_nacionalidad_fk")
+  per_sexo          per_sexo?         @relation(fields: [iden_sexo], references: [iden_sexo], onDelete: NoAction, onUpdate: NoAction, map: "per_persona_per_sexo_fk")
   TipoIdentificador TipoIdentificador @relation(fields: [idTipoIden], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "per_persona_per_tipo_identificador_fk")
   Usuario           Usuario[]
 
@@ -97,4 +101,100 @@ model usr_rol_usuario {
   usr_usuario      Usuario @relation(fields: [iden_usuario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "usr_rol_usuario_usr_usuario_fk")
 
   @@schema("ADMUSR")
+}
+
+model lda_educador {
+  iden_educador      Int                  @id(map: "lda_educador_pk") @default(autoincrement())
+  iden_persona       Int
+  flag_activo        Boolean              @default(true)
+  flag_eliminado     Boolean              @default(false)
+  per_persona        Persona              @relation(fields: [iden_persona], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lda_educador_per_persona_fk")
+  lda_grado_educador lda_grado_educador[]
+
+  @@schema("ADMLDA")
+}
+
+model lda_grado {
+  iden_grado         Int                  @id(map: "lda_grado_pk") @default(autoincrement())
+  nmro_agno          Int?
+  desc_nombre        String?              @db.VarChar
+  desc_descripcion   String?              @db.VarChar
+  flag_activo        Boolean              @default(true)
+  flag_eliminado     Boolean              @default(false)
+  iden_jornada       Int
+  iden_nivel         Int
+  lda_jornada        lda_jornada          @relation(fields: [iden_jornada], references: [iden_jornada], onDelete: NoAction, onUpdate: NoAction, map: "lda_grado_lda_jornada_fk")
+  lda_nivel          lda_nivel            @relation(fields: [iden_nivel], references: [iden_nivel], onDelete: NoAction, onUpdate: NoAction, map: "lda_grado_lda_nivel_fk")
+  lda_grado_educador lda_grado_educador[]
+  lda_grado_menor    lda_grado_menor[]
+
+  @@schema("ADMLDA")
+}
+
+model lda_grado_educador {
+  iden_grado_educador Int          @id(map: "lda_grado_educador_pk") @default(autoincrement())
+  iden_grado          Int
+  iden_educador       Int
+  flag_activo         Boolean      @default(true)
+  flag_eliminado      Boolean      @default(false)
+  lda_educador        lda_educador @relation(fields: [iden_educador], references: [iden_educador], onDelete: NoAction, onUpdate: NoAction, map: "lda_grado_educador_lda_educador_fk")
+  lda_grado           lda_grado    @relation(fields: [iden_grado], references: [iden_grado], onDelete: NoAction, onUpdate: NoAction, map: "lda_grado_educador_lda_grado_fk")
+
+  @@schema("ADMLDA")
+}
+
+model lda_grado_menor {
+  iden_grado_menor Int       @id(map: "lda_grado_menor_pk") @default(autoincrement())
+  iden_grado       Int
+  iden_menor       Int
+  flag_activo      Boolean   @default(true)
+  flag_eliminado   Boolean   @default(false)
+  lda_grado        lda_grado @relation(fields: [iden_grado], references: [iden_grado], onDelete: NoAction, onUpdate: NoAction, map: "lda_grado_menor_lda_grado_fk")
+  lda_menor        Menor     @relation(fields: [iden_menor], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lda_grado_menor_lda_menor_fk")
+
+  @@schema("ADMLDA")
+}
+
+model lda_jornada {
+  iden_jornada     Int         @id(map: "lda_jornada_pk") @default(autoincrement())
+  desc_nombre      String      @db.VarChar
+  desc_descripcion String?     @db.VarChar
+  flag_activo      Boolean     @default(true)
+  flag_eliminado   Boolean     @default(false)
+  lda_grado        lda_grado[]
+
+  @@schema("ADMLDA")
+}
+
+model lda_nivel {
+  iden_nivel       Int         @id(map: "lda_nivel_pk") @default(autoincrement())
+  desc_nombre      String      @db.VarChar
+  desc_descripcion String?     @db.VarChar
+  flag_activo      Boolean     @default(true)
+  flag_eliminado   Boolean     @default(false)
+  iden_sala        Int?
+  lda_grado        lda_grado[]
+  lda_sala         lda_sala?   @relation(fields: [iden_sala], references: [iden_sala], onDelete: NoAction, onUpdate: NoAction, map: "lda_nivel_lda_sala_fk")
+
+  @@schema("ADMLDA")
+}
+
+model lda_sala {
+  iden_sala        Int         @id(map: "lda_sala_pk") @default(autoincrement())
+  desc_nombre      String      @db.VarChar
+  desc_descripcion String?     @db.VarChar
+  flag_activo      Boolean     @default(true)
+  flag_eliminado   Boolean     @default(false)
+  lda_nivel        lda_nivel[]
+
+  @@schema("ADMLDA")
+}
+
+model per_sexo {
+  iden_sexo   Int       @id(map: "per_sexo_pk") @default(autoincrement())
+  desc_nombre String    @db.VarChar
+  code_sexo   String    @db.Char(1)
+  per_persona Persona[]
+
+  @@schema("ADMPER")
 }

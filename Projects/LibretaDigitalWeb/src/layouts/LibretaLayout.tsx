@@ -15,9 +15,6 @@ const LibretaLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  console.log("isError", isError);
-  console.log("isLoading", isLoading);
-
   useEffect(() => {
     setLoadingLayout(isLoading);
     if (isError) {
@@ -26,15 +23,24 @@ const LibretaLayout = () => {
   }, [isLoading, isError, navigate]);
 
   const initPathName: string = "/libreta";
+  const bienvenidoSexo: string =
+    usuario?.persona.sexo === "F"
+      ? "Bienvenida"
+      : usuario?.persona.sexo === "M"
+      ? "Bienvenido"
+      : "Bienvenid@";
+  const primerNombreUpper: string = usuario?.persona.primerNombre.toUpperCase();
+  const bienvenidaText: string = `${bienvenidoSexo} ${primerNombreUpper}`;
 
   const pageTitles: { [key: string]: string } = {
-    [initPathName]: "Bienvenido " + usuario?.persona.primerNombre.toUpperCase(),
-    [initPathName + "/"]:
-      "Bienvenido " + usuario?.persona.primerNombre.toUpperCase(),
+    [initPathName]: bienvenidaText,
+    [initPathName + "/"]: bienvenidaText,
     [initPathName + "/avisos"]: "Avisos",
     [initPathName + "/comunicate"]: "Comunícate",
     [initPathName + "/informate"]: "Infórmate",
     [initPathName + "/perfil"]: "Perfil del Usuario",
+    [initPathName + "/educador/comunicados"]: "Comunicados",
+    [initPathName + "/educador/crear-comunicado"]: "Comunicados",
   };
 
   const title: string = pageTitles[location.pathname] || "Libreta Digital";

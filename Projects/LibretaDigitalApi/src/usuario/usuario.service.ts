@@ -36,7 +36,7 @@ export class UsuarioService {
         },
       },
       include: {
-        persona: { include: { TipoIdentificador: true } },
+        persona: { include: { TipoIdentificador: true, per_sexo: true } },
         usr_rol_usuario: {
           select: { usr_rol: { select: { desc_rol: true } } },
         },

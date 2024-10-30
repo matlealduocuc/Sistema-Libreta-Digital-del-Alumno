@@ -9,6 +9,8 @@ import { ListaMantenedores } from "./views/mantenedores/listado/ListaMantenedore
 import LibretaLayout from "./layouts/LibretaLayout";
 import LibretaHome from "./views/Libreta/LibretaHome";
 import PerfilUsuario from "./views/Libreta/Perfil/PerfilUsuario";
+import EducadorComunicados from "./views/Libreta/Educador/EducadorComunicados";
+import CrearComunicado from "./views/Libreta/Educador/CrearComunicado";
 
 export const Router = () => {
   return (
@@ -26,6 +28,14 @@ export const Router = () => {
           <Route path="" element={<LibretaHome />} index />
           <Route path="home" element={<LibretaHome />} />
           <Route path="perfil" element={<PerfilUsuario />} />
+          <Route
+            path="educador/comunicados"
+            element={<EducadorComunicados />}
+          />
+          <Route
+            path="educador/crear-comunicado"
+            element={<CrearComunicado />}
+          />
         </Route>
 
         <Route element={<AuthLayout />}>

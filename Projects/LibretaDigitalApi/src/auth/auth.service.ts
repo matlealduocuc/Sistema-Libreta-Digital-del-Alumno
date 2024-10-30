@@ -26,6 +26,7 @@ export class AuthService {
 
     const persona = usuario.persona;
     const tipoIdentificacion = persona.TipoIdentificador;
+    const sexo = persona.per_sexo;
     const rolesUsuario = usuario.usr_rol_usuario;
 
     const personAuthDto = {
@@ -38,6 +39,7 @@ export class AuthService {
       dv: persona.char_dv,
       dni: persona.desc_dni,
       tipoIdentificacion: tipoIdentificacion.tipo,
+      sexo: sexo.code_sexo,
     };
 
     const payload: any = {

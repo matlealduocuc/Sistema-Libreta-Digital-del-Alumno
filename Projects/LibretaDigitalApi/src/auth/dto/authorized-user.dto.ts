@@ -8,6 +8,7 @@ class PersonAuthDto {
   dv: string | null;
   dni: string | null;
   tipoIdentificacion: string;
+  sexo: string | null;
 
   constructor(
     idPersona: number,
@@ -19,6 +20,7 @@ class PersonAuthDto {
     dv: string | null,
     dni: string | null,
     tipoIdentificacion: string,
+    sexo: string,
   ) {
     this.idPersona = idPersona;
     this.primerNombre = primerNombre;
@@ -29,6 +31,7 @@ class PersonAuthDto {
     this.dv = dv;
     this.dni = dni;
     this.tipoIdentificacion = tipoIdentificacion;
+    this.sexo = sexo;
   }
 }
 
