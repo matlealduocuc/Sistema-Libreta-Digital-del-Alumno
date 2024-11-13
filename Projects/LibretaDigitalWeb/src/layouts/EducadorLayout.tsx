@@ -7,13 +7,31 @@ import { useAuth } from "@/hooks/useAuth";
 import React from "react";
 import { Spin } from "antd";
 
-const LibretaLayout = () => {
-  const { isError, isLoading } = useAuth();
+const EducadorLayout = () => {
+  const { data, isError, isLoading } = useAuth();
   const [loadingLayout, setLoadingLayout] = React.useState<boolean>(true);
   const storedUser = localStorage.getItem("AUTH_USER");
   const usuario: AuthorizedUserDto = storedUser ? JSON.parse(storedUser) : null;
   const location = useLocation();
   const navigate = useNavigate();
+
+  let initPathName: string = "";
+  if (!isLoading && data) {
+    switch (data.rol) {
+      case "apoderado":
+        initPathName = "/apoderado";
+        break;
+      case "educador":
+        initPathName = "/educador";
+        break;
+      case "director":
+        initPathName = "/director";
+        break;
+      default:
+        initPathName = "/";
+        break;
+    }
+  }
 
   useEffect(() => {
     setLoadingLayout(isLoading);
@@ -22,7 +40,6 @@ const LibretaLayout = () => {
     }
   }, [isLoading, isError, navigate]);
 
-  const initPathName: string = "/libreta";
   const bienvenidoSexo: string =
     usuario?.persona.sexo === "F"
       ? "Bienvenida"
@@ -58,4 +75,4 @@ const LibretaLayout = () => {
   );
 };
 
-export default LibretaLayout;
+export default EducadorLayout;

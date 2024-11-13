@@ -113,15 +113,16 @@ const PerfilUsuario = () => {
 
   return (
     <Spin spinning={loadingFull}>
-      <div className="p-4 max-w-lg mx-auto bg-white shadow-md rounded-lg">
-        <div className="flex items-center justify-center mb-6">
+        <div className="p-4 max-w-lg mx-auto bg-white shadow-md rounded-lg">
+        <div className="flex items-center justify-center">
           <div className="bg-gray-300 rounded-full h-24 w-24 flex items-center justify-center">
             <span className="text-4xl font-bold text-gray-600">
               {user.name?.charAt(0) ?? "?"}{" "}
               {/* Muestra la primera letra del nombre */}
             </span>
-          </div>
         </div>
+        </div>
+        <small className="flex justify-center pt-0 pb-4">Rol: {usuario.rol}</small>
 
         <div className="space-y-4">
           {/* Rut del usuario */}

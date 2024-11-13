@@ -39,17 +39,17 @@ export class AuthorizedUserDto {
   token: string;
   persona: PersonAuthDto;
   idUsuario: number;
-  roles: string[];
+  rol: string;
 
   constructor(
     token: string,
     persona: PersonAuthDto,
     idUsuario: number,
-    roles: string[],
+    rol: string,
   ) {
     this.token = token;
     this.persona = persona;
     this.idUsuario = idUsuario;
-    this.roles = roles;
+    this.rol = rol;
   }
 }
