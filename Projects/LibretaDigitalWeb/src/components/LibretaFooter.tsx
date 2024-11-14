@@ -7,7 +7,15 @@ import {
 } from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
 
-const LibretaFooter = () => {
+interface LibretaFooterProps {
+  bgColorClass?: string;
+  textColorClass?: string;
+}
+
+const LibretaFooter: React.FC<LibretaFooterProps> = ({
+  bgColorClass = "black",
+  textColorClass = "white",
+}) => {
   const { data, isLoading } = useAuth();
   let initPathName: string = "";
   if (!isLoading && data) {
@@ -27,19 +35,18 @@ const LibretaFooter = () => {
     }
 
     return (
-      <footer className="fixed bottom-0 left-0 w-full bg-black p-4">
+      <footer
+        className={`fixed bottom-0 left-0 w-full bg-${bgColorClass} text-${textColorClass} p-4`}
+      >
         <nav className="flex justify-around items-center max-w-2xl mx-auto">
-          <NavLink
-            to="/libretaRedirect"
-            className="text-white flex flex-col items-center"
-          >
+          <NavLink to="/libretaRedirect" className="flex flex-col items-center">
             <HomeOutlined className="text-2xl" />
             <span className="text-xs">Inicio</span>
           </NavLink>
 
           <NavLink
             to={initPathName + "/mensaje"}
-            className="text-white flex flex-col items-center"
+            className="flex flex-col items-center"
           >
             <MessageOutlined className="text-2xl" />
             <span className="text-xs">Mensaje</span>
@@ -47,7 +54,7 @@ const LibretaFooter = () => {
 
           <NavLink
             to={initPathName + "/avisos"}
-            className="text-white flex flex-col items-center"
+            className="flex flex-col items-center"
           >
             <BellOutlined className="text-2xl" />
             <span className="text-xs">Avisos</span>
@@ -55,7 +62,7 @@ const LibretaFooter = () => {
 
           <NavLink
             to={initPathName + "/perfil"}
-            className="text-white flex flex-col items-center"
+            className="flex flex-col items-center"
           >
             <UserOutlined className="text-2xl" />
             <span className="text-xs">Perfil</span>
