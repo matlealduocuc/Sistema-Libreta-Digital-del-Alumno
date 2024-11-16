@@ -11,7 +11,7 @@ const ApoderadoAvisosHome = () => {
       title: "Vacunas",
       heading: "¡Autoriza y Protege!",
       description:
-        "Aquí podrás conocer novedades acerca de las próximas Vacunas y Recomendaciones de la autoridad sanitaria.",
+        "Aquí podrás conocer novedades acerca<br />de las próximas <strong>Vacunas</strong> y <strong>Recomendaciones</strong><br />de la autoridad sanitaria.",
       buttonText: "Continuar",
       href: "/apoderado/avisos/vacunas/listado-menores",
       imgSrc: VacunaSvg,
@@ -20,27 +20,27 @@ const ApoderadoAvisosHome = () => {
       title: "Paseos y Visitas",
       heading: "¡Aprender Divertido!",
       description:
-        "En esta sección encontrarás información sobre los Paseos y Visitas.",
+        "En esta sección encontrarás información<br />sobre los <strong>Paseos y Visitas</strong>.",
       buttonText: "Continuar",
-      href: "/apoderado/avisos/paseos-visitas",
+      href: "/apoderado/avisos/paseos-visitas/listado-menores",
       imgSrc: PaseoVisitaSvg,
     },
     {
       title: "Reuniones de Apoderados",
       heading: "¡Participar es Clave!",
       description:
-        "Descubre las fechas y temas de las Próximas Reuniones y Confirmar tu Asistencia.",
+        "Descubre las fechas y temas<br />de las <strong>Próximas Reuniones</strong><br />y Confirmar tu Asistencia.",
       buttonText: "Continuar",
-      href: "/apoderado/avisos/reuniones-apoderados",
+      href: "/apoderado/avisos/reuniones-apoderados/listado-menores",
       imgSrc: ReunionApoderadosSvg,
     },
     {
       title: "Itinerario de Jornada",
       heading: "¡Actividades Diarias!",
       description:
-        "Conoce las Experiencias Educativas y mantente al tanto de su evolución.",
+        "Conoce las <strong>Experiencias Educativas</strong><br />y mantente al tanto de su evolución.",
       buttonText: "Continuar",
-      href: "/apoderado/avisos/itinerario-jornada",
+      href: "/apoderado/avisos/itinerario-jornada/listado-menores",
       imgSrc: ActividadesDiariasSvf,
     },
   ];
@@ -143,7 +143,10 @@ const ApoderadoAvisosHome = () => {
               <h2 className="text-xl font-bold text-blue-600 mb-4">
                 {slide.heading}
               </h2>
-              <p className="text-gray-700">{slide.description}</p>
+              <p
+                className="text-gray-700"
+                dangerouslySetInnerHTML={{ __html: slide.description }}
+              ></p>
 
               <div className="my-6 w-full max-w-xs">
                 <img

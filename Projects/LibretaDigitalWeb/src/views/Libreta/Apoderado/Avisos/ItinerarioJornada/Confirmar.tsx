@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-const AutorizarVacunaMenor = () => {
+const ConfirmarItinerarioJornadaMenor = () => {
   const { id } = useParams();
   const [step, setStep] = useState(1);
   const navigate = useNavigate();
@@ -30,14 +30,12 @@ const AutorizarVacunaMenor = () => {
           <div className="text-center space-y-6">
             <h2 className="text-xl font-bold mb-4">Estado de Autorización</h2>
             <p className="mb-4">
-              En el recuadro se indica el nombre del menor,
-              <br />
-              la <strong>Vacuna Pendiente</strong>
-              <br />y su <strong>Estado de Autorización</strong>.
+              En el recuadro se indica el nombre del menor, la vacuna pendiente
+              y su estado de autorización.
             </p>
             <p className="mb-4">
-              Haz click en <strong>"Autorizar"</strong>
-              <br /> para permitir la aplicación de la vacuna.
+              Haz click en <strong>"Autorizar"</strong> para permitir la
+              aplicación de la vacuna.
             </p>
             <div className="border border-gray-300 rounded-lg p-4 mb-4 bg-white">
               <p>
@@ -62,11 +60,6 @@ const AutorizarVacunaMenor = () => {
             >
               Continuar
             </button>
-            <p className="text-black text-md text-center mt-4">
-              Haz{" "}
-              <a className="underline cursor-pointer font-bold">Click Aquí</a>{" "}
-              para ver las recomendaciones del Ministerio de Salud.
-            </p>
           </div>
         )}
 
@@ -136,4 +129,4 @@ const AutorizarVacunaMenor = () => {
   );
 };
 
-export default AutorizarVacunaMenor;
+export default ConfirmarItinerarioJornadaMenor;

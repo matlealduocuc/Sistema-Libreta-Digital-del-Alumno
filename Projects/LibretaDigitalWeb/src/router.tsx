@@ -17,6 +17,12 @@ import LibretaApoderadoHome from "./views/Libreta/Apoderado/LibretaApoderadoHome
 import ApoderadoAvisosHome from "./views/Libreta/Apoderado/Avisos/Home";
 import VacunasListadoMenores from "./views/Libreta/Apoderado/Avisos/Vacunas/ListadoMenores";
 import AutorizarVacunaMenor from "./views/Libreta/Apoderado/Avisos/Vacunas/Autorizar";
+import PaseosVisitasListadoMenores from "./views/Libreta/Apoderado/Avisos/PaseosVisitas/ListadoMenores";
+import AutorizarPaseoVisitaMenor from "./views/Libreta/Apoderado/Avisos/PaseosVisitas/Autorizar";
+import ReunionesApoderadosListadoMenores from "./views/Libreta/Apoderado/Avisos/ReunionesApoderados/ListadoMenores";
+import ConfirmarReunionesApoderadosMenor from "./views/Libreta/Apoderado/Avisos/ReunionesApoderados/Confirmar";
+import ItinerarioJornadaListadoMenores from "./views/Libreta/Apoderado/Avisos/ItinerarioJornada/ListadoMenores";
+import ConfirmarItinerarioJornadaMenor from "./views/Libreta/Apoderado/Avisos/ItinerarioJornada/Confirmar";
 
 export const Router = () => {
   return (
@@ -51,6 +57,30 @@ export const Router = () => {
           <Route
             path="avisos/vacunas/menor/:id"
             element={<AutorizarVacunaMenor />}
+          />
+          <Route
+            path="avisos/paseos-visitas/listado-menores"
+            element={<PaseosVisitasListadoMenores />}
+          />
+          <Route
+            path="avisos/paseos-visitas/menor/:id"
+            element={<AutorizarPaseoVisitaMenor />}
+          />
+          <Route
+            path="avisos/reuniones-apoderados/listado-menores"
+            element={<ReunionesApoderadosListadoMenores />}
+          />
+          <Route
+            path="avisos/reuniones-apoderados/menor/:id"
+            element={<ConfirmarReunionesApoderadosMenor />}
+          />
+          <Route
+            path="avisos/itinerario-jornada/listado-menores"
+            element={<ItinerarioJornadaListadoMenores />}
+          />
+          <Route
+            path="avisos/itinerario-jornada/menor/:id"
+            element={<ConfirmarItinerarioJornadaMenor />}
           />
         </Route>
 

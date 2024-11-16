@@ -95,7 +95,7 @@ const LibretaApoderadoHome = () => {
   }
 
   return (
-    <div className="flex flex-col py-8 items-center space-y-6 w-full max-w-md">
+    <div className="flex flex-col px-4 py-8 items-center space-y-6 w-full max-w-md">
       {renderItemsAppbar()}
     </div>
   );
