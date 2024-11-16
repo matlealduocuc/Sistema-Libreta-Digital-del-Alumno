@@ -6,6 +6,11 @@ const LibretaRedirect = () => {
 
   const navigate = useNavigate();
 
+  const handleCerrarSesion = () => {
+    localStorage.removeItem("AUTH_USER");
+    navigate("/login");
+  };
+
   if (!isLoading && data) {
     switch (data.rol) {
       case "apoderado":
@@ -18,6 +23,7 @@ const LibretaRedirect = () => {
         navigate("/director");
         break;
       default:
+        handleCerrarSesion();
         navigate("/");
         break;
     }

@@ -49,15 +49,11 @@ const EducadorLayout = () => {
   return (
     <Spin spinning={loadingLayout}>
       <div className="flex flex-col min-h-screen">
-        <LibretaHeader
-          title={title}
-          bgColorClass="blue-900"
-          textColorClass="white"
-        />
-        <main className="flex-grow p-4 pt-16 pb-20">
+        <LibretaHeader title={title} />
+        <main className="flex-grow p-4 pt-24 pb-20">
           <Outlet />
         </main>
-        <LibretaFooter bgColorClass="blue-900" textColorClass="white" />
+        <LibretaFooter />
       </div>
     </Spin>
   );

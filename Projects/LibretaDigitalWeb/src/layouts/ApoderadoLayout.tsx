@@ -7,7 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import React from "react";
 import { Spin } from "antd";
 
-const EducadorLayout = () => {
+const ApoderadoLayout = () => {
   const { data, isError, isLoading } = useAuth();
   const [loadingLayout, setLoadingLayout] = React.useState<boolean>(true);
   const storedUser = localStorage.getItem("AUTH_USER");
@@ -56,8 +56,9 @@ const EducadorLayout = () => {
     [initPathName + "/comunicate"]: "Comunícate",
     [initPathName + "/informate"]: "Infórmate",
     [initPathName + "/perfil"]: "Perfil del Usuario",
-    [initPathName + "/educador/comunicados"]: "Comunicados",
-    [initPathName + "/educador/crear-comunicado"]: "Comunicados",
+    [initPathName + "/avisos/home"]: "Avisos",
+    [initPathName + "/avisos/vacunas/listado-menores"]: "Vacunas",
+    [initPathName + "/avisos/vacunas/menor"]: "Vacunas",
   };
 
   const title: string = pageTitles[location.pathname] || "Libreta Digital";
@@ -66,7 +67,7 @@ const EducadorLayout = () => {
     <Spin spinning={loadingLayout}>
       <div className="flex flex-col min-h-screen">
         <LibretaHeader title={title} />
-        <main className="flex-grow p-4 pt-16 pb-20">
+        <main className="flex-grow p-4 pt-24 pb-20">
           <Outlet />
         </main>
         <LibretaFooter />
@@ -75,4 +76,4 @@ const EducadorLayout = () => {
   );
 };
 
-export default EducadorLayout;
+export default ApoderadoLayout;

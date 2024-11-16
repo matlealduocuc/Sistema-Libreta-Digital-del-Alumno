@@ -48,4 +48,8 @@ export class MenorController {
     });
     return menoresReturn;
   }
+
+  async getMenoresByApoderado(idPersona: number) {
+    return await this._menorService.getMenoresByApoderado();
+  }
 }
