@@ -23,7 +23,7 @@ const AutorizarVacunaMenor = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 mt-9">
+    <div className="min-h-screen flex flex-col mt-9 w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
       <main className="flex-1 p-4">
         {/* Paso 1: Estado de Autorización */}
         {step === 1 && (
@@ -72,7 +72,7 @@ const AutorizarVacunaMenor = () => {
 
         {/* Paso 2: Confirmación para autorizar */}
         {step === 2 && (
-          <div>
+          <div className="text-center">
             <h2 className="text-xl font-bold mb-4">¡Listo para Autorizar!</h2>
             <p className="mb-4">
               Haz click en <strong>"Aceptar"</strong> para autorizar la vacuna.

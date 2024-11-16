@@ -1,4 +1,4 @@
-import { MenorController } from "@/controllers/MenorController"; 
+import { MenorController } from "@/controllers/MenorController";
 import { useAuth } from "@/hooks/useAuth";
 import { Spin } from "antd";
 import React, { useEffect, useState } from "react";
@@ -24,7 +24,9 @@ const VacunasListadoMenores = () => {
       setLoading(true);
       if (!isLoading && idPersona) {
         try {
-          const menoresData = await menorController.getMenoresByApoderado(idPersona);
+          const menoresData = await menorController.getMenoresByApoderado(
+            idPersona
+          );
           if (menoresData) {
             setMenores(
               menoresData.map(
@@ -45,7 +47,7 @@ const VacunasListadoMenores = () => {
     };
 
     fetchMenores();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,14 +64,14 @@ const VacunasListadoMenores = () => {
 
   return (
     <Spin spinning={loading}>
-      <div className="p-4">
+      <div className="p-4 w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-xl font-bold">Listado de Menores</h1>
         </div>
 
         <div className="mb-4">
           <form
-            className="max-w-md mx-auto"
+            className="max-w-full mx-auto"
             onSubmit={(e) => e.preventDefault()}
           >
             <label
@@ -122,7 +124,9 @@ const VacunasListadoMenores = () => {
               </div>
             ))
           ) : (
-            <p className="text-gray-500 text-center">No se encontraron menores.</p>
+            <p className="text-gray-500 text-center">
+              No se encontraron menores.
+            </p>
           )}
         </div>
       </div>

@@ -62,14 +62,14 @@ const ItinerarioJornadaListadoMenores = () => {
 
   return (
     <Spin spinning={loading}>
-      <div className="p-4">
+      <div className="p-4 w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-xl font-bold">Listado de Menores</h1>
         </div>
 
         <div className="mb-4">
           <form
-            className="max-w-md mx-auto"
+            className="max-w-full mx-auto"
             onSubmit={(e) => e.preventDefault()}
           >
             <label

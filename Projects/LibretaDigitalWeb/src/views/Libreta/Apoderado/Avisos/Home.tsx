@@ -104,7 +104,7 @@ const ApoderadoAvisosHome = () => {
 
   return (
     <div
-      className="flex flex-col items-center"
+      className="flex flex-col items-center bg-white"
       onMouseDown={handleDragStart}
       onMouseMove={handleDrag}
       onMouseUp={handleDragEnd}
@@ -150,7 +150,7 @@ const ApoderadoAvisosHome = () => {
 
               <div className="my-6 w-full max-w-xs">
                 <img
-                  style={{ aspectRatio: "1" }}
+                  style={{ aspectRatio: "1", objectFit: "contain" }}
                   src={slide.imgSrc}
                   alt={slide.title}
                   className="w-full rounded-md"

@@ -9,7 +9,7 @@ const AutorizarPaseoVisitaMenor = () => {
   const menor = {
     nombre: "Antonella Ossio Soto",
     nivel: "Sala Cuna Mayor",
-    vacuna: "Sarampión 11.11.2024",
+    visita: "JUMPIT 11.11.2024",
     apoderado: "Lisette Soto Pedraza",
     estado: "VISITA NO AUTORIZADA",
   };
@@ -23,7 +23,7 @@ const AutorizarPaseoVisitaMenor = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 mt-9">
+    <div className="min-h-screen flex flex-col mt-9 w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
       <main className="flex-1 p-4">
         {/* Paso 1: Estado de Autorización */}
         {step === 1 && (
@@ -47,7 +47,7 @@ const AutorizarPaseoVisitaMenor = () => {
                 <strong>Nivel:</strong> {menor.nivel}
               </p>
               <p>
-                <strong>Vacuna:</strong> {menor.vacuna}
+                <strong>Visita:</strong> {menor.visita}
               </p>
               <p>
                 <strong>Apoderado:</strong> {menor.apoderado}

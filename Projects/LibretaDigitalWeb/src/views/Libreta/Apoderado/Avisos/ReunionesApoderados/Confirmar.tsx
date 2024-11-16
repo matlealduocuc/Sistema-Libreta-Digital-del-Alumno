@@ -9,7 +9,13 @@ const ConfirmarReunionesApoderadosMenor = () => {
   const menor = {
     nombre: "Antonella Ossio Soto",
     nivel: "Sala Cuna Mayor",
-    vacuna: "Sarampión 11.11.2024",
+    reunion: "SALA CUNA 11.11.2024",
+    temas: [
+      "Rendición de cuentas",
+      "Evaluaciones pendientes",
+      "Cierre del año",
+      "Varios",
+    ],
     apoderado: "Lisette Soto Pedraza",
     estado: "ASISTENCIA NO CONFIRMADA",
   };
@@ -23,12 +29,12 @@ const ConfirmarReunionesApoderadosMenor = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 mt-9">
+    <div className="min-h-screen flex flex-col mt-4 w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
       <main className="flex-1 p-4">
         {/* Paso 1: Estado de Autorización */}
         {step === 1 && (
-          <div className="text-center space-y-6">
-            <h2 className="text-xl font-bold mb-4">Estado de Autorización</h2>
+          <div className="text-center">
+            <h2 className="text-xl font-bold">Estado de Autorización</h2>
             <p className="mb-4 pt-12">
               Haz click en <strong>"Continuar"</strong>
               <br />
@@ -37,17 +43,25 @@ const ConfirmarReunionesApoderadosMenor = () => {
             </p>
             <div className="border border-gray-300 rounded-lg p-4 mb-4 bg-white">
               <p>
+                <strong>Reunión:</strong> {menor.reunion}
+              </p>
+              <p>
+                <strong>Apoderado:</strong> {menor.apoderado}
+              </p>
+              <p>
                 <strong>Menor:</strong> {menor.nombre}
               </p>
               <p>
                 <strong>Nivel:</strong> {menor.nivel}
               </p>
-              <p>
-                <strong>Vacuna:</strong> {menor.vacuna}
-              </p>
-              <p>
-                <strong>Apoderado:</strong> {menor.apoderado}
-              </p>
+              <div className="py-4">
+                <p className="pb-4">
+                  <strong>Temas a tratar:</strong>
+                </p>
+                {menor.temas.map((tema) => (
+                  <p key={tema}>{tema}</p>
+                ))}
+              </div>
               <p className="font-bold text-red-600">
                 <strong>Estado:</strong> {menor.estado}
               </p>
