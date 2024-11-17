@@ -72,7 +72,7 @@ const AutorizarPaseoVisitaMenor = () => {
             <p className="mb-4">
               Haz click en <strong>"Aceptar"</strong>
               <br />
-              para <strong>Autorizar la Vacuna</strong>.
+              para <strong>Autorizar la Visita</strong>.
             </p>
             <div className="border border-gray-300 rounded-lg p-4 mb-4 bg-white">
               <p className="text-center font-semibold">
@@ -110,8 +110,10 @@ const AutorizarPaseoVisitaMenor = () => {
                 />
               </svg>
             </div>
-            <p className="text-green-600 font-bold text-lg mb-4">
-              Visita Autorizada
+            <p className="text-green-600 font-bold text-lg mb-4 text-center">
+              Visita
+              <br />
+              Autorizada
             </p>
             <button
               onClick={handleNextStep}

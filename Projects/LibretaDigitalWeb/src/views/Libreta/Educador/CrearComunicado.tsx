@@ -180,6 +180,7 @@ const CrearComunicado = () => {
             className="border border-gray-300 rounded px-3 py-2 w-full text-xs"
           >
             <option value="">Seleccionar Grado</option>
+            <option value="1">Prueba 1</option>
             {gradosSelect.map((grado) => (
               <option key={grado.key} value={grado.key}>
                 {grado.text}

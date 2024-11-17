@@ -9,7 +9,7 @@ const AutorizarVacunaMenor = () => {
   const menor = {
     nombre: "Antonella Ossio Soto",
     nivel: "Sala Cuna Mayor",
-    vacuna: "Sarampión 11.11.2024",
+    vacuna: "Influenza 11.11.2024",
     apoderado: "Lisette Soto Pedraza",
     estado: "VACUNA NO AUTORIZADA",
   };
@@ -64,7 +64,13 @@ const AutorizarVacunaMenor = () => {
             </button>
             <p className="text-black text-md text-center mt-4">
               Haz{" "}
-              <a className="underline cursor-pointer font-bold">Click Aquí</a>{" "}
+              <a
+                className="underline cursor-pointer font-bold"
+                target="_blank"
+                href="https://saludresponde.minsal.cl/vacunacion-contra-la-influenza-2024/"
+              >
+                Click Aquí
+              </a>{" "}
               para ver las recomendaciones del Ministerio de Salud.
             </p>
           </div>
@@ -113,8 +119,10 @@ const AutorizarVacunaMenor = () => {
                 />
               </svg>
             </div>
-            <p className="text-green-600 font-bold text-lg mb-4">
-              Vacuna Autorizada
+            <p className="text-green-600 font-bold text-lg mb-4 text-center">
+              Vacuna
+              <br />
+              Autorizada
             </p>
             <button
               onClick={handleNextStep}

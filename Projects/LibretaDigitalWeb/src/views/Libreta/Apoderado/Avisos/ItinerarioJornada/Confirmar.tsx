@@ -25,17 +25,18 @@ const ConfirmarItinerarioJornadaMenor = () => {
   return (
     <div className="min-h-screen flex flex-col mt-9 w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
       <main className="flex-1 p-4">
-        {/* Paso 1: Estado de Autorización */}
+        {/* Paso 1 */}
         {step === 1 && (
-          <div className="text-center space-y-6">
-            <h2 className="text-xl font-bold mb-4">Estado de Autorización</h2>
-            <p className="mb-4">
-              En el recuadro se indica el nombre del menor, la vacuna pendiente
-              y su estado de autorización.
-            </p>
-            <p className="mb-4">
-              Haz click en <strong>"Autorizar"</strong> para permitir la
-              aplicación de la vacuna.
+          <div className="text-center space-y-10">
+            <h2 className="text-xl font-bold mb-6">
+              Confirmación de Actividad
+            </h2>
+            <p>
+              Haz click en <strong>"Continuar"</strong>
+              <br />
+              para <strong>Confirmar tu Conocimiento</strong>
+              <br />
+              de las actividades realizadas.
             </p>
             <div className="border border-gray-300 rounded-lg p-4 mb-4 bg-white">
               <p>
@@ -66,17 +67,17 @@ const ConfirmarItinerarioJornadaMenor = () => {
         {/* Paso 2: Confirmación para autorizar */}
         {step === 2 && (
           <div className="text-center">
-            <h2 className="text-xl font-bold mb-4">¡Listo para Autorizar!</h2>
+            <h2 className="text-xl font-bold mb-4">
+              ¡Confirma tu Conocimiento!
+            </h2>
             <p className="mb-4">
               Haz click en <strong>"Aceptar"</strong>
               <br />
-              para <strong>Confirmar tu Conocimiento</strong>
-              <br />
-              acerca de la asistencia del Menor.
+              para <strong>Confirmar tu Conocimiento</strong>.
             </p>
             <div className="border border-gray-300 rounded-lg p-4 mb-4 bg-white">
               <p className="text-center font-semibold">
-                ¿Deseas confirmar que conoces la actividad realizada?
+                ¿Deseas enviar el mensaje?
               </p>
             </div>
             <button
@@ -110,8 +111,10 @@ const ConfirmarItinerarioJornadaMenor = () => {
                 />
               </svg>
             </div>
-            <p className="text-green-600 font-bold text-lg mb-4">
-              Confirmación Autorizada
+            <p className="text-green-600 font-bold text-lg mb-4 text-center">
+              Conocimiento
+              <br />
+              Confirmado
             </p>
             <button
               onClick={handleNextStep}

@@ -120,7 +120,7 @@ const ConfirmarReunionesApoderadosMenor = () => {
                 />
               </svg>
             </div>
-            <p className="text-green-600 font-bold text-lg mb-4">
+            <p className="text-green-600 font-bold text-lg mb-4 text-center">
               Asistencia
               <br />
               Confirmada
