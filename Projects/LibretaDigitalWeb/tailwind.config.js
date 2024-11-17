@@ -2,7 +2,16 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        "figma-green": "#1B720F",
+        "figma-green-card": "#1B720F",
+        "figma-blue": "#033F7E",
+        "figma-blue-card": "#08509F",
+        "figma-blue-button": "#08509F",
+        "figma-light-blue-button": "#679BFF",
+      },
+    },
   },
   plugins: [],
   darkMode: "class",

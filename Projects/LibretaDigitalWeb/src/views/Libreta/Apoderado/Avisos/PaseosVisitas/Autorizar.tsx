@@ -58,7 +58,7 @@ const AutorizarPaseoVisitaMenor = () => {
             </div>
             <button
               onClick={handleNextStep}
-              className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+              className="w-full bg-figma-blue-button text-white py-2 rounded-lg hover:bg-blue-700"
             >
               Continuar
             </button>
@@ -81,7 +81,7 @@ const AutorizarPaseoVisitaMenor = () => {
             </div>
             <button
               onClick={handleNextStep}
-              className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+              className="w-full bg-figma-blue-button text-white py-2 rounded-lg hover:bg-blue-700"
             >
               Aceptar
             </button>
@@ -117,7 +117,7 @@ const AutorizarPaseoVisitaMenor = () => {
             </p>
             <button
               onClick={handleNextStep}
-              className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+              className="w-full bg-figma-blue-button text-white py-2 rounded-lg hover:bg-blue-700"
             >
               Aceptar
             </button>

@@ -1,126 +1,90 @@
-import { NavLink } from "react-router-dom";
+import { Card, CardBody, CardHeader, Divider } from "@nextui-org/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  AppstoreOutlined,
-  EditOutlined,
-} from "@ant-design/icons";
-import { useAuth } from "@/hooks/useAuth";
-import { AuthorizedUserDto } from "@/dtos/Auth/AuthorizedUserDto";
-
-const storedUser = localStorage.getItem("AUTH_USER");
-const usuario: AuthorizedUserDto = storedUser ? JSON.parse(storedUser) : null;
-
-const designadoSexo: string =
-  usuario?.persona.sexo === "F"
-    ? "designada"
-    : usuario?.persona.sexo === "M"
-    ? "designado"
-    : "designad@";
+  faBell,
+  faCalendar,
+  faInfoCircle,
+} from "@fortawesome/free-solid-svg-icons";
+import { NavLink } from "react-router-dom";
 
 const LibretaEducadorHome = () => {
-  const { data, isLoading } = useAuth();
+  const initPathName: string = "/educador";
+  const itemsAppbar = [
+    {
+      icon: faBell,
+      title: "Solicitudes",
+      url: initPathName + "/avisos/home",
+      parragraph: (
+        <p className="text-sm text-center p-1">
+          Envía <strong>Solicitudes Importantes</strong>
+          <br />y <strong>Verifica</strong> cuales fueron Autorizadas.
+        </p>
+      ),
+    },
+    {
+      icon: faCalendar,
+      title: "Asistencia",
+      url: initPathName + "/asistencia",
+      parragraph: (
+        <p className="text-sm text-center p-1">
+          <strong>Registra la Asistencia</strong> de
+          <br />
+          los menores.
+        </p>
+      ),
+    },
+    {
+      icon: faInfoCircle,
+      title: "Comunicados",
+      url: initPathName + "/comunicados",
+      parragraph: (
+        <p className="text-sm text-center p-1">
+          Envia <strong>Comunicados</strong>
+          <br />
+          relevantes a los Apoderados.
+        </p>
+      ),
+    },
+  ];
 
-  let initPathName: string = "";
-
-  if (!isLoading && data) {
-    switch (data.rol) {
-      case "apoderado":
-        initPathName = "/apoderado";
-        break;
-      case "educador":
-        initPathName = "/educador";
-        break;
-      case "director":
-        initPathName = "/director";
-        break;
-      default:
-        initPathName = "/";
-        break;
-    }
+  function renderItemsAppbar() {
+    return itemsAppbar.map((option, index) => {
+      return (
+        <Card
+          key={index}
+          className="bg-figma-green-card text-white w-full shadow-xl rounded-2xl"
+        >
+          <NavLink to={option.url}>
+            <CardHeader>
+              <div className="border-2 p-1 rounded-full">
+                <FontAwesomeIcon
+                  icon={option.icon}
+                  color="white"
+                  size="xl"
+                  className="p-1"
+                />
+              </div>
+              <p className="text-2xl font-medium text-center flex-grow mr-5">
+                {option.title}
+              </p>
+            </CardHeader>
+            <Divider className="bg-white" />
+            <CardBody className="flex justify-center">
+              {option.parragraph}
+            </CardBody>
+          </NavLink>
+        </Card>
+      );
+    });
   }
 
   return (
-    <div className="p-4 max-w-md mx-auto">
-      <NavLink
-        to={initPathName + "/mis-grados"}
-        className="block bg-gray-800 hover:bg-gray-700 text-white rounded-lg p-6 mb-4 border border-gray-300 shadow-sm transition"
-      >
-        <div className="flex items-center">
-          <AppstoreOutlined className="text-2xl mr-4 text-white" />
-          <div>
-            <h2 className="text-lg font-bold">Grados</h2>
-            <p className="text-sm">
-              Revisa los grados en los que estás {designadoSexo}.
-            </p>
-          </div>
-        </div>
-      </NavLink>
-      <NavLink
-        to={initPathName + "/comunicados"}
-        className="block bg-gray-800 hover:bg-gray-700 text-white rounded-lg p-6 mb-4 border border-gray-300 shadow-sm transition"
-      >
-        <div className="flex items-center">
-          <EditOutlined className="text-2xl mr-4 text-white" />
-          <div>
-            <h2 className="text-lg font-bold">Comunícate</h2>
-            <p className="text-sm">
-              Comunícate directamente con los apoderados de los grados donde
-              estás {designadoSexo}.
-            </p>
-          </div>
-        </div>
-      </NavLink>
+    <div className="flex flex-row justify-center">
+      <div className="flex flex-col px-4 py-8 items-center space-y-6 w-full max-w-md">
+        {renderItemsAppbar()}
+      </div>
     </div>
   );
 };
 
 export default LibretaEducadorHome;
-
-// const ApoderadoButtons = () => {
-//   return (
-//     <div>
-//       <NavLink
-//         to={initPathName + "/avisos"}
-//         className="block bg-gray-800 hover:bg-gray-700 text-white rounded-lg p-6 mb-4 border border-gray-300 shadow-sm transition"
-//       >
-//         <div className="flex items-center">
-//           <BulbOutlined className="text-2xl mr-4 text-white" />
-//           <div>
-//             <h2 className="text-lg font-bold">Avisos</h2>
-//             <p className="text-sm">
-//               Infórmate de los Avisos Importantes y autoriza solicitudes.
-//             </p>
-//           </div>
-//         </div>
-//       </NavLink>
-//       <NavLink
-//         to={initPathName + "/comunicate"}
-//         className="block bg-gray-800 hover:bg-gray-700 text-white rounded-lg p-6 mb-4 border border-gray-300 shadow-sm transition"
-//       >
-//         <div className="flex items-center">
-//           <EditOutlined className="text-2xl mr-4 text-white" />
-//           <div>
-//             <h2 className="text-lg font-bold">Comunícate</h2>
-//             <p className="text-sm">
-//               Comunícate directamente con la Educadora de Párvulo designada.
-//             </p>
-//           </div>
-//         </div>
-//       </NavLink>
-
-//       <NavLink
-//         to={initPathName + "/informate"}
-//         className="block bg-gray-800 hover:bg-gray-700 text-white rounded-lg p-6 mb-4 border border-gray-300 shadow-sm transition"
-//       >
-//         <div className="flex items-center">
-//           <InfoCircleOutlined className="text-2xl mr-4 text-white" />
-//           <div>
-//             <h2 className="text-lg font-bold">Infórmate</h2>
-//             <p className="text-sm">
-//               Revisa los Protocolos que rigen nuestra institución.
-//             </p>
-//           </div>
-//         </div>
-//       </NavLink>
-//     </div>
-//   );
-// };

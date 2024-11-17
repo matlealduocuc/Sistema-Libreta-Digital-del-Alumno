@@ -5,8 +5,8 @@ import ReunionApoderadosSvg from "../../../../assets/reunion-apoderados.svg";
 import ActividadesDiariasSvf from "../../../../assets/actividades-diarias.svg";
 import { useNavigate } from "react-router-dom";
 
-const ApoderadoAvisosHome = () => {
-  const initPathName: string = "/apoderado";
+const EducadorAvisosHome = () => {
+  const initPathName: string = "/educador";
   const slides = [
     {
       title: "Vacunas",
@@ -20,8 +20,11 @@ const ApoderadoAvisosHome = () => {
       <br />
       Haz click en <strong>"Continuar"</strong>
       <br />para ver el detalle y el Estado de Autorización.`,
-      buttonText: "Continuar",
+      buttonText: "Solicitar",
       href: initPathName + "/avisos/vacunas/listado-menores",
+      isSecondButton: true,
+      secondButtonText: "Revisar",
+      secondButtonHref: initPathName + "/avisos/vacunas/revisar-menores",
       imgSrc: VacunaSvg,
     },
     {
@@ -37,6 +40,9 @@ const ApoderadoAvisosHome = () => {
       para <strong>Revisar y Autorizar</strong>.`,
       buttonText: "Continuar",
       href: initPathName + "/avisos/paseos-visitas/listado-menores",
+      isSecondButton: false,
+      secondButtonText: "",
+      secondButtonHref: "",
       imgSrc: PaseoVisitaSvg,
     },
     {
@@ -53,6 +59,9 @@ const ApoderadoAvisosHome = () => {
       <br />para revisar.`,
       buttonText: "Continuar",
       href: initPathName + "/avisos/reuniones-apoderados/listado-menores",
+      isSecondButton: false,
+      secondButtonText: "",
+      secondButtonHref: "",
       imgSrc: ReunionApoderadosSvg,
     },
     {
@@ -70,6 +79,9 @@ const ApoderadoAvisosHome = () => {
         y <strong>Confirmar tu Conocimiento</strong>.`,
       buttonText: "Continuar",
       href: initPathName + "/avisos/itinerario-jornada/listado-menores",
+      isSecondButton: false,
+      secondButtonText: "",
+      secondButtonHref: "",
       imgSrc: ActividadesDiariasSvf,
     },
   ];
@@ -186,15 +198,30 @@ const ApoderadoAvisosHome = () => {
                 />
               </div>
 
-              <div className="fixed -bottom-12 w-full flex justify-center">
-                <button
-                  className="bg-figma-blue-button text-white w-80 text-lg font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-blue-700"
-                  onClick={() => {
-                    navigate(slides[currentIndex].href);
-                  }}
-                >
-                  {slides[currentIndex].buttonText}
-                </button>
+              <div className="fixed -bottom-20 w-full flex flex-col justify-center">
+                <div className="flex flex-row justify-center">
+                  <button
+                    className="bg-figma-blue-button text-white w-80 text-lg font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-blue-700"
+                    onClick={() => {
+                      navigate(slide.href);
+                    }}
+                  >
+                    {slide.buttonText}
+                  </button>
+                </div>
+
+                {slide.isSecondButton && (
+                  <div className="flex flex-row justify-center mt-2">
+                    <button
+                      className="bg-figma-light-blue-button text-white w-80 text-lg font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-blue-700"
+                      onClick={() => {
+                        navigate(slide.secondButtonHref);
+                      }}
+                    >
+                      {slide.secondButtonText}
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           ))}
@@ -217,4 +244,4 @@ const ApoderadoAvisosHome = () => {
   );
 };
 
-export default ApoderadoAvisosHome;
+export default EducadorAvisosHome;

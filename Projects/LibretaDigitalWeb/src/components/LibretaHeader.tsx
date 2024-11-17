@@ -18,11 +18,11 @@ const LibretaHeader: React.FC<LibretaHeaderProps> = ({
   if (!isLoading && data) {
     switch (data.rol) {
       case "apoderado":
-        bgColorClass = "bg-blue-950";
+        bgColorClass = "bg-figma-blue";
         textColorClass = "text-white";
         break;
       case "educador":
-        bgColorClass = "bg-green-700";
+        bgColorClass = "bg-figma-green";
         textColorClass = "text-white";
         break;
       case "director":

@@ -16,12 +16,12 @@ const LibretaFooter = () => {
     switch (data.rol) {
       case "apoderado":
         initPathName = "/apoderado";
-        bgColorClass = "bg-blue-950";
+        bgColorClass = "bg-figma-blue";
         textColorClass = "text-white";
         break;
       case "educador":
         initPathName = "/educador";
-        bgColorClass = "bg-green-700";
+        bgColorClass = "bg-figma-green";
         textColorClass = "text-white";
         break;
       case "director":

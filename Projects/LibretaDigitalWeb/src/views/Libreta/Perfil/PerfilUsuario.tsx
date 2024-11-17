@@ -38,9 +38,9 @@ const PerfilUsuario = () => {
           const nombreCompleto = ObtenerNombreCompletoJoined(perfil);
           setUser({
             name: nombreCompleto,
-            email: perfil.email ?? "",
-            phone: perfil.telefono ?? "",
-            address: perfil.direccion ?? "",
+            email: perfil.email ?? "No registrado",
+            phone: perfil.telefono ?? "No registrado",
+            address: perfil.direccion ?? "No registrado",
             rut: perfil.run + "-" + perfil.dv,
           });
           setEditData({
@@ -129,31 +129,31 @@ const PerfilUsuario = () => {
 
           <div className="space-y-4">
             {/* Rut del usuario */}
-            <div className="bg-gray-100 p-4 rounded-lg shadow-sm">
+            <div className="bg-gray-100 p-4 py-2 rounded-lg shadow-sm">
               <h2 className="font-semibold text-lg">Rut</h2>
               <p className="text-gray-700">{user.rut}</p>
             </div>
 
             {/* Nombre del usuario */}
-            <div className="bg-gray-100 p-4 rounded-lg shadow-sm">
+            <div className="bg-gray-100 p-4 py-2 rounded-lg shadow-sm">
               <h2 className="font-semibold text-lg">Nombre</h2>
               <p className="text-gray-700">{user.name}</p>
             </div>
 
             {/* Email */}
-            <div className="bg-gray-100 p-4 rounded-lg shadow-sm">
+            <div className="bg-gray-100 p-4 py-2 rounded-lg shadow-sm">
               <h2 className="font-semibold text-lg">Correo Electrónico</h2>
               <p className="text-gray-700">{user.email}</p>
             </div>
 
             {/* Teléfono */}
-            <div className="bg-gray-100 p-4 rounded-lg shadow-sm">
+            <div className="bg-gray-100 p-4 py-2 rounded-lg shadow-sm">
               <h2 className="font-semibold text-lg">Teléfono</h2>
               <p className="text-gray-700">{user.phone}</p>
             </div>
 
             {/* Dirección */}
-            <div className="bg-gray-100 p-4 rounded-lg shadow-sm">
+            <div className="bg-gray-100 p-4 py-2 rounded-lg shadow-sm">
               <h2 className="font-semibold text-lg">Dirección</h2>
               <p className="text-gray-700">{user.address}</p>
             </div>

@@ -7,7 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import React from "react";
 import { Spin } from "antd";
 
-const ApoderadoLayout = () => {
+const LibretaLayout = () => {
   const { data, isError, isLoading } = useAuth();
   const [loadingLayout, setLoadingLayout] = React.useState<boolean>(true);
   const storedUser = localStorage.getItem("AUTH_USER");
@@ -101,4 +101,4 @@ const ApoderadoLayout = () => {
   );
 };
 
-export default ApoderadoLayout;
+export default LibretaLayout;
