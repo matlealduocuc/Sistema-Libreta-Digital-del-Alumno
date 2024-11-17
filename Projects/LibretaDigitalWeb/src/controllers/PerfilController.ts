@@ -17,7 +17,7 @@ export class PerfilController {
   async updatePerfil(idPersona: number, updatedData: UpdatePerfil) {
     console.log("updatedData", updatedData);
     const updatePerfilDto = new UpdatePersonaDto(
-      idPersona.toString(),
+      idPersona,
       updatedData.email ?? "",
       updatedData.phone ?? "",
       updatedData.address ?? ""

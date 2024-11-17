@@ -8,6 +8,7 @@ class PersonAuthDto {
   dv: string | null;
   dni: string | null;
   tipoIdentificacion: string;
+  sexo: string | null;
 
   constructor(
     idPersona: number,
@@ -19,6 +20,7 @@ class PersonAuthDto {
     dv: string | null,
     dni: string | null,
     tipoIdentificacion: string,
+    sexo: string,
   ) {
     this.idPersona = idPersona;
     this.primerNombre = primerNombre;
@@ -29,6 +31,7 @@ class PersonAuthDto {
     this.dv = dv;
     this.dni = dni;
     this.tipoIdentificacion = tipoIdentificacion;
+    this.sexo = sexo;
   }
 }
 
@@ -36,17 +39,17 @@ export class AuthorizedUserDto {
   token: string;
   persona: PersonAuthDto;
   idUsuario: number;
-  roles: string[];
+  rol: string;
 
   constructor(
     token: string,
     persona: PersonAuthDto,
     idUsuario: number,
-    roles: string[],
+    rol: string,
   ) {
     this.token = token;
     this.persona = persona;
     this.idUsuario = idUsuario;
-    this.roles = roles;
+    this.rol = rol;
   }
 }

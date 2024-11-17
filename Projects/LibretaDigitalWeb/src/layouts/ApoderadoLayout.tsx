@@ -7,16 +7,31 @@ import { useAuth } from "@/hooks/useAuth";
 import React from "react";
 import { Spin } from "antd";
 
-const LibretaLayout = () => {
-  const { isError, isLoading } = useAuth();
+const ApoderadoLayout = () => {
+  const { data, isError, isLoading } = useAuth();
   const [loadingLayout, setLoadingLayout] = React.useState<boolean>(true);
   const storedUser = localStorage.getItem("AUTH_USER");
   const usuario: AuthorizedUserDto = storedUser ? JSON.parse(storedUser) : null;
   const location = useLocation();
   const navigate = useNavigate();
 
-  console.log("isError", isError);
-  console.log("isLoading", isLoading);
+  let initPathName: string = "";
+  if (!isLoading && data) {
+    switch (data.rol) {
+      case "apoderado":
+        initPathName = "/apoderado";
+        break;
+      case "educador":
+        initPathName = "/educador";
+        break;
+      case "director":
+        initPathName = "/director";
+        break;
+      default:
+        initPathName = "/";
+        break;
+    }
+  }
 
   useEffect(() => {
     setLoadingLayout(isLoading);
@@ -25,16 +40,25 @@ const LibretaLayout = () => {
     }
   }, [isLoading, isError, navigate]);
 
-  const initPathName: string = "/libreta";
+  const bienvenidoSexo: string =
+    usuario?.persona.sexo === "F"
+      ? "Bienvenida"
+      : usuario?.persona.sexo === "M"
+      ? "Bienvenido"
+      : "Bienvenid@";
+  const primerNombreUpper: string = usuario?.persona.primerNombre.toUpperCase();
+  const bienvenidaText: string = `${bienvenidoSexo} ${primerNombreUpper}`;
 
   const pageTitles: { [key: string]: string } = {
-    [initPathName]: "Bienvenido " + usuario?.persona.primerNombre.toUpperCase(),
-    [initPathName + "/"]:
-      "Bienvenido " + usuario?.persona.primerNombre.toUpperCase(),
+    [initPathName]: bienvenidaText,
+    [initPathName + "/"]: bienvenidaText,
     [initPathName + "/avisos"]: "Avisos",
     [initPathName + "/comunicate"]: "Comunícate",
     [initPathName + "/informate"]: "Infórmate",
     [initPathName + "/perfil"]: "Perfil del Usuario",
+    [initPathName + "/avisos/home"]: "Avisos",
+    [initPathName + "/avisos/vacunas/listado-menores"]: "Vacunas",
+    [initPathName + "/avisos/vacunas/menor"]: "Vacunas",
   };
 
   const title: string = pageTitles[location.pathname] || "Libreta Digital";
@@ -43,7 +67,7 @@ const LibretaLayout = () => {
     <Spin spinning={loadingLayout}>
       <div className="flex flex-col min-h-screen">
         <LibretaHeader title={title} />
-        <main className="flex-grow p-4 pt-16 pb-20">
+        <main className="flex-grow p-4 pt-24 pb-20">
           <Outlet />
         </main>
         <LibretaFooter />
@@ -52,4 +76,4 @@ const LibretaLayout = () => {
   );
 };
 
-export default LibretaLayout;
+export default ApoderadoLayout;

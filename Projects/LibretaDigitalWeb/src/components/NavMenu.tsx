@@ -38,7 +38,7 @@ export const NavMenu = () => {
             >
               Mantenedores
             </Link>
-            <Link to="/libreta" className="block p-2 hover:text-purple-950">
+            <Link to="/libretaRedirect" className="block p-2 hover:text-purple-950">
               Ir a Libreta
             </Link>
             <button
