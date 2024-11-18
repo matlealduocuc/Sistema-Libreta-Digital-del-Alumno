@@ -48,7 +48,7 @@ const RevisarVacunaMenor = () => {
             onClick={handleClick}
             className="w-full bg-figma-blue-button text-white py-2 rounded-lg hover:bg-blue-700"
           >
-            Continuar
+            Volver
           </button>
         </div>
       </main>

@@ -20,16 +20,19 @@ export class MenorService {
         id: 1,
         nombre: "Menor 1",
         edad: 10,
+        estadoVacuna: true,
       },
       {
         id: 2,
         nombre: "Menor 2",
         edad: 12,
+        estadoVacuna: false,
       },
       {
         id: 3,
         nombre: "Menor 3",
         edad: 14,
+        estadoVacuna: false,
       },
     ];
   }

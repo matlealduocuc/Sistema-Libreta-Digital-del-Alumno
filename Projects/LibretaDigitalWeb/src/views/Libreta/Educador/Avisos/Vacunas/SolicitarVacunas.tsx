@@ -6,12 +6,11 @@ const SolicitarVacunas = () => {
   const [step, setStep] = useState(1);
   const navigate = useNavigate();
 
-  const menor = {
-    nombre: "Antonella Ossio Soto",
-    nivel: "Sala Cuna Mayor",
+  const nivelVacuna = {
+    nombre: "Sala Cuna Mayor",
     vacuna: "Influenza 11.11.2024",
-    apoderado: "Lisette Soto Pedraza",
-    estado: "VACUNA NO AUTORIZADA",
+    cantidadMenores: "47",
+    enviada: false,
   };
 
   const handleNextStep = () => {
@@ -25,36 +24,39 @@ const SolicitarVacunas = () => {
   return (
     <div className="min-h-screen flex flex-col mt-9 w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
       <main className="flex-1 p-4">
-        {/* Paso 1: Estado de Autorización */}
+        {/* Paso 1 */}
         {step === 1 && (
-          <div className="text-center space-y-6">
-            <h2 className="text-xl font-bold mb-4">Estado de Autorización</h2>
-            <p className="mb-4">
-              En el recuadro se indica el nombre del menor,
+          <div className="text-center">
+            <h2 className="text-xl font-bold mb-8">
+              Solicitud de Autorización
+            </h2>
+            <p className="mb-12">
+              Haz click en <strong>“Continuar”</strong>
               <br />
-              la <strong>Vacuna Pendiente</strong>
-              <br />y su <strong>Estado de Autorización</strong>.
+              para solicitar la Autorización
+              <br />
+              de <strong>Vacuna contra la Influenza</strong>.
             </p>
-            <p className="mb-4">
-              Haz click en <strong>"Autorizar"</strong>
-              <br /> para permitir la aplicación de la vacuna.
-            </p>
-            <div className="border border-gray-300 rounded-lg p-4 mb-4 bg-white">
+            <div className="border border-gray-300 rounded-lg p-4 mb-16 bg-white">
               <p>
-                <strong>Menor:</strong> {menor.nombre}
+                <strong>Nivel:</strong> {nivelVacuna.nombre}
               </p>
               <p>
-                <strong>Nivel:</strong> {menor.nivel}
+                <strong>Vacuna:</strong> {nivelVacuna.vacuna}
               </p>
               <p>
-                <strong>Vacuna:</strong> {menor.vacuna}
+                <strong>Cantidad de Menores:</strong>{" "}
+                {nivelVacuna.cantidadMenores}
               </p>
-              <p>
-                <strong>Apoderado:</strong> {menor.apoderado}
-              </p>
-              <p className="font-bold text-red-600">
-                <strong>Estado:</strong> {menor.estado}
-              </p>
+              {nivelVacuna.enviada ? (
+                <p className="font-bold text-red-600">
+                  <strong>Estado:</strong> AUTORIZACIÓN ENVIADA
+                </p>
+              ) : (
+                <p className="font-bold text-red-600">
+                  <strong>Estado:</strong> AUTORIZACIÓN NO ENVIADA
+                </p>
+              )}
             </div>
             <button
               onClick={handleNextStep}
@@ -62,30 +64,23 @@ const SolicitarVacunas = () => {
             >
               Continuar
             </button>
-            <p className="text-black text-md text-center mt-4">
-              Haz{" "}
-              <a
-                className="underline cursor-pointer font-bold"
-                target="_blank"
-                href="https://saludresponde.minsal.cl/vacunacion-contra-la-influenza-2024/"
-              >
-                Click Aquí
-              </a>{" "}
-              para ver las recomendaciones del Ministerio de Salud.
-            </p>
           </div>
         )}
 
-        {/* Paso 2: Confirmación para autorizar */}
+        {/* Paso 2 */}
         {step === 2 && (
           <div className="text-center">
-            <h2 className="text-xl font-bold mb-4">¡Listo para Autorizar!</h2>
+            <h2 className="text-xl font-bold mb-4">¡Listo para Solicitar!</h2>
             <p className="mb-4">
-              Haz click en <strong>"Aceptar"</strong> para autorizar la vacuna.
+              Haz click en <strong>"Aceptar"</strong>
+              <br />
+              para Solicitar Autorización de Vacuna.
             </p>
             <div className="border border-gray-300 rounded-lg p-4 mb-4 bg-white">
               <p className="text-center font-semibold">
-                ¿Autoriza el suministro de la vacuna indicada?
+                ¿Solicitar autorización el suministro
+                <br />
+                de la vacuna indicada?
               </p>
             </div>
             <button
@@ -97,11 +92,13 @@ const SolicitarVacunas = () => {
           </div>
         )}
 
-        {/* Paso 3: Confirmación de autorización */}
+        {/* Paso 3 */}
         {step === 3 && (
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center text-center">
             <h2 className="text-xl font-bold mb-4">
-              Confirmación de Autorización
+              Confirmación de
+              <br />
+              Solicitud de Autorización
             </h2>
             <div className="flex items-center justify-center mb-4">
               <svg
@@ -120,9 +117,9 @@ const SolicitarVacunas = () => {
               </svg>
             </div>
             <p className="text-green-600 font-bold text-lg mb-4 text-center">
-              Vacuna
+              Solicitud
               <br />
-              Autorizada
+              Confirmada
             </p>
             <button
               onClick={handleNextStep}

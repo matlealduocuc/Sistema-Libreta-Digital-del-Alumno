@@ -8,7 +8,7 @@ import { AuthorizedUserDto } from "@/dtos/Auth/AuthorizedUserDto";
 const ListadoMenoresAutorizadosVacunas = () => {
   const { isLoading } = useAuth();
   const [menores, setMenores] = useState<
-    { id: number; nombre: string; edad: number }[]
+    { id: number; nombre: string; edad: number; estadoVacuna: boolean }[]
   >([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState<boolean>(true);
@@ -30,10 +30,16 @@ const ListadoMenoresAutorizadosVacunas = () => {
           if (menoresData) {
             setMenores(
               menoresData.map(
-                (menor: { id: number; nombre: string; edad: number }) => ({
+                (menor: {
+                  id: number;
+                  nombre: string;
+                  edad: number;
+                  estadoVacuna: boolean;
+                }) => ({
                   id: menor.id,
                   nombre: menor.nombre,
                   edad: menor.edad,
+                  estadoVacuna: menor.estadoVacuna,
                 })
               )
             );
@@ -120,6 +126,15 @@ const ListadoMenoresAutorizadosVacunas = () => {
               >
                 <h2 className="font-semibold">{menor.nombre}</h2>
                 <p>Edad: {menor.edad} años</p>
+                {menor.estadoVacuna ? (
+                  <p className="text-green-700 font-bold">
+                    Estado Vacuna: AUTORIZADA
+                  </p>
+                ) : (
+                  <p className="text-red-700 font-bold">
+                    Estado Vacuna: NO AUTORIZADA
+                  </p>
+                )}
               </div>
             ))
           ) : (
