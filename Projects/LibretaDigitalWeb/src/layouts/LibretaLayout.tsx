@@ -7,13 +7,19 @@ import { useAuth } from "@/hooks/useAuth";
 import React from "react";
 import { Spin } from "antd";
 
-const ApoderadoLayout = () => {
+const LibretaLayout = () => {
   const { data, isError, isLoading } = useAuth();
   const [loadingLayout, setLoadingLayout] = React.useState<boolean>(true);
   const storedUser = localStorage.getItem("AUTH_USER");
   const usuario: AuthorizedUserDto = storedUser ? JSON.parse(storedUser) : null;
   const location = useLocation();
   const navigate = useNavigate();
+  const pathName = location.pathname
+    .split("/")
+    ?.splice(2, 2)
+    .join("/")
+    .toLowerCase();
+  const pathsQuitarHeader = ["avisos/home"];
 
   let initPathName: string = "";
   if (!isLoading && data) {
@@ -35,10 +41,18 @@ const ApoderadoLayout = () => {
 
   useEffect(() => {
     setLoadingLayout(isLoading);
-    if (isError) {
+    if (!isLoading && isError) {
       return navigate("/login");
+    } else {
+      if (!isLoading && data) {
+        const pathRol = location.pathname.split("/")[1].trim().toLowerCase();
+        const rol = data.rol.trim().toLowerCase();
+        if (pathRol && pathRol != rol) {
+          return navigate("/libretaRedirect");
+        }
+      }
     }
-  }, [isLoading, isError, navigate]);
+  }, [isLoading, isError, data, navigate, location.pathname]);
 
   const bienvenidoSexo: string =
     usuario?.persona.sexo === "F"
@@ -92,7 +106,11 @@ const ApoderadoLayout = () => {
     <Spin spinning={loadingLayout}>
       <div className="flex flex-col min-h-screen">
         <LibretaHeader title={title} />
-        <main className="flex-grow p-0 pt-24 pb-20">
+        <main
+          className={`flex-grow p-0 ${
+            pathsQuitarHeader.includes(pathName) ? "pt-8" : "pt-24"
+          } pb-20`}
+        >
           <Outlet />
         </main>
         <LibretaFooter />
@@ -101,4 +119,4 @@ const ApoderadoLayout = () => {
   );
 };
 
-export default ApoderadoLayout;
+export default LibretaLayout;

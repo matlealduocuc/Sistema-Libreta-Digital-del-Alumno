@@ -1,23 +1,16 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-const ConfirmarReunionesApoderadosMenor = () => {
+const SolicitarVacunas = () => {
   const { id } = useParams();
   const [step, setStep] = useState(1);
   const navigate = useNavigate();
 
-  const menor = {
-    nombre: "Antonella Ossio Soto",
-    nivel: "Sala Cuna Mayor",
-    reunion: "SALA CUNA 11.11.2024",
-    temas: [
-      "Rendición de cuentas",
-      "Evaluaciones pendientes",
-      "Cierre del año",
-      "Varios",
-    ],
-    apoderado: "Lisette Soto Pedraza",
-    estado: "ASISTENCIA NO CONFIRMADA",
+  const nivelVacuna = {
+    nombre: "Sala Cuna Mayor",
+    vacuna: "Influenza 11.11.2024",
+    cantidadMenores: "47",
+    enviada: false,
   };
 
   const handleNextStep = () => {
@@ -29,42 +22,41 @@ const ConfirmarReunionesApoderadosMenor = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col mt-4 w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
+    <div className="min-h-screen flex flex-col mt-9 w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
       <main className="flex-1 p-4">
-        {/* Paso 1: Estado de Autorización */}
+        {/* Paso 1 */}
         {step === 1 && (
           <div className="text-center">
-            <h2 className="text-xl font-bold">Estado de Autorización</h2>
-            <p className="mb-4 pt-12">
-              Haz click en <strong>"Continuar"</strong>
+            <h2 className="text-xl font-bold mb-8">
+              Solicitud de Autorización
+            </h2>
+            <p className="mb-12">
+              Haz click en <strong>“Continuar”</strong>
               <br />
-              para <strong>Confirmar tu Asistencia</strong>
-              <br />a la próxima Reunión.
+              para solicitar la Autorización
+              <br />
+              de <strong>Vacuna contra la Influenza</strong>.
             </p>
-            <div className="border border-gray-300 rounded-lg p-4 mb-4 bg-white">
+            <div className="border border-gray-300 rounded-lg p-4 mb-16 bg-white">
               <p>
-                <strong>Reunión:</strong> {menor.reunion}
+                <strong>Nivel:</strong> {nivelVacuna.nombre}
               </p>
               <p>
-                <strong>Apoderado:</strong> {menor.apoderado}
+                <strong>Vacuna:</strong> {nivelVacuna.vacuna}
               </p>
               <p>
-                <strong>Menor:</strong> {menor.nombre}
+                <strong>Cantidad de Menores:</strong>{" "}
+                {nivelVacuna.cantidadMenores}
               </p>
-              <p>
-                <strong>Nivel:</strong> {menor.nivel}
-              </p>
-              <div className="py-4">
-                <p className="pb-4">
-                  <strong>Temas a tratar:</strong>
+              {nivelVacuna.enviada ? (
+                <p className="font-bold text-red-600">
+                  <strong>Estado:</strong> AUTORIZACIÓN ENVIADA
                 </p>
-                {menor.temas.map((tema) => (
-                  <p key={tema}>{tema}</p>
-                ))}
-              </div>
-              <p className="font-bold text-red-600">
-                <strong>Estado:</strong> {menor.estado}
-              </p>
+              ) : (
+                <p className="font-bold text-red-600">
+                  <strong>Estado:</strong> AUTORIZACIÓN NO ENVIADA
+                </p>
+              )}
             </div>
             <button
               onClick={handleNextStep}
@@ -75,18 +67,20 @@ const ConfirmarReunionesApoderadosMenor = () => {
           </div>
         )}
 
-        {/* Paso 2: Confirmación para autorizar */}
+        {/* Paso 2 */}
         {step === 2 && (
           <div className="text-center">
-            <h2 className="text-xl font-bold mb-4">¡Confirma tu Asistencia!</h2>
+            <h2 className="text-xl font-bold mb-4">¡Listo para Solicitar!</h2>
             <p className="mb-4">
               Haz click en <strong>"Aceptar"</strong>
               <br />
-              para <strong>Confirmar tu Asistencia</strong>.
+              para Solicitar Autorización de Vacuna.
             </p>
             <div className="border border-gray-300 rounded-lg p-4 mb-4 bg-white">
               <p className="text-center font-semibold">
-                ¿Deseas enviar el mensaje?
+                ¿Solicitar autorización el suministro
+                <br />
+                de la vacuna indicada?
               </p>
             </div>
             <button
@@ -98,11 +92,13 @@ const ConfirmarReunionesApoderadosMenor = () => {
           </div>
         )}
 
-        {/* Paso 3: Confirmación de autorización */}
+        {/* Paso 3 */}
         {step === 3 && (
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center text-center">
             <h2 className="text-xl font-bold mb-4">
-              Confirmación de Asistencia
+              Confirmación de
+              <br />
+              Solicitud de Autorización
             </h2>
             <div className="flex items-center justify-center mb-4">
               <svg
@@ -121,7 +117,7 @@ const ConfirmarReunionesApoderadosMenor = () => {
               </svg>
             </div>
             <p className="text-green-600 font-bold text-lg mb-4 text-center">
-              Asistencia
+              Solicitud
               <br />
               Confirmada
             </p>
@@ -145,4 +141,4 @@ const ConfirmarReunionesApoderadosMenor = () => {
   );
 };
 
-export default ConfirmarReunionesApoderadosMenor;
+export default SolicitarVacunas;
