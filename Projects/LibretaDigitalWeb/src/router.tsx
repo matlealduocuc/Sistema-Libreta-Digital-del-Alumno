@@ -23,9 +23,11 @@ import ConfirmarReunionesApoderadosMenor from "./views/Libreta/Apoderado/Avisos/
 import ItinerarioJornadaListadoMenores from "./views/Libreta/Apoderado/Avisos/ItinerarioJornada/ListadoMenores";
 import ConfirmarItinerarioJornadaMenor from "./views/Libreta/Apoderado/Avisos/ItinerarioJornada/Confirmar";
 import EducadorAvisosHome from "./views/Libreta/Educador/Avisos/Home";
-import RevisarMenoresAutorizados from "./views/Libreta/Educador/Avisos/Vacunas/ListadoNiveles";
 import ListadoNivelesAutorizadosVacuna from "./views/Libreta/Educador/Avisos/Vacunas/ListadoNiveles";
 import ListadoMenoresAutorizadosVacunas from "./views/Libreta/Educador/Avisos/Vacunas/ListadoMenoresAutorizados";
+import RevisarVacunaMenor from "./views/Libreta/Educador/Avisos/Vacunas/RevisarAutorizacion";
+import ListadoAvisarNivelesEducador from "./views/Libreta/Educador/Avisos/Vacunas/ListadoAvisarNiveles";
+import SolicitarVacunas from "./views/Libreta/Educador/Avisos/Vacunas/SolicitarVacunas";
 
 export const Router = () => {
   return (
@@ -48,12 +50,24 @@ export const Router = () => {
             <Route path="home" element={<EducadorAvisosHome />} />
             <Route path="vacunas">
               <Route
-                path="revisar-menores"
+                path="revisar-niveles-menores"
                 element={<ListadoNivelesAutorizadosVacuna />}
               />
               <Route
-                path="nivel/:id"
+                path="menores-por-nivel/:id"
                 element={<ListadoMenoresAutorizadosVacunas />}
+              />
+              <Route
+                path="revisar-menor/:id"
+                element={<RevisarVacunaMenor />}
+              />
+              <Route
+                path="avisar-niveles-menores"
+                element={<ListadoAvisarNivelesEducador />}
+              />
+              <Route
+                path="solicitar-vacunas/:id"
+                element={<SolicitarVacunas />}
               />
             </Route>
             <Route path="paseos-visitas">

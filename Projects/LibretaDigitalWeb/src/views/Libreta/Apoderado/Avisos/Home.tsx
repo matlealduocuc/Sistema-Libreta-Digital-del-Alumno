@@ -202,7 +202,7 @@ const ApoderadoAvisosHome = () => {
       </div>
 
       {/* Indicators */}
-      <div className="flex justify-center space-x-4 mb-10">
+      <div className="flex justify-center space-x-4 mb-6">
         {slides.map((_, index) => (
           <button
             key={index}

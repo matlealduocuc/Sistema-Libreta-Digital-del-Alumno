@@ -21,10 +21,11 @@ const EducadorAvisosHome = () => {
       Haz click en <strong>"Continuar"</strong>
       <br />para ver el detalle y el Estado de Autorización.`,
       buttonText: "Solicitar",
-      href: initPathName + "/avisos/vacunas/listado-menores",
+      href: initPathName + "/avisos/vacunas/avisar-niveles-menores",
       isSecondButton: true,
       secondButtonText: "Revisar",
-      secondButtonHref: initPathName + "/avisos/vacunas/revisar-menores",
+      secondButtonHref:
+        initPathName + "/avisos/vacunas/revisar-niveles-menores",
       imgSrc: VacunaSvg,
     },
     {
@@ -229,7 +230,7 @@ const EducadorAvisosHome = () => {
       </div>
 
       {/* Indicators */}
-      <div className="flex justify-center space-x-4 mb-10">
+      <div className="flex justify-center space-x-4 mb-6">
         {slides.map((_, index) => (
           <button
             key={index}

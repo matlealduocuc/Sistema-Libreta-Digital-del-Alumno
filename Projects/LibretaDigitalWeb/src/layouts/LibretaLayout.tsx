@@ -35,10 +35,18 @@ const LibretaLayout = () => {
 
   useEffect(() => {
     setLoadingLayout(isLoading);
-    if (isError) {
+    if (!isLoading && isError) {
       return navigate("/login");
+    } else {
+      if (!isLoading && data) {
+        const pathRol = location.pathname.split("/")[1].trim().toLowerCase();
+        const rol = data.rol.trim().toLowerCase();
+        if (pathRol && pathRol != rol) {
+          return navigate("/libretaRedirect");
+        }
+      }
     }
-  }, [isLoading, isError, navigate]);
+  }, [isLoading, isError, data, navigate, location.pathname]);
 
   const bienvenidoSexo: string =
     usuario?.persona.sexo === "F"

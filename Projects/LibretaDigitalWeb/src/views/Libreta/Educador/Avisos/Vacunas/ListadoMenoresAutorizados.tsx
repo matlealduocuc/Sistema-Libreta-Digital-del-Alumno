@@ -55,7 +55,7 @@ const ListadoMenoresAutorizadosVacunas = () => {
   };
 
   const handleMenorClick = (id: number) => {
-    navigate(`/educador/avisos/vacunas/nivel/${id}`);
+    navigate(`/educador/avisos/vacunas/revisar-menor/${id}`);
   };
 
   const filteredMenores = menores.filter((menor) =>
@@ -110,7 +110,6 @@ const ListadoMenoresAutorizadosVacunas = () => {
           </form>
         </div>
 
-        {/* Lista de menores */}
         <div className="grid gap-4">
           {filteredMenores.length > 0 ? (
             filteredMenores.map((menor) => (

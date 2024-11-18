@@ -3,10 +3,10 @@ import { Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthorizedUserDto } from "@/dtos/Auth/AuthorizedUserDto";
-import { ObtenerInitPathName } from "@/common/FuncionesComunesUsuario";
 import { NivelController } from "@/controllers/NivelController";
+import { ObtenerInitPathName } from "@/common/FuncionesComunesUsuario";
 
-const ListadoNivelesAutorizadosVacuna = () => {
+const ListadoAvisarNivelesEducador = () => {
   const { isLoading } = useAuth();
   const [niveles, setNiveles] = useState<
     { id: number; nombre: string; cantidadMenores: number }[]
@@ -61,7 +61,7 @@ const ListadoNivelesAutorizadosVacuna = () => {
   };
 
   const handleNivelClick = (id: number) => {
-    navigate(`${initPathName}/avisos/vacunas/menores-por-nivel/${id}`);
+    navigate(`${initPathName}/avisos/vacunas/solicitar-vacunas/${id}`);
   };
 
   const filteredNiveles = niveles.filter((nivel) =>
@@ -139,4 +139,4 @@ const ListadoNivelesAutorizadosVacuna = () => {
   );
 };
 
-export default ListadoNivelesAutorizadosVacuna;
+export default ListadoAvisarNivelesEducador;
