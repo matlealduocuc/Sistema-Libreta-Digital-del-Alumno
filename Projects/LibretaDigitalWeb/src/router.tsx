@@ -148,6 +148,7 @@ export const Router = () => {
           <Route path="/auth/login" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/libretaRedirect" element={<LibretaRedirect />} />
+          <Route path="*" element={<LibretaRedirect />} />
         </Route>
       </Routes>
     </BrowserRouter>
