@@ -10,8 +10,15 @@ const ApoderadoAvisosHome = () => {
     {
       title: "Vacunas",
       heading: "¡Autoriza y Protege!",
-      description:
-        "Aquí podrás conocer novedades acerca de las próximas Vacunas y Recomendaciones de la autoridad sanitaria.",
+      description: `Aquí podrás conocer novedades acerca
+      <br />
+      de las próximas <strong>Vacunas</strong> y <strong>Recomendaciones</strong>
+      <br />
+      de la autoridad sanitaria.
+      <br />
+      <br />
+      Haz click en <strong>"Continuar"</strong>
+      <br />para ver el detalle y el Estado de Autorización.`,
       buttonText: "Continuar",
       href: "/apoderado/avisos/vacunas/listado-menores",
       imgSrc: VacunaSvg,
@@ -19,28 +26,49 @@ const ApoderadoAvisosHome = () => {
     {
       title: "Paseos y Visitas",
       heading: "¡Aprender Divertido!",
-      description:
-        "En esta sección encontrarás información sobre los Paseos y Visitas.",
+      description: `En esta sección encontrarás información
+      <br />
+      sobre los <strong>Paseos y Visitas</strong>.
+      <br />
+      <br />
+      Haz clic en <strong>“Continuar”</strong>
+      <br />
+      para <strong>Revisar y Autorizar</strong>.`,
       buttonText: "Continuar",
-      href: "/apoderado/avisos/paseos-visitas",
+      href: "/apoderado/avisos/paseos-visitas/listado-menores",
       imgSrc: PaseoVisitaSvg,
     },
     {
       title: "Reuniones de Apoderados",
       heading: "¡Participar es Clave!",
-      description:
-        "Descubre las fechas y temas de las Próximas Reuniones y Confirmar tu Asistencia.",
+      description: `Descubre las fechas y temas
+      <br />
+      de las <strong>Próximas Reuniones</strong>
+      <br />
+      y Confirmar tu Asistencia.
+      <br />
+      <br />
+      Haz clic en <strong>“Continuar”</strong>
+      <br />para revisar.`,
       buttonText: "Continuar",
-      href: "/apoderado/avisos/reuniones-apoderados",
+      href: "/apoderado/avisos/reuniones-apoderados/listado-menores",
       imgSrc: ReunionApoderadosSvg,
     },
     {
       title: "Itinerario de Jornada",
       heading: "¡Actividades Diarias!",
-      description:
-        "Conoce las Experiencias Educativas y mantente al tanto de su evolución.",
+      description: `Conoce las <strong>Experiencias Educativas</strong>
+        <br />
+        y mantente al tanto de su evolución.
+        <br />
+        <br />
+        Haz clic en <strong>“Continuar”</strong>
+        <br />
+        para ver las Actividades Diarias
+        <br />
+        y <strong>Confirmar tu Conocimiento</strong>.`,
       buttonText: "Continuar",
-      href: "/apoderado/avisos/itinerario-jornada",
+      href: "/apoderado/avisos/itinerario-jornada/listado-menores",
       imgSrc: ActividadesDiariasSvf,
     },
   ];
@@ -104,7 +132,7 @@ const ApoderadoAvisosHome = () => {
 
   return (
     <div
-      className="flex flex-col items-center"
+      className="flex flex-col items-center bg-white"
       onMouseDown={handleDragStart}
       onMouseMove={handleDrag}
       onMouseUp={handleDragEnd}
@@ -143,14 +171,17 @@ const ApoderadoAvisosHome = () => {
               <h2 className="text-xl font-bold text-blue-600 mb-4">
                 {slide.heading}
               </h2>
-              <p className="text-gray-700">{slide.description}</p>
+              <p
+                className="text-gray-700"
+                dangerouslySetInnerHTML={{ __html: slide.description }}
+              ></p>
 
-              <div className="my-6 w-full max-w-xs">
+              <div className="my-6 w-auto max-w-xs">
                 <img
-                  style={{ aspectRatio: "1" }}
+                  style={{ objectFit: "contain" }}
                   src={slide.imgSrc}
                   alt={slide.title}
-                  className="w-full rounded-md"
+                  className="w-full h-56 rounded-md"
                 />
               </div>
 

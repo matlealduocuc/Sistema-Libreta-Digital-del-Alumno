@@ -1,11 +1,11 @@
-import { MenorController } from "@/controllers/MenorController";
+import { MenorController } from "@/controllers/MenorController"; 
 import { useAuth } from "@/hooks/useAuth";
 import { Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthorizedUserDto } from "@/dtos/Auth/AuthorizedUserDto";
 
-const VacunasListadoMenores = () => {
+const ReunionesApoderadosListadoMenores = () => {
   const { isLoading } = useAuth();
   const [menores, setMenores] = useState<
     { id: number; nombre: string; edad: number }[]
@@ -24,9 +24,7 @@ const VacunasListadoMenores = () => {
       setLoading(true);
       if (!isLoading && idPersona) {
         try {
-          const menoresData = await menorController.getMenoresByApoderado(
-            idPersona
-          );
+          const menoresData = await menorController.getMenoresByApoderado(idPersona);
           if (menoresData) {
             setMenores(
               menoresData.map(
@@ -47,7 +45,7 @@ const VacunasListadoMenores = () => {
     };
 
     fetchMenores();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,7 +53,7 @@ const VacunasListadoMenores = () => {
   };
 
   const handleMenorClick = (id: number) => {
-    navigate(`/apoderado/avisos/vacunas/menor/${id}`);
+    navigate(`/apoderado/avisos/reuniones-apoderados/menor/${id}`);
   };
 
   const filteredMenores = menores.filter((menor) =>
@@ -124,9 +122,7 @@ const VacunasListadoMenores = () => {
               </div>
             ))
           ) : (
-            <p className="text-gray-500 text-center">
-              No se encontraron menores.
-            </p>
+            <p className="text-gray-500 text-center">No se encontraron menores.</p>
           )}
         </div>
       </div>
@@ -134,4 +130,4 @@ const VacunasListadoMenores = () => {
   );
 };
 
-export default VacunasListadoMenores;
+export default ReunionesApoderadosListadoMenores;

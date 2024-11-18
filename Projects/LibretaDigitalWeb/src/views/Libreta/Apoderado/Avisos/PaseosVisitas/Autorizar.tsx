@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-const AutorizarVacunaMenor = () => {
+const AutorizarPaseoVisitaMenor = () => {
   const { id } = useParams();
   const [step, setStep] = useState(1);
   const navigate = useNavigate();
@@ -9,9 +9,9 @@ const AutorizarVacunaMenor = () => {
   const menor = {
     nombre: "Antonella Ossio Soto",
     nivel: "Sala Cuna Mayor",
-    vacuna: "Influenza 11.11.2024",
+    visita: "JUMPIT 11.11.2024",
     apoderado: "Lisette Soto Pedraza",
-    estado: "VACUNA NO AUTORIZADA",
+    estado: "VISITA NO AUTORIZADA",
   };
 
   const handleNextStep = () => {
@@ -30,14 +30,14 @@ const AutorizarVacunaMenor = () => {
           <div className="text-center space-y-6">
             <h2 className="text-xl font-bold mb-4">Estado de Autorización</h2>
             <p className="mb-4">
-              En el recuadro se indica el nombre del menor,
+              En esta sección encontrarás información
               <br />
-              la <strong>Vacuna Pendiente</strong>
-              <br />y su <strong>Estado de Autorización</strong>.
+              de los próximos <strong>Paseos y Visitas.</strong>
             </p>
             <p className="mb-4">
-              Haz click en <strong>"Autorizar"</strong>
-              <br /> para permitir la aplicación de la vacuna.
+              Haz clic en <strong>“Continuar”</strong>
+              <br />
+              para <strong>Confirmar</strong> su <strong>Autorización</strong>.
             </p>
             <div className="border border-gray-300 rounded-lg p-4 mb-4 bg-white">
               <p>
@@ -47,7 +47,7 @@ const AutorizarVacunaMenor = () => {
                 <strong>Nivel:</strong> {menor.nivel}
               </p>
               <p>
-                <strong>Vacuna:</strong> {menor.vacuna}
+                <strong>Visita:</strong> {menor.visita}
               </p>
               <p>
                 <strong>Apoderado:</strong> {menor.apoderado}
@@ -62,17 +62,6 @@ const AutorizarVacunaMenor = () => {
             >
               Continuar
             </button>
-            <p className="text-black text-md text-center mt-4">
-              Haz{" "}
-              <a
-                className="underline cursor-pointer font-bold"
-                target="_blank"
-                href="https://saludresponde.minsal.cl/vacunacion-contra-la-influenza-2024/"
-              >
-                Click Aquí
-              </a>{" "}
-              para ver las recomendaciones del Ministerio de Salud.
-            </p>
           </div>
         )}
 
@@ -81,11 +70,13 @@ const AutorizarVacunaMenor = () => {
           <div className="text-center">
             <h2 className="text-xl font-bold mb-4">¡Listo para Autorizar!</h2>
             <p className="mb-4">
-              Haz click en <strong>"Aceptar"</strong> para autorizar la vacuna.
+              Haz click en <strong>"Aceptar"</strong>
+              <br />
+              para <strong>Autorizar la Visita</strong>.
             </p>
             <div className="border border-gray-300 rounded-lg p-4 mb-4 bg-white">
               <p className="text-center font-semibold">
-                ¿Autoriza el suministro de la vacuna indicada?
+                ¿Autorizas la visita al lugar indicado?
               </p>
             </div>
             <button
@@ -120,7 +111,7 @@ const AutorizarVacunaMenor = () => {
               </svg>
             </div>
             <p className="text-green-600 font-bold text-lg mb-4 text-center">
-              Vacuna
+              Visita
               <br />
               Autorizada
             </p>
@@ -144,4 +135,4 @@ const AutorizarVacunaMenor = () => {
   );
 };
 
-export default AutorizarVacunaMenor;
+export default AutorizarPaseoVisitaMenor;

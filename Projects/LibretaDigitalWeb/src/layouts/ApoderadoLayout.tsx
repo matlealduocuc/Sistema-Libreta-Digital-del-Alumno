@@ -59,15 +59,40 @@ const ApoderadoLayout = () => {
     [initPathName + "/avisos/home"]: "Avisos",
     [initPathName + "/avisos/vacunas/listado-menores"]: "Vacunas",
     [initPathName + "/avisos/vacunas/menor"]: "Vacunas",
+    [initPathName + "/avisos/paseos-visitas/listado-menores"]:
+      "Paseos y Visitas",
+    [initPathName + "/avisos/paseos-visitas/menor"]: "Paseos y Visitas",
+    [initPathName + "/avisos/reuniones-apoderados/listado-menores"]:
+      "Reuniones de Apoderados",
+    [initPathName + "/avisos/reuniones-apoderados/menor"]:
+      "Reuniones de Apoderados",
+    [initPathName + "/avisos/itinerario-jornada/listado-menores"]:
+      "Itinerario de Jornada",
+    [initPathName + "/avisos/itinerario-jornada/menor"]:
+      "Itinerario de Jornada",
   };
 
-  const title: string = pageTitles[location.pathname] || "Libreta Digital";
+  const pathsWithOneParam: string[] = [
+    initPathName + "/avisos/vacunas/menor",
+    initPathName + "/avisos/paseos-visitas/menor",
+    initPathName + "/avisos/reuniones-apoderados/menor",
+    initPathName + "/avisos/itinerario-jornada/menor",
+  ];
+
+  const title: string =
+    pageTitles[
+      pathsWithOneParam.includes(
+        location.pathname.split("/").slice(0, -1).join("/")
+      )
+        ? location.pathname.split("/").slice(0, -1).join("/")
+        : location.pathname
+    ] || "Libreta Digital";
 
   return (
     <Spin spinning={loadingLayout}>
       <div className="flex flex-col min-h-screen">
         <LibretaHeader title={title} />
-        <main className="flex-grow p-4 pt-24 pb-20">
+        <main className="flex-grow p-0 pt-24 pb-20">
           <Outlet />
         </main>
         <LibretaFooter />
