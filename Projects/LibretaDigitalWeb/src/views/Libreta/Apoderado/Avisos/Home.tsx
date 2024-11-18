@@ -143,7 +143,7 @@ const ApoderadoAvisosHome = () => {
       onTouchEnd={handleDragEnd}
     >
       {/* Header */}
-      <div className="w-full text-black py-3 flex items-center justify-between px-4">
+      <div className="w-full py-3 flex items-center justify-between px-4 bg-figma-blue text-white">
         <button onClick={goToPreviousSlide} className="font-bold text-2xl">
           {`<`}
         </button>
@@ -154,7 +154,7 @@ const ApoderadoAvisosHome = () => {
       </div>
 
       {/* Slides Container */}
-      <div className="relative w-full h-[66vh] overflow-hidden">
+      <div className="relative w-full h-[66vh] overflow-hidden mt-10">
         <div
           className="flex transition-transform duration-300 ease-in-out"
           style={{

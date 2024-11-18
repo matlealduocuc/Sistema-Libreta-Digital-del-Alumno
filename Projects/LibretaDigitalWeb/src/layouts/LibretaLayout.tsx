@@ -14,6 +14,12 @@ const LibretaLayout = () => {
   const usuario: AuthorizedUserDto = storedUser ? JSON.parse(storedUser) : null;
   const location = useLocation();
   const navigate = useNavigate();
+  const pathName = location.pathname
+    .split("/")
+    ?.splice(2, 2)
+    .join("/")
+    .toLowerCase();
+  const pathsQuitarHeader = ["avisos/home"];
 
   let initPathName: string = "";
   if (!isLoading && data) {
@@ -100,7 +106,11 @@ const LibretaLayout = () => {
     <Spin spinning={loadingLayout}>
       <div className="flex flex-col min-h-screen">
         <LibretaHeader title={title} />
-        <main className="flex-grow p-0 pt-24 pb-20">
+        <main
+          className={`flex-grow p-0 ${
+            pathsQuitarHeader.includes(pathName) ? "pt-8" : "pt-24"
+          } pb-20`}
+        >
           <Outlet />
         </main>
         <LibretaFooter />

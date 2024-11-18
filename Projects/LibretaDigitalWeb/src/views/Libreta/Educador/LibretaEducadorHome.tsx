@@ -4,6 +4,7 @@ import {
   faBell,
   faCalendar,
   faInfoCircle,
+  faLightbulb,
 } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
 
@@ -16,8 +17,13 @@ const LibretaEducadorHome = () => {
       url: initPathName + "/avisos/home",
       parragraph: (
         <p className="text-sm text-center p-1">
-          Envía <strong>Solicitudes Importantes</strong>
-          <br />y <strong>Verifica</strong> cuales fueron Autorizadas.
+          Envía{" "}
+          <strong>
+            Solicitudes Importantes a los
+            <br />
+            Apoderados
+          </strong>{" "}
+          para que las Autoricen.
         </p>
       ),
     },
@@ -34,12 +40,12 @@ const LibretaEducadorHome = () => {
       ),
     },
     {
-      icon: faInfoCircle,
-      title: "Comunicados",
+      icon: faLightbulb,
+      title: "Mensajes",
       url: initPathName + "/comunicados",
       parragraph: (
         <p className="text-sm text-center p-1">
-          Envia <strong>Comunicados</strong>
+          Envía <strong>Mensajes y Documentos</strong>
           <br />
           relevantes a los Apoderados.
         </p>
@@ -54,14 +60,14 @@ const LibretaEducadorHome = () => {
           key={index}
           className="bg-figma-green-card text-white w-full shadow-xl rounded-2xl"
         >
-          <NavLink to={option.url}>
+          <NavLink to={option.url} className="hover:text-green-500">
             <CardHeader>
               <div className="border-2 p-1 rounded-full">
                 <FontAwesomeIcon
                   icon={option.icon}
                   color="white"
                   size="xl"
-                  className="p-1"
+                  className="p-1 w-6"
                 />
               </div>
               <p className="text-2xl font-medium text-center flex-grow mr-5">

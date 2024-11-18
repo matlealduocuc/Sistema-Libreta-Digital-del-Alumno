@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBell,
   faCalendar,
-  faInfoCircle,
+  faLightbulb,
 } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
 
@@ -12,11 +12,11 @@ const LibretaApoderadoHome = () => {
   const itemsAppbar = [
     {
       icon: faBell,
-      title: "Avisos",
+      title: "Autoriza",
       url: initPathName + "/avisos/home",
       parragraph: (
         <p className="text-sm text-center p-1">
-          Informate de los <strong>Avisos Importantes</strong>
+          Accede a <strong>Información Importante</strong>
           <br />y <strong>Autoriza Solicitudes</strong>.
         </p>
       ),
@@ -34,8 +34,8 @@ const LibretaApoderadoHome = () => {
       ),
     },
     {
-      icon: faInfoCircle,
-      title: "Circulares",
+      icon: faLightbulb,
+      title: "Mensajes",
       url: initPathName + "/comunicados",
       parragraph: (
         <p className="text-sm text-center p-1">
@@ -61,7 +61,7 @@ const LibretaApoderadoHome = () => {
                   icon={option.icon}
                   color="white"
                   size="xl"
-                  className="p-1"
+                  className="p-1 w-6"
                 />
               </div>
               <p className="text-2xl font-medium text-center flex-grow mr-5">

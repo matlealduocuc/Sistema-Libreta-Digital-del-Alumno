@@ -1,34 +1,52 @@
+import { ObtenerInitPathName } from "@/common/FuncionesComunesUsuario";
 import { useAuth } from "@/hooks/useAuth";
 import {
-  HomeOutlined,
-  MessageOutlined,
-  BellOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+  faBell,
+  faCalendar,
+  faHome,
+  faLightbulb,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from "react-router-dom";
 
 const LibretaFooter = () => {
   const { data, isLoading } = useAuth();
-  let initPathName: string = "";
+  const initPathName = ObtenerInitPathName();
   let bgColorClass = "bg-black";
   let textColorClass = "text-white";
+  let textoHome: string = "Inicio";
+  let textoAvisos: string = "Autoriza";
+  let textoAsistencia: string = "Asistencia";
+  let textoMensajes: string = "Mensajes";
   if (!isLoading && data) {
     switch (data.rol) {
       case "apoderado":
-        initPathName = "/apoderado";
+        textoHome = "Inicio";
+        textoAvisos = "Autoriza";
+        textoAsistencia = "Asistencia";
+        textoMensajes = "Mensajes";
         bgColorClass = "bg-figma-blue";
         textColorClass = "text-white";
         break;
       case "educador":
-        initPathName = "/educador";
+        textoHome = "Inicio";
+        textoAvisos = "Solicitudes";
+        textoAsistencia = "Asistencia";
+        textoMensajes = "Mensajes";
         bgColorClass = "bg-figma-green";
         textColorClass = "text-white";
         break;
       case "director":
-        initPathName = "/director";
+        textoHome = "Inicio";
+        textoAvisos = "Solicitudes";
+        textoAsistencia = "Asistencia";
+        textoMensajes = "Mensajes";
         break;
       default:
-        initPathName = "/";
+        textoHome = "Inicio";
+        textoAvisos = "Asistencia";
+        textoAsistencia = "Asistencia";
+        textoMensajes = "Mensajes";
         break;
     }
   }
@@ -44,32 +62,52 @@ const LibretaFooter = () => {
               to="/libretaRedirect"
               className="flex flex-col items-center"
             >
-              <HomeOutlined className="text-2xl" />
-              <span className="text-xs">Inicio</span>
+              <FontAwesomeIcon
+                icon={faHome}
+                color="white"
+                size="lg"
+                className="p-1 w-6"
+              />
+              <span className="text-xs">{textoHome}</span>
             </NavLink>
 
             <NavLink
-              to={initPathName + "/mensaje"}
+              to={initPathName + "/avisos/home"}
               className="flex flex-col items-center"
             >
-              <MessageOutlined className="text-2xl" />
-              <span className="text-xs">Mensaje</span>
+              <FontAwesomeIcon
+                icon={faBell}
+                color="white"
+                size="lg"
+                className="p-1 w-6"
+              />
+              <span className="text-xs">{textoAvisos}</span>
             </NavLink>
 
             <NavLink
-              to={initPathName + "/avisos"}
+              to={initPathName + "/asistencia"}
               className="flex flex-col items-center"
             >
-              <BellOutlined className="text-2xl" />
-              <span className="text-xs">Avisos</span>
+              <FontAwesomeIcon
+                icon={faCalendar}
+                color="white"
+                size="lg"
+                className="p-1 w-6"
+              />
+              <span className="text-xs">{textoAsistencia}</span>
             </NavLink>
 
             <NavLink
               to={initPathName + "/perfil"}
               className="flex flex-col items-center"
             >
-              <UserOutlined className="text-2xl" />
-              <span className="text-xs">Perfil</span>
+              <FontAwesomeIcon
+                icon={faLightbulb}
+                color="white"
+                size="lg"
+                className="p-1 w-6"
+              />
+              <span className="text-xs">{textoMensajes}</span>
             </NavLink>
           </nav>
         </footer>
