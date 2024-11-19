@@ -98,7 +98,7 @@ const LibretaFooter = () => {
             </NavLink>
 
             <NavLink
-              to={initPathName + "/mensajes"}
+              to={initPathName + "/comunicados"}
               className="flex flex-col items-center"
             >
               <FontAwesomeIcon

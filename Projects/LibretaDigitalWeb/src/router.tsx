@@ -28,6 +28,7 @@ import ListadoMenoresAutorizadosVacunas from "./views/Libreta/Educador/Avisos/Va
 import RevisarVacunaMenor from "./views/Libreta/Educador/Avisos/Vacunas/RevisarAutorizacion";
 import ListadoAvisarNivelesEducador from "./views/Libreta/Educador/Avisos/Vacunas/ListadoAvisarNiveles";
 import SolicitarVacunas from "./views/Libreta/Educador/Avisos/Vacunas/SolicitarVacunas";
+import UnderConstruction from "./views/home/UnderConstruction";
 
 export const Router = () => {
   return (
@@ -38,9 +39,11 @@ export const Router = () => {
           <Route path="/mantenedores/grados/lista" element={<ListaGrados />} />
           <Route path="/mantenedores/grados/nuevo" element={<NuevoGrado />} />
           <Route path="/mantenedores/lista" element={<ListaMantenedores />} />
+          <Route path="*" element={<LibretaRedirect />} />
         </Route>
 
         <Route path="/educador" element={<LibretaLayout />}>
+          <Route path="*" element={<UnderConstruction />} />
           <Route path="" element={<LibretaEducadorHome />} index />
           <Route path="home" element={<LibretaEducadorHome />} />
           <Route path="perfil" element={<PerfilUsuario />} />
@@ -101,6 +104,7 @@ export const Router = () => {
         </Route>
 
         <Route path="/apoderado" element={<LibretaLayout />}>
+          <Route path="*" element={<UnderConstruction />} />
           <Route path="" element={<LibretaApoderadoHome />} index />
           <Route path="home" element={<LibretaApoderadoHome />} />
           <Route path="perfil" element={<PerfilUsuario />} />

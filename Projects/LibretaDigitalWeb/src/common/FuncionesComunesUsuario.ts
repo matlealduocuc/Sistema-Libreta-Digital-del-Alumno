@@ -39,3 +39,11 @@ export const ObtenerInitPathName = () => {
 
   return initPathName;
 };
+
+export const ObtenerRolUser = () => {
+  const { data, isLoading } = useAuth();
+
+  if (!isLoading && data) {
+    return data.rol;
+  }
+}
