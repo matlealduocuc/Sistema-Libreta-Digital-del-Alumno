@@ -23,6 +23,7 @@ model Menor {
   per_persona_lda_menor_iden_per_apoderadoToper_persona     Persona                @relation("lda_menor_iden_per_apoderadoToper_persona", fields: [iden_per_apoderado], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lda_menor_per_persona_fk_1")
   per_persona_lda_menor_iden_per_apoderado_supToper_persona Persona?               @relation("lda_menor_iden_per_apoderado_supToper_persona", fields: [iden_per_apoderado_sup], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lda_menor_per_persona_fk_2")
   lda_nivel_menor                                           lda_nivel_menor[]
+  lda_vacuna_menor                                          lda_vacuna_menor[]
 
   @@map("lda_menor")
   @@schema("ADMLDA")
@@ -235,6 +236,27 @@ model lda_nivel_menor {
   flag_eliminado   Boolean   @default(false)
   lda_menor        Menor     @relation(fields: [iden_menor], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lda_nivel_menor_lda_menor_fk")
   lda_nivel        lda_nivel @relation(fields: [iden_nivel], references: [iden_nivel], onDelete: NoAction, onUpdate: NoAction, map: "lda_nivel_menor_lda_nivel_fk")
+
+  @@schema("ADMLDA")
+}
+
+model lda_vacuna {
+  iden_vacuna      Int                @id(map: "lda_vacuna_pk") @default(autoincrement())
+  desc_nombre      String             @db.VarChar
+  fech_vacunacion  DateTime           @db.Date
+  nmro_agno        Int
+  lda_vacuna_menor lda_vacuna_menor[]
+
+  @@schema("ADMLDA")
+}
+
+model lda_vacuna_menor {
+  iden_vacuna_menor Int        @id(map: "lda_vacuna_menor_pk") @default(autoincrement())
+  iden_vacuna       Int
+  iden_menor        Int
+  flag_autorizado   Boolean    @default(false)
+  lda_menor         Menor      @relation(fields: [iden_menor], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lda_vacuna_menor_lda_menor_fk")
+  lda_vacuna        lda_vacuna @relation(fields: [iden_vacuna], references: [iden_vacuna], onDelete: NoAction, onUpdate: NoAction, map: "lda_vacuna_menor_lda_vacuna_fk")
 
   @@schema("ADMLDA")
 }

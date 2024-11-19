@@ -62,4 +62,170 @@ export class MenorService {
       },
     });
   }
+
+  async getMenoresVacunasByApoderado(idApoderado: number) {
+    return await this.prisma.menor.findMany({
+      where: {
+        iden_per_apoderado: idApoderado,
+        flag_activo: true,
+        flag_eliminado: false,
+      },
+      select: {
+        id: true,
+        per_persona: {
+          select: {
+            primerNombre: true,
+            apellidoP: true,
+            apellidoM: true,
+            fech_nacimiento: true,
+          },
+        },
+        lda_vacuna_menor: {
+          where: {
+            lda_vacuna: {
+              nmro_agno: {
+                equals: new Date().getFullYear(),
+              },
+            },
+          },
+          select: {
+            flag_autorizado: true,
+          },
+        },
+        lda_nivel_menor: {
+          where: {
+            flag_activo: true,
+            flag_eliminado: false,
+            lda_nivel: {
+              flag_activo: true,
+              flag_eliminado: false,
+            },
+          },
+          select: {
+            lda_nivel: {
+              select: {
+                desc_nombre: true,
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
+  async getMenorVacunasByMenorAndApoderado(
+    idMenor: number,
+    idApoderado: number,
+  ) {
+    return await this.prisma.menor.findFirst({
+      where: {
+        id: idMenor,
+        iden_per_apoderado: idApoderado,
+        flag_activo: true,
+        flag_eliminado: false,
+        lda_vacuna_menor: {
+          some: {
+            lda_vacuna: {
+              nmro_agno: {
+                equals: new Date().getFullYear(),
+              },
+            },
+          },
+        },
+      },
+      select: {
+        id: true,
+        per_persona: {
+          select: {
+            primerNombre: true,
+            apellidoP: true,
+            apellidoM: true,
+          },
+        },
+        lda_nivel_menor: {
+          where: {
+            flag_activo: true,
+            flag_eliminado: false,
+            lda_nivel: {
+              flag_activo: true,
+              flag_eliminado: false,
+            },
+          },
+          select: {
+            lda_nivel: {
+              select: {
+                desc_nombre: true,
+              },
+            },
+          },
+        },
+        lda_vacuna_menor: {
+          where: {
+            lda_vacuna: {
+              nmro_agno: {
+                equals: new Date().getFullYear(),
+              },
+            },
+          },
+          select: {
+            flag_autorizado: true,
+            lda_vacuna: {
+              select: {
+                iden_vacuna: true,
+                desc_nombre: true,
+                fech_vacunacion: true,
+              },
+            },
+          },
+        },
+        per_persona_lda_menor_iden_per_apoderadoToper_persona: {
+          select: {
+            primerNombre: true,
+            apellidoP: true,
+            apellidoM: true,
+          },
+        },
+      },
+    });
+  }
+
+  async autorizarVacunaMenor(
+    idMenor: number,
+    idVacuna: number,
+    idApoderado: number,
+  ) {
+    const isApoderado = await this.prisma.menor.findFirst({
+      where: {
+        id: idMenor,
+        iden_per_apoderado: idApoderado,
+        flag_activo: true,
+        flag_eliminado: false,
+        per_persona_lda_menor_iden_per_apoderadoToper_persona: {
+          flag_activo: true,
+          flag_eliminado: false,
+        },
+      },
+    });
+    if (!isApoderado) {
+      return false;
+    }
+    const getIdenVacunaMenor = await this.prisma.lda_vacuna_menor.findFirst({
+      where: {
+        iden_menor: idMenor,
+        iden_vacuna: idVacuna,
+      },
+      select: {
+        iden_vacuna_menor: true,
+      },
+    });
+    const updated = await this.prisma.lda_vacuna_menor.update({
+      data: {
+        flag_autorizado: true,
+      },
+      where: {
+        iden_vacuna_menor: getIdenVacunaMenor.iden_vacuna_menor,
+      },
+    });
+    return updated;
+  }
 }

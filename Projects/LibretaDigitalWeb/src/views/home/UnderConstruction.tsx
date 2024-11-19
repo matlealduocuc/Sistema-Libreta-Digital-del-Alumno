@@ -1,5 +1,6 @@
 import UnderConstructionSignal from "@/assets/under-construction-signal.png";
 import { ObtenerRolUser } from "@/common/FuncionesComunesUsuario";
+import HomeIcon from "@/components/HomeIcon";
 import { useNavigate } from "react-router-dom";
 
 const UnderConstruction = () => {
@@ -61,6 +62,19 @@ const UnderConstruction = () => {
                 Volver
               </button>
             </div>
+            {rol && (
+              <div className="w-full flex justify-center mt-3">
+                <button
+                  className="outline outline-1 outline-figma-blue-button text-figma-blue-button bg-white transition-colors w-80 text-lg font-semibold py-3 px-6 rounded-lg shadow-lg hover:outline-none hover:bg-figma-blue-button hover:text-white"
+                  onClick={() => {
+                    navigate("/libretaRedirect");
+                  }}
+                >
+                  <HomeIcon color="blue" size="sm" className="pe-2" />
+                  Inicio
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

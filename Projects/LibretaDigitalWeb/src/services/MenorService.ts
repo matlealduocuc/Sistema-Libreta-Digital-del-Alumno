@@ -36,6 +36,41 @@ export class MenorService {
       },
     ];
   }
+
+  async getMenoresVacunasByApoderado() {
+    try {
+      const response = await api.get("/menor/getMenoresVacunasByApoderado");
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async getMenorVacunasByMenorAndApoderado(idMenor: number) {
+    try {
+      const response = await api.get(
+        "/menor/getMenorVacunasByMenorAndApoderado/" + idMenor
+      );
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async autorizarVacunaMenor(idMenor: number, idVacuna: number) {
+    try {
+      const response = await api.post("/menor/autorizarVacunaMenor", {
+        idMenor,
+        idVacuna,
+      });
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
 }
 
 const ifAxiosError = (error: unknown): error is AxiosError => {

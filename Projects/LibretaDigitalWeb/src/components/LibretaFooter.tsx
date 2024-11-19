@@ -3,11 +3,11 @@ import { useAuth } from "@/hooks/useAuth";
 import {
   faBell,
   faCalendar,
-  faHome,
   faLightbulb,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from "react-router-dom";
+import HomeIcon from "./HomeIcon";
 
 const LibretaFooter = () => {
   const { data, isLoading } = useAuth();
@@ -62,12 +62,7 @@ const LibretaFooter = () => {
               to="/libretaRedirect"
               className="flex flex-col items-center"
             >
-              <FontAwesomeIcon
-                icon={faHome}
-                color="white"
-                size="lg"
-                className="p-1 w-6"
-              />
+              <HomeIcon />
               <span className="text-xs">{textoHome}</span>
             </NavLink>
 

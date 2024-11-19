@@ -3,37 +3,45 @@ import { useAuth } from "@/hooks/useAuth";
 import { Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthorizedUserDto } from "@/dtos/Auth/AuthorizedUserDto";
 
 const VacunasListadoMenores = () => {
   const { isLoading } = useAuth();
   const [menores, setMenores] = useState<
-    { id: number; nombre: string; edad: number }[]
+    {
+      id: number;
+      nombre: string;
+      edad: number;
+      autorizado: boolean | null;
+      nivel: string;
+    }[]
   >([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState<boolean>(true);
-  const storedUser = localStorage.getItem("AUTH_USER");
-  const usuario: AuthorizedUserDto = storedUser ? JSON.parse(storedUser) : null;
-  const persona = usuario?.persona;
-  const idPersona = persona?.idPersona;
   const menorController = new MenorController();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMenores = async () => {
       setLoading(true);
-      if (!isLoading && idPersona) {
+      if (!isLoading) {
         try {
-          const menoresData = await menorController.getMenoresByApoderado(
-            idPersona
-          );
+          const menoresData =
+            await menorController.getMenoresVacunasByApoderado();
           if (menoresData) {
             setMenores(
               menoresData.map(
-                (menor: { id: number; nombre: string; edad: number }) => ({
+                (menor: {
+                  id: number;
+                  nombre: string;
+                  edad: number;
+                  autorizado: boolean | null;
+                  nivel: string;
+                }) => ({
                   id: menor.id,
                   nombre: menor.nombre,
                   edad: menor.edad,
+                  autorizado: menor.autorizado,
+                  nivel: menor.nivel,
                 })
               )
             );
@@ -116,11 +124,29 @@ const VacunasListadoMenores = () => {
             filteredMenores.map((menor) => (
               <div
                 key={menor.id}
-                className="border border-gray-300 rounded p-4 shadow-md cursor-pointer"
-                onClick={() => handleMenorClick(menor.id)}
+                className={`border ${
+                  menor.autorizado != null && !menor.autorizado
+                    ? "border-gray-300"
+                    : "border-gray-600 bg-gray-300"
+                } rounded p-4 shadow-md cursor-pointer`}
+                onClick={() => {
+                  if (menor.autorizado != null && !menor.autorizado) {
+                    handleMenorClick(menor.id);
+                  }
+                }}
               >
                 <h2 className="font-semibold">{menor.nombre}</h2>
                 <p>Edad: {menor.edad} años</p>
+
+                {menor.autorizado ? (
+                  <p className="text-green-600 font-bold">Estado: AUTORIZADO</p>
+                ) : menor.autorizado != null && !menor.autorizado ? (
+                  <p className="text-red-600 font-bold">
+                    Estado: NO AUTORIZADO
+                  </p>
+                ) : (
+                  <p>Estado: NO SE HA SOLICITADO</p>
+                )}
               </div>
             ))
           ) : (
