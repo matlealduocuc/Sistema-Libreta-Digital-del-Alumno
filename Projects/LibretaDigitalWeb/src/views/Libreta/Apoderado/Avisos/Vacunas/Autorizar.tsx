@@ -52,11 +52,17 @@ const AutorizarVacunaMenor = () => {
     }
   };
 
+  const handlePrevStep = () => {
+    if (step > 1) {
+      setStep(step - 1);
+    } else {
+      navigate(-1);
+    }
+  };
+
   const handleAutorizarVacuna = async (idVacuna: number | undefined) => {
     try {
       setLoading(true);
-      console.log("id", id);
-      console.log("idVacuna", idVacuna);
       if (id && idVacuna) {
         const isOk = await menorController.autorizarVacunaMenor(+id, idVacuna);
         setIsErrorAutorizar(!isOk);
@@ -75,7 +81,7 @@ const AutorizarVacunaMenor = () => {
 
   return (
     <Spin spinning={loading}>
-      <div className="min-h-screen flex flex-col mt-9 w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
+      <div className="flex flex-col mt-9 w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
         <main className="flex-1 p-4">
           {/* Paso 1: Estado de Autorización */}
           {step === 1 && (
@@ -114,16 +120,25 @@ const AutorizarVacunaMenor = () => {
                   </p>
                 ) : (
                   <p className="font-bold text-gray-600">
-                    <strong>Estado:Vacuna no solicitada</strong>
+                    <strong>Estado: Vacuna no solicitada</strong>
                   </p>
                 )}
               </div>
-              <button
-                onClick={handleNextStep}
-                className="w-full bg-figma-blue-button text-white py-2 rounded-lg hover:bg-blue-700"
-              >
-                Continuar
-              </button>
+              {menor?.autorizado != null && !menor?.autorizado ? (
+                <button
+                  onClick={handleNextStep}
+                  className="w-full bg-figma-blue-button text-white py-2 rounded-lg hover:bg-blue-700"
+                >
+                  Continuar
+                </button>
+              ) : (
+                <button
+                  onClick={handlePrevStep}
+                  className="w-full outline outline-1 outline-figma-blue-button text-figma-blue-button bg-white transition-colors py-2 mt-4 font-semibold rounded-lg hover:outline-none hover:bg-figma-blue-button hover:text-white"
+                >
+                  Volver
+                </button>
+              )}
               <p className="text-black text-md text-center mt-4">
                 Haz{" "}
                 <a
@@ -153,9 +168,15 @@ const AutorizarVacunaMenor = () => {
               </div>
               <button
                 onClick={() => handleAutorizarVacuna(menor?.idVacuna)}
-                className="w-full bg-figma-blue-button text-white py-2 rounded-lg hover:bg-blue-700"
+                className="w-full bg-figma-blue-button text-white py-2 font-semibold rounded-lg hover:bg-blue-700"
               >
                 Aceptar
+              </button>
+              <button
+                onClick={() => handlePrevStep()}
+                className="w-full outline outline-1 outline-figma-blue-button text-figma-blue-button bg-white transition-colors py-2 mt-4 font-semibold rounded-lg hover:outline-none hover:bg-figma-blue-button hover:text-white"
+              >
+                Volver
               </button>
             </div>
           )}
@@ -232,13 +253,6 @@ const AutorizarVacunaMenor = () => {
             </div>
           )}
         </main>
-
-        <footer className="bg-white border-t border-gray-300 p-4 flex justify-around">
-          <button className="text-blue-600">Inicio</button>
-          <button className="text-blue-600">Avisos</button>
-          <button className="text-blue-600">Mensaje</button>
-          <button className="text-blue-600">Info</button>
-        </footer>
       </div>
     </Spin>
   );

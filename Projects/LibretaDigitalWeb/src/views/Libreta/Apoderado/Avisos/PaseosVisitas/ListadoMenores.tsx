@@ -14,6 +14,7 @@ const PaseosVisitasListadoMenores = () => {
       nivel: string;
       autorizado: boolean | null;
       paseo: string;
+      tipoPaseo: string;
       fechaInicio: string;
       fechaFin: string;
     }[]
@@ -40,6 +41,7 @@ const PaseosVisitasListadoMenores = () => {
                   nivel: string;
                   autorizado: boolean | null;
                   paseo: string;
+                  tipoPaseo: string;
                   fechaInicio: string;
                   fechaFin: string;
                 }) => ({
@@ -49,13 +51,13 @@ const PaseosVisitasListadoMenores = () => {
                   nivel: menor.nivel,
                   autorizado: menor.autorizado,
                   paseo: menor.paseo,
+                  tipoPaseo: menor.tipoPaseo,
                   fechaInicio: menor.fechaInicio,
                   fechaFin: menor.fechaFin,
                 })
               )
             );
           }
-          console.log(menoresData);
         } catch (error) {
           console.error("Error fetching menores:", error);
         } finally {
@@ -136,32 +138,24 @@ const PaseosVisitasListadoMenores = () => {
             filteredMenores.map((menor) => (
               <div
                 key={menor.idMenor}
-                className="border border-gray-300 rounded p-4 shadow-md cursor-pointer"
-                onClick={() => handleMenorClick(menor.idMenor, menor.idPaseo)}
+                className={`border ${
+                  menor.autorizado != null && !menor.autorizado
+                    ? "border-gray-300"
+                    : "border-gray-600 bg-gray-300"
+                } rounded p-4 shadow-md cursor-pointer`}
+                onClick={() => {
+                  handleMenorClick(menor.idMenor, menor.idPaseo);
+                }}
               >
                 <h2 className="font-semibold">{menor.nombre}</h2>
-                <h2 className="font-semibold">{menor.paseo}</h2>
                 <p>Nivel: {menor.nivel}</p>
-                <p>
-                  Inicio:{" "}
-                  {menor.fechaInicio.split("T")[0] +
-                    " " +
-                    menor.fechaInicio.split("T")[1].split(":")[0] +
-                    ":" +
-                    menor.fechaInicio.split("T")[1].split(":")[1]}{" "}
-                  hrs.
-                </p>
-                <p>
-                  Termino:{" "}
-                  {menor.fechaFin.split("T")[0] +
-                    " " +
-                    menor.fechaFin.split("T")[1].split(":")[0] +
-                    ":" +
-                    menor.fechaFin.split("T")[1].split(":")[1]}{" "}
-                  hrs.
-                </p>
+                <h2 className="font-semibold">
+                  {menor.tipoPaseo}: {menor.paseo}
+                </h2>
+                <p>Inicio: {menor.fechaInicio.split(".").join("-")}</p>
+                <p>Termino: {menor.fechaFin.split(".").join("-")}</p>
                 {menor.autorizado ? (
-                  <p className="text-green-600 font-bold">Estado: AUTORIZADO</p>
+                  <p className="text-blue-600 font-bold">Estado: AUTORIZADO</p>
                 ) : menor.autorizado != null && !menor.autorizado ? (
                   <p className="text-red-600 font-bold">
                     Estado: NO AUTORIZADO

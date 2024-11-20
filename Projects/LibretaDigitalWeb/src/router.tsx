@@ -110,6 +110,7 @@ export const Router = () => {
           <Route path="perfil" element={<PerfilUsuario />} />
           <Route path="avisos">
             <Route path="home" element={<ApoderadoAvisosHome />} />
+            <Route path="home/:slide" element={<ApoderadoAvisosHome />} />
             <Route path="vacunas">
               <Route
                 path="listado-menores"
@@ -133,7 +134,7 @@ export const Router = () => {
                 element={<ReunionesApoderadosListadoMenores />}
               />
               <Route
-                path="menor/:id"
+                path="menor/:idMenor/reunion/:idReunion"
                 element={<ConfirmarReunionesApoderadosMenor />}
               />
             </Route>
@@ -143,7 +144,7 @@ export const Router = () => {
                 element={<ItinerarioJornadaListadoMenores />}
               />
               <Route
-                path="menor/:id"
+                path="menor/:idMenor/itinerario/:idItinerario"
                 element={<ConfirmarItinerarioJornadaMenor />}
               />
             </Route>

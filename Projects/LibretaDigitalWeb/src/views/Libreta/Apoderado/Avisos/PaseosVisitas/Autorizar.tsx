@@ -13,12 +13,12 @@ const AutorizarPaseoVisitaMenor = () => {
   const [menor, setMenor] = useState<{
     nombreMenor: string;
     nivel: string;
-    autorizado: boolean | null;
+    tipoPaseo: string;
     nombrePaseo: string;
     descPaseo: string;
     fechaInicio: string;
     fechaFin: string;
-    nombreApoderado: string;
+    autorizado: boolean | null;
   }>();
   const [loading, setLoading] = useState<boolean>(true);
   const [isErrorAutorizar, setIsErrorAutorizar] = useState<boolean>(true);
@@ -59,11 +59,17 @@ const AutorizarPaseoVisitaMenor = () => {
     }
   };
 
+  const handlePrevStep = () => {
+    if (step > 1) {
+      setStep(step - 1);
+    } else {
+      navigate(-1);
+    }
+  };
+
   const handleAutorizarPaseo = async () => {
     try {
       setLoading(true);
-      console.log("idMenor", idMenor);
-      console.log("idPaseo", idPaseo);
       if (idMenor && idPaseo) {
         const isOk = await menorController.autorizarPaseoMenor(
           +idMenor,
@@ -85,7 +91,7 @@ const AutorizarPaseoVisitaMenor = () => {
 
   return (
     <Spin spinning={loading}>
-      <div className="min-h-screen flex flex-col mt-9 w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
+      <div className="flex flex-col mt-9 w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
         <main className="flex-1 p-4">
           {/* Paso 1: Estado de Autorización */}
           {step === 1 && (
@@ -104,27 +110,54 @@ const AutorizarPaseoVisitaMenor = () => {
               </p>
               <div className="border border-gray-300 rounded-lg p-4 mb-4 bg-white">
                 <p>
-                  <strong>Menor:</strong> {menor.nombre}
+                  <strong>Menor:</strong> {menor?.nombreMenor}
                 </p>
                 <p>
-                  <strong>Nivel:</strong> {menor.nivel}
+                  <strong>Nivel:</strong> {menor?.nivel}
                 </p>
                 <p>
-                  <strong>Visita:</strong> {menor.visita}
+                  <strong>{menor?.tipoPaseo}:</strong> {menor?.nombrePaseo}
+                </p>
+                <p className="mb-2">
+                  <strong>Descripción:</strong>
+                  <br />
+                  {menor?.descPaseo}
                 </p>
                 <p>
-                  <strong>Apoderado:</strong> {menor.apoderado}
+                  <strong>Inicio:</strong> {menor?.fechaInicio}
                 </p>
-                <p className="font-bold text-red-600">
-                  <strong>Estado:</strong> {menor.estado}
+                <p className="mb-2">
+                  <strong>Termino:</strong> {menor?.fechaFin}
                 </p>
+                {menor?.autorizado ? (
+                  <p className="font-bold text-blue-600">
+                    <strong>Estado: Visita Autorizada</strong>
+                  </p>
+                ) : menor?.autorizado != null && !menor?.autorizado ? (
+                  <p className="font-bold text-red-600">
+                    <strong>Estado: Visita No Autorizada</strong>
+                  </p>
+                ) : (
+                  <p className="font-bold text-gray-600">
+                    <strong>Estado: Visita no solicitada</strong>
+                  </p>
+                )}
               </div>
-              <button
-                onClick={handleNextStep}
-                className="w-full bg-figma-blue-button text-white py-2 rounded-lg hover:bg-blue-700"
-              >
-                Continuar
-              </button>
+              {menor?.autorizado != null && !menor?.autorizado ? (
+                <button
+                  onClick={handleNextStep}
+                  className="w-full bg-figma-blue-button text-white py-2 rounded-lg hover:bg-blue-700"
+                >
+                  Continuar
+                </button>
+              ) : (
+                <button
+                  onClick={handlePrevStep}
+                  className="w-full outline outline-1 outline-figma-blue-button text-figma-blue-button bg-white transition-colors py-2 mt-4 font-semibold rounded-lg hover:outline-none hover:bg-figma-blue-button hover:text-white"
+                >
+                  Volver
+                </button>
+              )}
             </div>
           )}
 
@@ -143,10 +176,16 @@ const AutorizarPaseoVisitaMenor = () => {
                 </p>
               </div>
               <button
-                onClick={handleNextStep}
-                className="w-full bg-figma-blue-button text-white py-2 rounded-lg hover:bg-blue-700"
+                onClick={() => handleAutorizarPaseo()}
+                className="w-full bg-figma-blue-button text-white py-2 font-semibold rounded-lg hover:bg-blue-700"
               >
                 Aceptar
+              </button>
+              <button
+                onClick={() => handlePrevStep()}
+                className="w-full outline outline-1 outline-figma-blue-button text-figma-blue-button bg-white transition-colors py-2 mt-4 font-semibold rounded-lg hover:outline-none hover:bg-figma-blue-button hover:text-white"
+              >
+                Volver
               </button>
             </div>
           )}
@@ -222,13 +261,6 @@ const AutorizarPaseoVisitaMenor = () => {
             </div>
           )}
         </main>
-
-        <footer className="bg-white border-t border-gray-300 p-4 flex justify-around">
-          <button className="text-blue-600">Inicio</button>
-          <button className="text-blue-600">Avisos</button>
-          <button className="text-blue-600">Mensaje</button>
-          <button className="text-blue-600">Info</button>
-        </footer>
       </div>
     </Spin>
   );

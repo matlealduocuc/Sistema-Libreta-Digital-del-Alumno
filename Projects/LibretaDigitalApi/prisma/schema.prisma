@@ -18,12 +18,14 @@ model Menor {
   iden_per_apoderado_sup                                    Int?
   iden_jornada                                              Int?
   lda_comunicado_menor                                      lda_comunicado_menor[]
+  lda_itinerario_menor                                      lda_itinerario_menor[]
   lda_jornada                                               lda_jornada?           @relation(fields: [iden_jornada], references: [iden_jornada], onDelete: NoAction, onUpdate: NoAction, map: "lda_menor_lda_jornada_fk")
   per_persona                                               Persona                @relation(fields: [iden_persona], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lda_menor_per_persona_fk")
   per_persona_lda_menor_iden_per_apoderadoToper_persona     Persona                @relation("lda_menor_iden_per_apoderadoToper_persona", fields: [iden_per_apoderado], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lda_menor_per_persona_fk_1")
   per_persona_lda_menor_iden_per_apoderado_supToper_persona Persona?               @relation("lda_menor_iden_per_apoderado_supToper_persona", fields: [iden_per_apoderado_sup], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lda_menor_per_persona_fk_2")
   lda_nivel_menor                                           lda_nivel_menor[]
   lda_paseo_menor                                           lda_paseo_menor[]
+  lda_reunion_menor                                         lda_reunion_menor[]
   lda_vacuna_menor                                          lda_vacuna_menor[]
 
   @@map("lda_menor")
@@ -62,7 +64,6 @@ model Persona {
   lda_menor                                               Menor[]
   lda_menor_lda_menor_iden_per_apoderadoToper_persona     Menor[]           @relation("lda_menor_iden_per_apoderadoToper_persona")
   lda_menor_lda_menor_iden_per_apoderado_supToper_persona Menor[]           @relation("lda_menor_iden_per_apoderado_supToper_persona")
-  lda_profesor                                            lda_profesor[]
   per_nacionalidad                                        Nacionalidad?     @relation(fields: [iden_nacionalidad], references: [iden_nacionalidad], onDelete: NoAction, onUpdate: NoAction, map: "per_persona_per_nacionalidad_fk")
   per_sexo                                                per_sexo          @relation(fields: [iden_sexo], references: [iden_sexo], onDelete: NoAction, onUpdate: NoAction, map: "per_persona_per_sexo_fk")
   TipoIdentificador                                       TipoIdentificador @relation(fields: [idTipoIden], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "per_persona_per_tipo_identificador_fk")
@@ -73,14 +74,15 @@ model Persona {
 }
 
 model Usuario {
-  id        Int      @id(map: "usr_usuario_pk") @default(autoincrement()) @map("iden_usuario")
-  idPersona Int      @map("iden_persona")
-  password  String   @map("desc_password") @db.VarChar
-  activo    Boolean  @default(true) @map("flag_activo")
-  eliminado Boolean  @default(false) @map("flag_eliminado")
-  iden_rol  Int?
-  persona   Persona  @relation(fields: [idPersona], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "usr_usuario_per_persona_fk")
-  usr_rol   usr_rol? @relation(fields: [iden_rol], references: [iden_rol], onDelete: NoAction, onUpdate: NoAction, map: "usr_usuario_usr_rol_fk")
+  id             Int              @id(map: "usr_usuario_pk") @default(autoincrement()) @map("iden_usuario")
+  idPersona      Int              @map("iden_persona")
+  password       String           @map("desc_password") @db.VarChar
+  activo         Boolean          @default(true) @map("flag_activo")
+  eliminado      Boolean          @default(false) @map("flag_eliminado")
+  iden_rol       Int?
+  lda_itinerario lda_itinerario[]
+  persona        Persona          @relation(fields: [idPersona], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "usr_usuario_per_persona_fk")
+  usr_rol        usr_rol?         @relation(fields: [iden_rol], references: [iden_rol], onDelete: NoAction, onUpdate: NoAction, map: "usr_usuario_usr_rol_fk")
 
   @@map("usr_usuario")
   @@schema("ADMUSR")
@@ -101,15 +103,6 @@ model usr_rol {
   desc_rol    String    @db.VarChar
   flag_activo Boolean   @default(true)
   usr_usuario Usuario[]
-
-  @@schema("ADMUSR")
-}
-
-model usr_rol_usuario {
-  iden_rol_usuario Int     @id(map: "usr_rol_usuario_pk") @default(autoincrement())
-  iden_usuario     Int
-  iden_rol         Int
-  flag_activo      Boolean @default(true)
 
   @@schema("ADMUSR")
 }
@@ -139,27 +132,29 @@ model lda_jornada {
 }
 
 model lda_nivel {
-  iden_nivel       Int               @id(map: "lda_nivel_pk") @default(autoincrement())
-  desc_nombre      String            @db.VarChar
-  desc_descripcion String?           @db.VarChar
-  flag_activo      Boolean           @default(true)
-  flag_eliminado   Boolean           @default(false)
-  iden_sala        Int?
-  lda_sala         lda_sala?         @relation(fields: [iden_sala], references: [iden_sala], onDelete: NoAction, onUpdate: NoAction, map: "lda_nivel_lda_sala_fk")
-  lda_nivel_menor  lda_nivel_menor[]
-  lda_paseo_menor  lda_paseo_menor[]
-  lda_reunion      lda_reunion[]
+  iden_nivel           Int                    @id(map: "lda_nivel_pk") @default(autoincrement())
+  desc_nombre          String                 @db.VarChar
+  desc_descripcion     String?                @db.VarChar
+  flag_activo          Boolean                @default(true)
+  flag_eliminado       Boolean                @default(false)
+  iden_sala            Int?
+  lda_itinerario_menor lda_itinerario_menor[]
+  lda_sala             lda_sala?              @relation(fields: [iden_sala], references: [iden_sala], onDelete: NoAction, onUpdate: NoAction, map: "lda_nivel_lda_sala_fk")
+  lda_nivel_menor      lda_nivel_menor[]
+  lda_paseo_menor      lda_paseo_menor[]
+  lda_reunion_menor    lda_reunion_menor[]
 
   @@schema("ADMLDA")
 }
 
 model lda_sala {
-  iden_sala        Int         @id(map: "lda_sala_pk") @default(autoincrement())
-  desc_nombre      String      @db.VarChar
-  desc_descripcion String?     @db.VarChar
-  flag_activo      Boolean     @default(true)
-  flag_eliminado   Boolean     @default(false)
+  iden_sala        Int           @id(map: "lda_sala_pk") @default(autoincrement())
+  desc_nombre      String        @db.VarChar
+  desc_descripcion String?       @db.VarChar
+  flag_activo      Boolean       @default(true)
+  flag_eliminado   Boolean       @default(false)
   lda_nivel        lda_nivel[]
+  lda_reunion      lda_reunion[]
 
   @@schema("ADMLDA")
 }
@@ -195,16 +190,6 @@ model lda_tipo_comunicado {
   @@schema("ADMLDA")
 }
 
-model lda_profesor {
-  iden_profesor  Int     @id(map: "lda_profesor_pk") @default(autoincrement())
-  iden_persona   Int
-  flag_activo    Boolean @default(true)
-  flag_eliminado Boolean @default(false)
-  per_persona    Persona @relation(fields: [iden_persona], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lda_profesor_per_persona_fk")
-
-  @@schema("ADMLDA")
-}
-
 model lda_comunicado_menor {
   iden_comunicado_elementos Int            @id(map: "lda_comunicado_elementos_pk") @default(autoincrement())
   iden_comunicado           Int
@@ -220,12 +205,16 @@ model lda_comunicado_menor {
 }
 
 model lda_reunion {
-  iden_reunion     Int       @id(map: "lda_reunion_pk") @default(autoincrement())
-  desc_titulo      String    @db.VarChar
-  desc_descripcion String?   @db.VarChar
-  fech_reunion     DateTime  @db.Date
-  iden_nivel       Int
-  lda_nivel        lda_nivel @relation(fields: [iden_nivel], references: [iden_nivel], onDelete: NoAction, onUpdate: NoAction, map: "lda_reunion_lda_nivel_fk")
+  iden_reunion      Int                 @id(map: "lda_reunion_pk") @default(autoincrement())
+  desc_titulo       String              @db.VarChar
+  desc_descripcion  String              @db.VarChar
+  fech_reunion      DateTime            @db.Timestamp(6)
+  iden_sala         Int
+  flag_activo       Boolean             @default(true)
+  flag_eliminado    Boolean             @default(false)
+  lda_sala          lda_sala            @relation(fields: [iden_sala], references: [iden_sala], onDelete: NoAction, onUpdate: NoAction, map: "lda_reunion_lda_sala_fk")
+  lda_reunion_menor lda_reunion_menor[]
+  lda_reunion_tema  lda_reunion_tema[]
 
   @@schema("ADMLDA")
 }
@@ -295,6 +284,58 @@ model lda_paseo_menor {
   lda_menor        Menor     @relation(fields: [iden_menor], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lda_paseo_menor_lda_menor_fk")
   lda_nivel        lda_nivel @relation(fields: [iden_nivel], references: [iden_nivel], onDelete: NoAction, onUpdate: NoAction, map: "lda_paseo_menor_lda_nivel_fk")
   lda_paseo        lda_paseo @relation(fields: [iden_paseo], references: [iden_paseo], onDelete: NoAction, onUpdate: NoAction, map: "lda_paseo_menor_lda_paseo_fk")
+
+  @@schema("ADMLDA")
+}
+
+model lda_reunion_menor {
+  iden_reunion_menor Int         @id(map: "lda_reunion_menor_pk") @default(autoincrement())
+  iden_reunion       Int
+  iden_menor         Int
+  flag_confirmado    Boolean     @default(false)
+  iden_nivel         Int
+  lda_menor          Menor       @relation(fields: [iden_menor], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lda_reunion_menor_lda_menor_fk")
+  lda_nivel          lda_nivel   @relation(fields: [iden_nivel], references: [iden_nivel], onDelete: NoAction, onUpdate: NoAction, map: "lda_reunion_menor_lda_nivel_fk")
+  lda_reunion        lda_reunion @relation(fields: [iden_reunion], references: [iden_reunion], onDelete: NoAction, onUpdate: NoAction, map: "lda_reunion_menor_lda_reunion_fk")
+
+  @@schema("ADMLDA")
+}
+
+model lda_reunion_tema {
+  iden_reunion_tema Int         @id(map: "lda_reunion_tema_pk") @default(autoincrement())
+  iden_reunion      Int
+  desc_tema         String      @db.VarChar
+  flag_eliminado    Boolean     @default(false)
+  lda_reunion       lda_reunion @relation(fields: [iden_reunion], references: [iden_reunion], onDelete: NoAction, onUpdate: NoAction, map: "lda_reunion_tema_lda_reunion_fk")
+
+  @@schema("ADMLDA")
+}
+
+model lda_itinerario {
+  iden_itinerario      Int                    @id(map: "lda_itinerario_pk") @default(autoincrement())
+  desc_titulo          String                 @db.VarChar
+  desc_descripcion     String                 @db.VarChar
+  fech_itinerario      DateTime               @db.Timestamp(6)
+  flag_activo          Boolean                @default(true)
+  flag_eliminado       Boolean                @default(false)
+  iden_usr_creador     Int
+  fech_creacion        DateTime               @db.Timestamp(6)
+  flag_realizado       Boolean                @default(false)
+  usr_usuario          Usuario                @relation(fields: [iden_usr_creador], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lda_itinerario_usr_usuario_fk")
+  lda_itinerario_menor lda_itinerario_menor[]
+
+  @@schema("ADMLDA")
+}
+
+model lda_itinerario_menor {
+  iden_itinerario_menor Int            @id(map: "lda_itinerario_menor_pk") @default(autoincrement())
+  iden_itinerario       Int
+  iden_menor            Int
+  flag_confirmado       Boolean        @default(false)
+  iden_nivel            Int
+  lda_itinerario        lda_itinerario @relation(fields: [iden_itinerario], references: [iden_itinerario], onDelete: NoAction, onUpdate: NoAction, map: "lda_itinerario_menor_lda_itinerario_fk")
+  lda_menor             Menor          @relation(fields: [iden_menor], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lda_itinerario_menor_lda_menor_fk")
+  lda_nivel             lda_nivel      @relation(fields: [iden_nivel], references: [iden_nivel], onDelete: NoAction, onUpdate: NoAction, map: "lda_itinerario_menor_lda_nivel_fk")
 
   @@schema("ADMLDA")
 }

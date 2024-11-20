@@ -40,12 +40,12 @@ const LibretaHeader: React.FC<LibretaHeaderProps> = ({ title }) => {
   }
   return (
     <header>
-      <p className="fixed top-0 w-full z-10 text-md flex justify-center items-center">
+      <p className="fixed top-0 w-full z-10 text-md flex justify-center items-center bg-white">
         Libreta Digital Del Alumno
       </p>
       {pathsQuitarHeader.includes(pathName) ? null : (
         <div
-          className={`fixed top-7 left-0 w-full z-10 ${bgColorClass} ${textColorClass} p-4 flex justify-between items-center`}
+          className={`fixed top-[24px] left-0 w-full z-10 ${bgColorClass} ${textColorClass} p-4 flex justify-between items-center`}
         >
           <ArrowLeftOutlined
             className="text-xl mr-4"

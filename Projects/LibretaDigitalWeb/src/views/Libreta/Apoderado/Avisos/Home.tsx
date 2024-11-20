@@ -1,11 +1,12 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import VacunaSvg from "../../../../assets/vacuna.svg";
 import PaseoVisitaSvg from "../../../../assets/paseos-y-visitas.svg";
 import ReunionApoderadosSvg from "../../../../assets/reunion-apoderados.svg";
 import ActividadesDiariasSvf from "../../../../assets/actividades-diarias.svg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ApoderadoAvisosHome = () => {
+  const { slide } = useParams();
   const initPathName: string = "/apoderado";
   const slides = [
     {
@@ -80,6 +81,24 @@ const ApoderadoAvisosHome = () => {
   const [translate, setTranslate] = useState(0);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (
+      slide &&
+      parseInt(slide) > 0 &&
+      parseInt(slide) < 5 &&
+      parseInt(slide) <= slides.length
+    ) {
+      setCurrentIndex(parseInt(slide) - 1);
+    }
+  }, [slide, slides.length]);
+
+  useEffect(() => {
+    const newPath = `${initPathName}/avisos/home/${currentIndex + 1}`;
+    if (window.location.pathname !== newPath) {
+      window.history.replaceState(null, '', newPath);
+    }
+  }, [currentIndex, navigate]);
+
   const goToNextSlide = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === slides.length - 1 ? 0 : prevIndex + 1
@@ -143,7 +162,7 @@ const ApoderadoAvisosHome = () => {
       onTouchEnd={handleDragEnd}
     >
       {/* Header */}
-      <div className="w-full py-3 flex items-center justify-between px-4 bg-figma-blue text-white">
+      <div className="fixed top-[24px] w-full py-3 flex items-center justify-between px-4 bg-figma-blue text-white">
         <button onClick={goToPreviousSlide} className="font-bold text-2xl">
           {`<`}
         </button>
@@ -154,7 +173,7 @@ const ApoderadoAvisosHome = () => {
       </div>
 
       {/* Slides Container */}
-      <div className="relative w-full h-[66vh] overflow-hidden mt-10">
+      <div className="relative w-full h-[66vh] overflow-hidden mt-24">
         <div
           className="flex transition-transform duration-300 ease-in-out"
           style={{

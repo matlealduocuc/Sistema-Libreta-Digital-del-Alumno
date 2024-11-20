@@ -12,6 +12,8 @@ const VacunasListadoMenores = () => {
       nombre: string;
       autorizado: boolean | null;
       nivel: string;
+      vacuna: string;
+      fechaVacuna: string;
     }[]
   >([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -34,11 +36,15 @@ const VacunasListadoMenores = () => {
                   nombre: string;
                   autorizado: boolean | null;
                   nivel: string;
+                  vacuna: string;
+                  fechaVacuna: string;
                 }) => ({
                   id: menor.id,
                   nombre: menor.nombre,
                   autorizado: menor.autorizado,
                   nivel: menor.nivel,
+                  vacuna: menor.vacuna,
+                  fechaVacuna: menor.fechaVacuna,
                 })
               )
             );
@@ -127,15 +133,16 @@ const VacunasListadoMenores = () => {
                     : "border-gray-600 bg-gray-300"
                 } rounded p-4 shadow-md cursor-pointer`}
                 onClick={() => {
-                  if (menor.autorizado != null && !menor.autorizado) {
-                    handleMenorClick(menor.id);
-                  }
+                  handleMenorClick(menor.id);
                 }}
               >
                 <h2 className="font-semibold">{menor.nombre}</h2>
+                <p>Nivel: {menor.nivel}</p>
+                <h2 className="font-semibold">Vacuna: {menor.vacuna}</h2>
+                <p>Fecha: {menor.fechaVacuna.split(" ")[0].split(".").join("-")}</p>
 
                 {menor.autorizado ? (
-                  <p className="text-green-600 font-bold">Estado: AUTORIZADO</p>
+                  <p className="text-blue-600 font-bold">Estado: AUTORIZADO</p>
                 ) : menor.autorizado != null && !menor.autorizado ? (
                   <p className="text-red-600 font-bold">
                     Estado: NO AUTORIZADO

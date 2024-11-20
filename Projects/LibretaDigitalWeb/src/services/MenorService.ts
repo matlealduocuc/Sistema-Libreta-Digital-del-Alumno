@@ -81,6 +81,110 @@ export class MenorService {
       ifAxiosError(error);
     }
   }
+
+  async getMenorPaseoByMenorPaseoAndApoderado(
+    idMenor: number,
+    idPaseo: number
+  ) {
+    try {
+      const response = await api.get(
+        `/menor/getMenorPaseoByMenorPaseoAndApoderado/${idMenor}/${idPaseo}`
+      );
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async autorizarPaseoMenor(idMenor: number, idPaseo: number) {
+    try {
+      const response = await api.post("/menor/autorizarPaseoMenor", {
+        idMenor,
+        idPaseo,
+      });
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async getMenoresReunionesByApoderado() {
+    try {
+      const response = await api.get("/menor/getMenoresReunionesByApoderado");
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async getMenorReunionByMenorPaseoAndApoderado(
+    idMenor: number,
+    idReunion: number
+  ) {
+    try {
+      const response = await api.get(
+        `/menor/getMenorReunionByMenorPaseoAndApoderado/${idMenor}/${idReunion}`
+      );
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async confirmaReunionMenor(idMenor: number, idReunion: number) {
+    try {
+      const response = await api.post("/menor/confirmaReunionMenor", {
+        idMenor,
+        idReunion,
+      });
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async getMenoresItinerariosByApoderado() {
+    try {
+      const response = await api.get("/menor/getMenoresItinerariosByApoderado");
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async getMenorItinerarioByMenorPaseoAndApoderado(
+    idMenor: number,
+    idItinerario: number
+  ) {
+    try {
+      const response = await api.get(
+        `/menor/getMenorItinerarioByMenorPaseoAndApoderado/${idMenor}/${idItinerario}`
+      );
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async confirmaItinerarioMenor(idMenor: number, idItinerario: number) {
+    try {
+      const response = await api.post("/menor/confirmaItinerarioMenor", {
+        idMenor,
+        idItinerario,
+      });
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
 }
 
 const ifAxiosError = (error: unknown): error is AxiosError => {
