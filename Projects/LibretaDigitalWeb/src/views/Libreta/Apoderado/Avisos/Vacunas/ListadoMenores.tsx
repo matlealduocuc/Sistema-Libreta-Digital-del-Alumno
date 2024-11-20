@@ -10,7 +10,6 @@ const VacunasListadoMenores = () => {
     {
       id: number;
       nombre: string;
-      edad: number;
       autorizado: boolean | null;
       nivel: string;
     }[]
@@ -33,13 +32,11 @@ const VacunasListadoMenores = () => {
                 (menor: {
                   id: number;
                   nombre: string;
-                  edad: number;
                   autorizado: boolean | null;
                   nivel: string;
                 }) => ({
                   id: menor.id,
                   nombre: menor.nombre,
-                  edad: menor.edad,
                   autorizado: menor.autorizado,
                   nivel: menor.nivel,
                 })
@@ -136,7 +133,6 @@ const VacunasListadoMenores = () => {
                 }}
               >
                 <h2 className="font-semibold">{menor.nombre}</h2>
-                <p>Edad: {menor.edad} años</p>
 
                 {menor.autorizado ? (
                   <p className="text-green-600 font-bold">Estado: AUTORIZADO</p>

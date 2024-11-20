@@ -23,6 +23,7 @@ model Menor {
   per_persona_lda_menor_iden_per_apoderadoToper_persona     Persona                @relation("lda_menor_iden_per_apoderadoToper_persona", fields: [iden_per_apoderado], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lda_menor_per_persona_fk_1")
   per_persona_lda_menor_iden_per_apoderado_supToper_persona Persona?               @relation("lda_menor_iden_per_apoderado_supToper_persona", fields: [iden_per_apoderado_sup], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lda_menor_per_persona_fk_2")
   lda_nivel_menor                                           lda_nivel_menor[]
+  lda_paseo_menor                                           lda_paseo_menor[]
   lda_vacuna_menor                                          lda_vacuna_menor[]
 
   @@map("lda_menor")
@@ -43,7 +44,7 @@ model Persona {
   id                                                      Int               @id(map: "per_persona_pk") @default(autoincrement()) @map("iden_persona")
   primerNombre                                            String            @map("desc_primer_nombre") @db.VarChar
   segundoNombre                                           String?           @map("desc_segundo_nombre") @db.VarChar
-  apellidoP                                               String?           @map("desc_apellido_paterno") @db.VarChar
+  apellidoP                                               String            @map("desc_apellido_paterno") @db.VarChar
   apellidoM                                               String?           @map("desc_apellido_materno") @db.VarChar
   idTipoIden                                              Int               @map("iden_tipo_identificador")
   run                                                     String?           @unique(map: "per_persona_unique") @map("desc_run") @db.VarChar
@@ -146,6 +147,7 @@ model lda_nivel {
   iden_sala        Int?
   lda_sala         lda_sala?         @relation(fields: [iden_sala], references: [iden_sala], onDelete: NoAction, onUpdate: NoAction, map: "lda_nivel_lda_sala_fk")
   lda_nivel_menor  lda_nivel_menor[]
+  lda_paseo_menor  lda_paseo_menor[]
   lda_reunion      lda_reunion[]
 
   @@schema("ADMLDA")
@@ -257,6 +259,42 @@ model lda_vacuna_menor {
   flag_autorizado   Boolean    @default(false)
   lda_menor         Menor      @relation(fields: [iden_menor], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lda_vacuna_menor_lda_menor_fk")
   lda_vacuna        lda_vacuna @relation(fields: [iden_vacuna], references: [iden_vacuna], onDelete: NoAction, onUpdate: NoAction, map: "lda_vacuna_menor_lda_vacuna_fk")
+
+  @@schema("ADMLDA")
+}
+
+model lda_paseo {
+  iden_paseo       Int               @id(map: "lda_paseo_pk") @default(autoincrement())
+  desc_titulo      String            @db.VarChar
+  desc_descripcion String            @db.VarChar
+  iden_tipo_paseo  Int
+  flag_activo      Boolean           @default(true)
+  flag_eliminado   Boolean           @default(false)
+  fech_inicio      DateTime?         @db.Timestamp(6)
+  fech_fin         DateTime?         @db.Timestamp(6)
+  lda_tipo_paseo   lda_tipo_paseo    @relation(fields: [iden_tipo_paseo], references: [iden_tipo_paseo], onDelete: NoAction, onUpdate: NoAction, map: "lda_paseo_lda_tipo_paseo_fk")
+  lda_paseo_menor  lda_paseo_menor[]
+
+  @@schema("ADMLDA")
+}
+
+model lda_tipo_paseo {
+  iden_tipo_paseo Int         @id(map: "lda_paseo_tipo_pk") @default(autoincrement())
+  desc_tipo_paseo String      @db.VarChar
+  lda_paseo       lda_paseo[]
+
+  @@schema("ADMLDA")
+}
+
+model lda_paseo_menor {
+  iden_paseo_menor Int       @id(map: "lda_paseo_menor_pk") @default(autoincrement())
+  iden_paseo       Int
+  iden_menor       Int
+  iden_nivel       Int
+  flag_autorizado  Boolean   @default(false)
+  lda_menor        Menor     @relation(fields: [iden_menor], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lda_paseo_menor_lda_menor_fk")
+  lda_nivel        lda_nivel @relation(fields: [iden_nivel], references: [iden_nivel], onDelete: NoAction, onUpdate: NoAction, map: "lda_paseo_menor_lda_nivel_fk")
+  lda_paseo        lda_paseo @relation(fields: [iden_paseo], references: [iden_paseo], onDelete: NoAction, onUpdate: NoAction, map: "lda_paseo_menor_lda_paseo_fk")
 
   @@schema("ADMLDA")
 }

@@ -122,7 +122,10 @@ export const Router = () => {
                 path="listado-menores"
                 element={<PaseosVisitasListadoMenores />}
               />
-              <Route path="menor/:id" element={<AutorizarPaseoVisitaMenor />} />
+              <Route
+                path="menor/:idMenor/paseo/:idPaseo"
+                element={<AutorizarPaseoVisitaMenor />}
+              />
             </Route>
             <Route path="reuniones-apoderados">
               <Route

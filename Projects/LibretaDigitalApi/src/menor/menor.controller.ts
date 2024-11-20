@@ -13,7 +13,6 @@ import { Request, Response } from 'express';
 import { Rol } from 'src/common/enums/rol.enum';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 import { ActiveUser } from 'src/common/decorators/active-user.decorator';
-import calculateAge from 'src/common/functions/calculateAge';
 import formatFecha1 from 'src/common/functions/formatFecha1';
 
 @Controller('menor')
@@ -53,7 +52,6 @@ export class MenorController {
             ' ' +
             menor.per_persona.apellidoM
           : menor.per_persona.primerNombre + ' ' + menor.per_persona.apellidoP,
-      edad: calculateAge(menor.per_persona.fech_nacimiento),
       autorizado: menor.lda_vacuna_menor[0]?.flag_autorizado ?? null,
       nivel: menor.lda_nivel_menor[0]?.lda_nivel?.desc_nombre,
     }));
@@ -126,5 +124,36 @@ export class MenorController {
       +user.idPersona,
     );
     return isAutorizado;
+  }
+
+  @Get('getMenoresPaseosByApoderado')
+  @Auth(Rol.APODERADO)
+  async getMenoresPaseosByApoderado(@ActiveUser() user) {
+    const paseos = await this.menorService.getMenoresPaseosByApoderado(
+      +user.idPersona,
+    );
+    const paseosDto = paseos.map((paseo) => {
+      const menor = paseo.lda_paseo_menor[0]?.lda_menor;
+      return {
+        idMenor: menor.id,
+        idPaseo: paseo.iden_paseo,
+        nombre:
+          menor.per_persona.apellidoM != null
+            ? menor.per_persona.primerNombre +
+              ' ' +
+              menor.per_persona.apellidoP +
+              ' ' +
+              menor.per_persona.apellidoM
+            : menor.per_persona.primerNombre +
+              ' ' +
+              menor.per_persona.apellidoP,
+        nivel: menor.lda_nivel_menor[0]?.lda_nivel?.desc_nombre,
+        autorizado: paseo.lda_paseo_menor[0]?.flag_autorizado ?? null,
+        paseo: paseo.desc_titulo,
+        fechaInicio: paseo.fech_inicio,
+        fechaFin: paseo.fech_fin,
+      };
+    });
+    return paseosDto;
   }
 }

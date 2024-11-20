@@ -64,4 +64,8 @@ export class MenorController {
   async autorizarVacunaMenor(idMenor: number, idVacuna: number) {
     return await this._menorService.autorizarVacunaMenor(idMenor, idVacuna);
   }
+
+  async getMenoresPaseosByApoderado() {
+    return await this._menorService.getMenoresPaseosByApoderado();
+  }
 }

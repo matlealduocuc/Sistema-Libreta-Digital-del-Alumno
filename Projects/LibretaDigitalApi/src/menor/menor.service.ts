@@ -228,4 +228,127 @@ export class MenorService {
     });
     return updated;
   }
+
+  async getMenoresPaseosByApoderado(idApoderado: number) {
+    return await this.prisma.lda_paseo.findMany({
+      where: {
+        lda_paseo_menor: {
+          some: {
+            lda_menor: {
+              iden_per_apoderado: idApoderado,
+              flag_activo: true,
+              flag_eliminado: false,
+            },
+          },
+        },
+      },
+      select: {
+        iden_paseo: true,
+        desc_titulo: true,
+        fech_inicio: true,
+        fech_fin: true,
+        lda_paseo_menor: {
+          where: {
+            lda_menor: {
+              iden_per_apoderado: idApoderado,
+              flag_activo: true,
+              flag_eliminado: false,
+            },
+          },
+          select: {
+            flag_autorizado: true,
+            lda_menor: {
+              select: {
+                id: true,
+                per_persona: {
+                  select: {
+                    primerNombre: true,
+                    segundoNombre: true,
+                    apellidoP: true,
+                    apellidoM: true,
+                  },
+                },
+                lda_nivel_menor: {
+                  where: {
+                    flag_activo: true,
+                    flag_eliminado: false,
+                    lda_nivel: {
+                      flag_activo: true,
+                      flag_eliminado: false,
+                    },
+                  },
+                  select: {
+                    lda_nivel: {
+                      select: {
+                        desc_nombre: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+    // return await this.prisma.menor.findMany({
+    //   where: {
+    //     iden_per_apoderado: idApoderado,
+    //     flag_activo: true,
+    //     flag_eliminado: false,
+    //     per_persona_lda_menor_iden_per_apoderadoToper_persona: {
+    //       flag_activo: true,
+    //       flag_eliminado: false,
+    //     },
+    //   },
+    //   select: {
+    //     id: true,
+    //     per_persona: {
+    //       select: {
+    //         primerNombre: true,
+    //         apellidoP: true,
+    //         apellidoM: true,
+    //         fech_nacimiento: true,
+    //       },
+    //     },
+    //     lda_nivel_menor: {
+    //       where: {
+    //         flag_activo: true,
+    //         flag_eliminado: false,
+    //         lda_nivel: {
+    //           flag_activo: true,
+    //           flag_eliminado: false,
+    //         },
+    //       },
+    //       select: {
+    //         lda_nivel: {
+    //           select: {
+    //             desc_nombre: true,
+    //           },
+    //         },
+    //       },
+    //     },
+    //     lda_paseo_menor: {
+    //       where: {
+    //         lda_paseo: {
+    //           flag_activo: true,
+    //           flag_eliminado: false,
+    //         },
+    //       },
+    //       select: {
+    //         flag_autorizado: true,
+    //         lda_paseo: {
+    //           select: {
+    //             desc_titulo: true,
+    //             fech_inicio: true,
+    //             hora_inicio: true,
+    //             fech_fin: true,
+    //             hora_fin: true,
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    // });
+  }
 }

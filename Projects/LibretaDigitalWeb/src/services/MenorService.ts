@@ -71,6 +71,16 @@ export class MenorService {
       ifAxiosError(error);
     }
   }
+
+  async getMenoresPaseosByApoderado() {
+    try {
+      const response = await api.get("/menor/getMenoresPaseosByApoderado");
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
 }
 
 const ifAxiosError = (error: unknown): error is AxiosError => {

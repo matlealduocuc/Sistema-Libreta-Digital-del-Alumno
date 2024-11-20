@@ -1,41 +1,61 @@
-import { MenorController } from "@/controllers/MenorController"; 
+import { MenorController } from "@/controllers/MenorController";
 import { useAuth } from "@/hooks/useAuth";
 import { Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthorizedUserDto } from "@/dtos/Auth/AuthorizedUserDto";
 
 const PaseosVisitasListadoMenores = () => {
   const { isLoading } = useAuth();
   const [menores, setMenores] = useState<
-    { id: number; nombre: string; edad: number }[]
+    {
+      idMenor: number;
+      idPaseo: number;
+      nombre: string;
+      nivel: string;
+      autorizado: boolean | null;
+      paseo: string;
+      fechaInicio: string;
+      fechaFin: string;
+    }[]
   >([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState<boolean>(true);
-  const storedUser = localStorage.getItem("AUTH_USER");
-  const usuario: AuthorizedUserDto = storedUser ? JSON.parse(storedUser) : null;
-  const persona = usuario?.persona;
-  const idPersona = persona?.idPersona;
   const menorController = new MenorController();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMenores = async () => {
       setLoading(true);
-      if (!isLoading && idPersona) {
+      if (!isLoading) {
         try {
-          const menoresData = await menorController.getMenoresByApoderado(idPersona);
+          const menoresData =
+            await menorController.getMenoresPaseosByApoderado();
           if (menoresData) {
             setMenores(
               menoresData.map(
-                (menor: { id: number; nombre: string; edad: number }) => ({
-                  id: menor.id,
+                (menor: {
+                  idMenor: number;
+                  idPaseo: number;
+                  nombre: string;
+                  nivel: string;
+                  autorizado: boolean | null;
+                  paseo: string;
+                  fechaInicio: string;
+                  fechaFin: string;
+                }) => ({
+                  idMenor: menor.idMenor,
+                  idPaseo: menor.idPaseo,
                   nombre: menor.nombre,
-                  edad: menor.edad,
+                  nivel: menor.nivel,
+                  autorizado: menor.autorizado,
+                  paseo: menor.paseo,
+                  fechaInicio: menor.fechaInicio,
+                  fechaFin: menor.fechaFin,
                 })
               )
             );
           }
+          console.log(menoresData);
         } catch (error) {
           console.error("Error fetching menores:", error);
         } finally {
@@ -45,15 +65,17 @@ const PaseosVisitasListadoMenores = () => {
     };
 
     fetchMenores();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
-  const handleMenorClick = (id: number) => {
-    navigate(`/apoderado/avisos/paseos-visitas/menor/${id}`);
+  const handleMenorClick = (idMenor: number, idPaseo: number) => {
+    navigate(
+      `/apoderado/avisos/paseos-visitas/menor/${idMenor}/paseo/${idPaseo}`
+    );
   };
 
   const filteredMenores = menores.filter((menor) =>
@@ -113,16 +135,46 @@ const PaseosVisitasListadoMenores = () => {
           {filteredMenores.length > 0 ? (
             filteredMenores.map((menor) => (
               <div
-                key={menor.id}
+                key={menor.idMenor}
                 className="border border-gray-300 rounded p-4 shadow-md cursor-pointer"
-                onClick={() => handleMenorClick(menor.id)}
+                onClick={() => handleMenorClick(menor.idMenor, menor.idPaseo)}
               >
                 <h2 className="font-semibold">{menor.nombre}</h2>
-                <p>Edad: {menor.edad} años</p>
+                <h2 className="font-semibold">{menor.paseo}</h2>
+                <p>Nivel: {menor.nivel}</p>
+                <p>
+                  Inicio:{" "}
+                  {menor.fechaInicio.split("T")[0] +
+                    " " +
+                    menor.fechaInicio.split("T")[1].split(":")[0] +
+                    ":" +
+                    menor.fechaInicio.split("T")[1].split(":")[1]}{" "}
+                  hrs.
+                </p>
+                <p>
+                  Termino:{" "}
+                  {menor.fechaFin.split("T")[0] +
+                    " " +
+                    menor.fechaFin.split("T")[1].split(":")[0] +
+                    ":" +
+                    menor.fechaFin.split("T")[1].split(":")[1]}{" "}
+                  hrs.
+                </p>
+                {menor.autorizado ? (
+                  <p className="text-green-600 font-bold">Estado: AUTORIZADO</p>
+                ) : menor.autorizado != null && !menor.autorizado ? (
+                  <p className="text-red-600 font-bold">
+                    Estado: NO AUTORIZADO
+                  </p>
+                ) : (
+                  <p>Estado: NO SE HA SOLICITADO</p>
+                )}
               </div>
             ))
           ) : (
-            <p className="text-gray-500 text-center">No se encontraron menores.</p>
+            <p className="text-gray-500 text-center">
+              No se encontraron menores.
+            </p>
           )}
         </div>
       </div>

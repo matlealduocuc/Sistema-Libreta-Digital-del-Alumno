@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const AutorizarVacunaMenor = () => {
+  const { id } = useParams();
   const { isLoading } = useAuth();
   const [menor, setMenor] = useState<{
     idMenor: number;
@@ -17,7 +18,6 @@ const AutorizarVacunaMenor = () => {
   }>();
   const [loading, setLoading] = useState<boolean>(true);
   const [isErrorAutorizar, setIsErrorAutorizar] = useState<boolean>(true);
-  const { id } = useParams();
   const [step, setStep] = useState(1);
   const menorController = new MenorController();
   const navigate = useNavigate();
