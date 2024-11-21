@@ -52,4 +52,73 @@ export class MenorController {
   async getMenoresByApoderado(idPersona: number) {
     return await this._menorService.getMenoresByApoderado();
   }
+
+  async getMenoresVacunasByApoderado() {
+    return await this._menorService.getMenoresVacunasByApoderado();
+  }
+
+  async getMenorVacunasByMenorAndApoderado(idMenor: number) {
+    return await this._menorService.getMenorVacunasByMenorAndApoderado(idMenor);
+  }
+
+  async autorizarVacunaMenor(idMenor: number, idVacuna: number) {
+    return await this._menorService.autorizarVacunaMenor(idMenor, idVacuna);
+  }
+
+  async getMenoresPaseosByApoderado() {
+    return await this._menorService.getMenoresPaseosByApoderado();
+  }
+
+  async getMenorPaseoByMenorPaseoAndApoderado(
+    idMenor: number,
+    idPaseo: number
+  ) {
+    return await this._menorService.getMenorPaseoByMenorPaseoAndApoderado(
+      idMenor,
+      idPaseo
+    );
+  }
+
+  async autorizarPaseoMenor(idMenor: number, idPaseo: number) {
+    return await this._menorService.autorizarPaseoMenor(idMenor, idPaseo);
+  }
+
+  async getMenoresReunionesByApoderado() {
+    return await this._menorService.getMenoresReunionesByApoderado();
+  }
+
+  async getMenorReunionByMenorPaseoAndApoderado(
+    idMenor: number,
+    idReunion: number
+  ) {
+    return await this._menorService.getMenorReunionByMenorPaseoAndApoderado(
+      idMenor,
+      idReunion
+    );
+  }
+
+  async confirmaReunionMenor(idMenor: number, idReunion: number) {
+    return await this._menorService.confirmaReunionMenor(idMenor, idReunion);
+  }
+
+  async getMenoresItinerariosByApoderado() {
+    return await this._menorService.getMenoresItinerariosByApoderado();
+  }
+
+  async getMenorItinerarioByMenorPaseoAndApoderado(
+    idMenor: number,
+    idItinerario: number
+  ) {
+    return await this._menorService.getMenorItinerarioByMenorPaseoAndApoderado(
+      idMenor,
+      idItinerario
+    );
+  }
+
+  async confirmaItinerarioMenor(idMenor: number, idItinerario: number) {
+    return await this._menorService.confirmaItinerarioMenor(
+      idMenor,
+      idItinerario
+    );
+  }
 }

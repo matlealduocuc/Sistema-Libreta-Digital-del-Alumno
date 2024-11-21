@@ -17,7 +17,8 @@
       "@/lib/*": ["lib/*"],
       "@/validators/*": ["validators/*"],
       "@/common/*": ["common/*"],
-      "@/hooks/*": ["hooks/*"]
+      "@/hooks/*": ["hooks/*"],
+      "@/assets/*": ["assets/*"]
     },
 
     /* Bundler mode */
@@ -32,7 +33,7 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
+    "noFallthroughCasesInSwitch": true
   },
   "include": ["src"]
 }

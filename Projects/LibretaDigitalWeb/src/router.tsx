@@ -28,6 +28,7 @@ import ListadoMenoresAutorizadosVacunas from "./views/Libreta/Educador/Avisos/Va
 import RevisarVacunaMenor from "./views/Libreta/Educador/Avisos/Vacunas/RevisarAutorizacion";
 import ListadoAvisarNivelesEducador from "./views/Libreta/Educador/Avisos/Vacunas/ListadoAvisarNiveles";
 import SolicitarVacunas from "./views/Libreta/Educador/Avisos/Vacunas/SolicitarVacunas";
+import UnderConstruction from "./views/home/UnderConstruction";
 
 export const Router = () => {
   return (
@@ -38,9 +39,11 @@ export const Router = () => {
           <Route path="/mantenedores/grados/lista" element={<ListaGrados />} />
           <Route path="/mantenedores/grados/nuevo" element={<NuevoGrado />} />
           <Route path="/mantenedores/lista" element={<ListaMantenedores />} />
+          <Route path="*" element={<LibretaRedirect />} />
         </Route>
 
         <Route path="/educador" element={<LibretaLayout />}>
+          <Route path="*" element={<UnderConstruction />} />
           <Route path="" element={<LibretaEducadorHome />} index />
           <Route path="home" element={<LibretaEducadorHome />} />
           <Route path="perfil" element={<PerfilUsuario />} />
@@ -101,11 +104,13 @@ export const Router = () => {
         </Route>
 
         <Route path="/apoderado" element={<LibretaLayout />}>
+          <Route path="*" element={<UnderConstruction />} />
           <Route path="" element={<LibretaApoderadoHome />} index />
           <Route path="home" element={<LibretaApoderadoHome />} />
           <Route path="perfil" element={<PerfilUsuario />} />
           <Route path="avisos">
             <Route path="home" element={<ApoderadoAvisosHome />} />
+            <Route path="home/:slide" element={<ApoderadoAvisosHome />} />
             <Route path="vacunas">
               <Route
                 path="listado-menores"
@@ -118,7 +123,10 @@ export const Router = () => {
                 path="listado-menores"
                 element={<PaseosVisitasListadoMenores />}
               />
-              <Route path="menor/:id" element={<AutorizarPaseoVisitaMenor />} />
+              <Route
+                path="menor/:idMenor/paseo/:idPaseo"
+                element={<AutorizarPaseoVisitaMenor />}
+              />
             </Route>
             <Route path="reuniones-apoderados">
               <Route
@@ -126,7 +134,7 @@ export const Router = () => {
                 element={<ReunionesApoderadosListadoMenores />}
               />
               <Route
-                path="menor/:id"
+                path="menor/:idMenor/reunion/:idReunion"
                 element={<ConfirmarReunionesApoderadosMenor />}
               />
             </Route>
@@ -136,7 +144,7 @@ export const Router = () => {
                 element={<ItinerarioJornadaListadoMenores />}
               />
               <Route
-                path="menor/:id"
+                path="menor/:idMenor/itinerario/:idItinerario"
                 element={<ConfirmarItinerarioJornadaMenor />}
               />
             </Route>

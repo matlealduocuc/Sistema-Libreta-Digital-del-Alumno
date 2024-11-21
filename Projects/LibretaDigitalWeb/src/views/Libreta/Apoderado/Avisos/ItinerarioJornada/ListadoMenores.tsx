@@ -1,37 +1,56 @@
-import { MenorController } from "@/controllers/MenorController"; 
+import { MenorController } from "@/controllers/MenorController";
 import { useAuth } from "@/hooks/useAuth";
 import { Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthorizedUserDto } from "@/dtos/Auth/AuthorizedUserDto";
 
 const ItinerarioJornadaListadoMenores = () => {
   const { isLoading } = useAuth();
   const [menores, setMenores] = useState<
-    { id: number; nombre: string; edad: number }[]
+    {
+      idMenor: number;
+      idItinerario: number;
+      nombre: string;
+      nivel: string;
+      confirmado: boolean | null;
+      realizado: boolean | null;
+      actividad: string;
+      fechaItinerario: string;
+    }[]
   >([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState<boolean>(true);
-  const storedUser = localStorage.getItem("AUTH_USER");
-  const usuario: AuthorizedUserDto = storedUser ? JSON.parse(storedUser) : null;
-  const persona = usuario?.persona;
-  const idPersona = persona?.idPersona;
   const menorController = new MenorController();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMenores = async () => {
       setLoading(true);
-      if (!isLoading && idPersona) {
+      if (!isLoading) {
         try {
-          const menoresData = await menorController.getMenoresByApoderado(idPersona);
+          const menoresData =
+            await menorController.getMenoresItinerariosByApoderado();
           if (menoresData) {
             setMenores(
               menoresData.map(
-                (menor: { id: number; nombre: string; edad: number }) => ({
-                  id: menor.id,
+                (menor: {
+                  idMenor: number;
+                  idItinerario: number;
+                  nombre: string;
+                  nivel: string;
+                  confirmado: boolean | null;
+                  realizado: boolean | null;
+                  actividad: string;
+                  fechaItinerario: string;
+                }) => ({
+                  idMenor: menor.idMenor,
+                  idItinerario: menor.idItinerario,
                   nombre: menor.nombre,
-                  edad: menor.edad,
+                  nivel: menor.nivel,
+                  confirmado: menor.confirmado,
+                  realizado: menor.realizado,
+                  actividad: menor.actividad,
+                  fechaItinerario: menor.fechaItinerario,
                 })
               )
             );
@@ -45,15 +64,17 @@ const ItinerarioJornadaListadoMenores = () => {
     };
 
     fetchMenores();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
-  const handleMenorClick = (id: number) => {
-    navigate(`/apoderado/avisos/itinerario-jornada/menor/${id}`);
+  const handleMenorClick = (idMenor: number, idItinerario: number) => {
+    navigate(
+      `/apoderado/avisos/itinerario-jornada/menor/${idMenor}/itinerario/${idItinerario}`
+    );
   };
 
   const filteredMenores = menores.filter((menor) =>
@@ -113,16 +134,42 @@ const ItinerarioJornadaListadoMenores = () => {
           {filteredMenores.length > 0 ? (
             filteredMenores.map((menor) => (
               <div
-                key={menor.id}
-                className="border border-gray-300 rounded p-4 shadow-md cursor-pointer"
-                onClick={() => handleMenorClick(menor.id)}
+                key={menor.idMenor + "-" + menor.idItinerario}
+                className={`border ${
+                  menor.confirmado != null && !menor.confirmado
+                    ? "border-gray-300"
+                    : "border-gray-600 bg-gray-300"
+                } rounded p-4 shadow-md cursor-pointer`}
+                onClick={() =>
+                  handleMenorClick(menor.idMenor, menor.idItinerario)
+                }
               >
                 <h2 className="font-semibold">{menor.nombre}</h2>
-                <p>Edad: {menor.edad} años</p>
+                <p>Nivel: {menor.nivel}</p>
+                <h2 className="font-semibold">Actividad: {menor.actividad}</h2>
+                <p>Fecha: {menor.fechaItinerario.split(".").join("-")}</p>
+                {menor.realizado ? (
+                  <p className="text-black">Actividad Realizada</p>
+                ) : (
+                  <p className="text-gray-600">Actividad Sin Realizar</p>
+                )}
+                {menor.confirmado ? (
+                  <p className="text-green-700 font-bold">
+                    Conocimiento: CONFIRMADO
+                  </p>
+                ) : menor.confirmado != null && !menor.confirmado ? (
+                  <p className="text-red-600 font-bold">
+                    Conocimiento: NO CONFIRMADO
+                  </p>
+                ) : (
+                  <p>Estado: NO SE HA SOLICITADO</p>
+                )}
               </div>
             ))
           ) : (
-            <p className="text-gray-500 text-center">No se encontraron menores.</p>
+            <p className="text-gray-500 text-center">
+              No se encontraron menores.
+            </p>
           )}
         </div>
       </div>
