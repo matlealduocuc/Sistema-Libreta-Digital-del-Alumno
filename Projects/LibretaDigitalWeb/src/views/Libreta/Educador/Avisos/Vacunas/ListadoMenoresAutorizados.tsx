@@ -1,8 +1,9 @@
 import { useAuth } from "@/hooks/useAuth";
 import { Spin } from "antd";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+// import { useNavigate, useParams } from "react-router-dom";
 import { NivelController } from "@/controllers/NivelController";
+import { useParams } from "react-router-dom";
 
 const ListadoMenoresAutorizadosVacunas = () => {
   const { idNivel } = useParams();
@@ -13,7 +14,7 @@ const ListadoMenoresAutorizadosVacunas = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState<boolean>(true);
   const nivelController = new NivelController();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMenores = async () => {
@@ -52,9 +53,9 @@ const ListadoMenoresAutorizadosVacunas = () => {
     setSearchTerm(e.target.value);
   };
 
-  const handleMenorClick = (id: number) => {
-    navigate(`/educador/avisos/vacunas/revisar-menor/${id}`);
-  };
+  // const handleMenorClick = (id: number) => {
+  //   navigate(`/educador/avisos/vacunas/revisar-menor/${id}`);
+  // };
 
   const filteredMenores = menores.filter((menor) =>
     menor.descNombre.toLowerCase().includes(searchTerm.toLowerCase())
