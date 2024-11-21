@@ -10,6 +10,8 @@ export default {
         "figma-blue-card": "#08509F",
         "figma-blue-button": "#08509F",
         "figma-light-blue-button": "#679BFF",
+        "figma-purple": "#8D089F",
+        "figma-purple-card": "#8D089F",
       },
     },
   },

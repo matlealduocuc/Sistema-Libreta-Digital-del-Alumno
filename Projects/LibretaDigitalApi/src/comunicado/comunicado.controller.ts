@@ -8,7 +8,7 @@ export class ComunicadoController {
   constructor(private readonly comunicadoService: ComunicadoService) {}
 
   @Get('getTipos')
-  @Auth([Rol.EDUCADOR, Rol.ADMIN, Rol.DIRECTOR, Rol.PROFESOR])
+  @Auth([Rol.EDUCADOR, Rol.ADMIN, Rol.DIRECTOR])
   async getGradosByEducadorIdPersona() {
     return await this.comunicadoService.getTiposComunicado();
   }

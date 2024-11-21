@@ -9,4 +9,8 @@ export class NivelController {
   async getNivelesByEducador(idPersona: number) {
     return await this._nivelService.getNivelesByEducador(idPersona);
   }
+
+  async getNivelesWhereSomeVacuna() {
+    return await this._nivelService.getNivelesWhereSomeVacuna();
+  }
 }

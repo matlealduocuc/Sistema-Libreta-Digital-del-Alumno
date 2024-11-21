@@ -1,26 +1,54 @@
 import { Injectable } from '@nestjs/common';
-import { CreateNivelDto } from './dto/create-nivel.dto';
-import { UpdateNivelDto } from './dto/update-nivel.dto';
+import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class NivelService {
-  create(createNivelDto: CreateNivelDto) {
-    return 'This action adds a new nivel';
-  }
+  constructor(private prisma: PrismaService) {}
 
-  findAll() {
-    return `This action returns all nivel`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} nivel`;
-  }
-
-  update(id: number, updateNivelDto: UpdateNivelDto) {
-    return `This action updates a #${id} nivel`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} nivel`;
+  async getNivelesWhereSomeVacuna(idPersona: number) {
+    return this.prisma.lda_nivel.findMany({
+      where: {
+        flag_activo: true,
+        flag_eliminado: false,
+        lda_nivel_educador: {
+          some: {
+            iden_persona: {
+              equals: idPersona,
+            },
+          },
+        },
+        lda_nivel_menor: {
+          some: {
+            lda_menor: {
+              flag_activo: true,
+              flag_eliminado: false,
+              lda_vacuna_menor: {
+                some: {
+                  lda_vacuna: {
+                    nmro_agno: {
+                      equals: new Date().getFullYear(),
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      select: {
+        iden_nivel: true,
+        desc_nombre: true,
+        _count: {
+          select: {
+            lda_nivel_menor: {
+              where: {
+                flag_activo: true,
+                flag_eliminado: false,
+              },
+            },
+          },
+        },
+      },
+    });
   }
 }
