@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const SolicitarVacunas = () => {
   const { id } = useParams();
+  console.log(id);
   const [step, setStep] = useState(1);
   const navigate = useNavigate();
 

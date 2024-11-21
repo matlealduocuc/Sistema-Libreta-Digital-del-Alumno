@@ -1,5 +1,6 @@
 export class NivelService {
   async getNivelesByEducador(idPersona: number) {
+    console.log(idPersona);
     return [
       {
         id: 1,
