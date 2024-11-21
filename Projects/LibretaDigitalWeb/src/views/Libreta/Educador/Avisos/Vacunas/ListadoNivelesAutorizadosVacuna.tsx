@@ -2,21 +2,20 @@ import { useAuth } from "@/hooks/useAuth";
 import { Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthorizedUserDto } from "@/dtos/Auth/AuthorizedUserDto";
 import { ObtenerInitPathName } from "@/common/FuncionesComunesUsuario";
 import { NivelController } from "@/controllers/NivelController";
 
 const ListadoNivelesAutorizadosVacuna = () => {
   const { isLoading } = useAuth();
   const [niveles, setNiveles] = useState<
-    { id: number; nombre: string; cantidadMenores: number }[]
+    {
+      idenNivel: number;
+      descNombre: string;
+      cantidadMenores: number;
+    }[]
   >([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState<boolean>(true);
-  const storedUser = localStorage.getItem("AUTH_USER");
-  const usuario: AuthorizedUserDto = storedUser ? JSON.parse(storedUser) : null;
-  const persona = usuario?.persona;
-  const idPersona = persona?.idPersona;
   const nivelController = new NivelController();
   const navigate = useNavigate();
   const initPathName = ObtenerInitPathName();
@@ -24,21 +23,19 @@ const ListadoNivelesAutorizadosVacuna = () => {
   useEffect(() => {
     const fetchNiveles = async () => {
       setLoading(true);
-      if (!isLoading && idPersona) {
+      if (!isLoading) {
         try {
-          const nivelesData = await nivelController.getNivelesByEducador(
-            idPersona
-          );
+          const nivelesData = await nivelController.getNivelesWhereSomeVacuna();
           if (nivelesData) {
             setNiveles(
               nivelesData.map(
                 (nivel: {
-                  id: number;
-                  nombre: string;
+                  idenNivel: number;
+                  descNombre: string;
                   cantidadMenores: number;
                 }) => ({
-                  id: nivel.id,
-                  nombre: nivel.nombre,
+                  idenNivel: nivel.idenNivel,
+                  descNombre: nivel.descNombre,
                   cantidadMenores: nivel.cantidadMenores,
                 })
               )
@@ -65,7 +62,7 @@ const ListadoNivelesAutorizadosVacuna = () => {
   };
 
   const filteredNiveles = niveles.filter((nivel) =>
-    nivel.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+    nivel.descNombre.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -120,11 +117,11 @@ const ListadoNivelesAutorizadosVacuna = () => {
           {filteredNiveles.length > 0 ? (
             filteredNiveles.map((nivel) => (
               <div
-                key={nivel.id}
+                key={nivel.idenNivel}
                 className="border border-gray-300 rounded p-4 shadow-md cursor-pointer"
-                onClick={() => handleNivelClick(nivel.id)}
+                onClick={() => handleNivelClick(nivel.idenNivel)}
               >
-                <h2 className="font-semibold">{nivel.nombre}</h2>
+                <h2 className="font-semibold">{nivel.descNombre}</h2>
                 <p>Cantidad menores: {nivel.cantidadMenores}</p>
               </div>
             ))

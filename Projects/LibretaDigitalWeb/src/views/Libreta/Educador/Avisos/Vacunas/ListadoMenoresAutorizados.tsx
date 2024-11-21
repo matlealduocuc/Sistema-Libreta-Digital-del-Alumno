@@ -1,45 +1,37 @@
-import { MenorController } from "@/controllers/MenorController";
 import { useAuth } from "@/hooks/useAuth";
 import { Spin } from "antd";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { AuthorizedUserDto } from "@/dtos/Auth/AuthorizedUserDto";
+import { useNavigate, useParams } from "react-router-dom";
+import { NivelController } from "@/controllers/NivelController";
 
 const ListadoMenoresAutorizadosVacunas = () => {
+  const { idNivel } = useParams();
   const { isLoading } = useAuth();
   const [menores, setMenores] = useState<
-    { id: number; nombre: string; edad: number; estadoVacuna: boolean }[]
+    { idenMenor: number; descNombre: string; autorizado: boolean | null }[]
   >([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState<boolean>(true);
-  const storedUser = localStorage.getItem("AUTH_USER");
-  const usuario: AuthorizedUserDto = storedUser ? JSON.parse(storedUser) : null;
-  const persona = usuario?.persona;
-  const idPersona = persona?.idPersona;
-  const menorController = new MenorController();
+  const nivelController = new NivelController();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMenores = async () => {
       setLoading(true);
-      if (!isLoading && idPersona) {
+      if (!isLoading && idNivel) {
         try {
-          const menoresData = await menorController.getMenoresByApoderado(
-            idPersona
-          );
+          const menoresData = await nivelController.getMenoresByNivel(+idNivel);
           if (menoresData) {
             setMenores(
               menoresData.map(
                 (menor: {
-                  id: number;
-                  nombre: string;
-                  edad: number;
-                  estadoVacuna: boolean;
+                  idenMenor: number;
+                  descNombre: string;
+                  autorizado: boolean | null;
                 }) => ({
-                  id: menor.id,
-                  nombre: menor.nombre,
-                  edad: menor.edad,
-                  estadoVacuna: menor.estadoVacuna,
+                  idenMenor: menor.idenMenor,
+                  descNombre: menor.descNombre,
+                  autorizado: menor.autorizado,
                 })
               )
             );
@@ -54,7 +46,7 @@ const ListadoMenoresAutorizadosVacunas = () => {
 
     fetchMenores();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading]);
+  }, [isLoading, idNivel]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -65,7 +57,7 @@ const ListadoMenoresAutorizadosVacunas = () => {
   };
 
   const filteredMenores = menores.filter((menor) =>
-    menor.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+    menor.descNombre.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -120,13 +112,12 @@ const ListadoMenoresAutorizadosVacunas = () => {
           {filteredMenores.length > 0 ? (
             filteredMenores.map((menor) => (
               <div
-                key={menor.id}
+                key={menor.idenMenor}
                 className="border border-gray-300 rounded p-4 shadow-md cursor-pointer"
-                onClick={() => handleMenorClick(menor.id)}
+                // onClick={() => handleMenorClick(menor.idenMenor)}
               >
-                <h2 className="font-semibold">{menor.nombre}</h2>
-                <p>Edad: {menor.edad} años</p>
-                {menor.estadoVacuna ? (
+                <h2 className="font-semibold">{menor.descNombre}</h2>
+                {menor.autorizado ? (
                   <p className="text-green-700 font-bold">
                     Estado Vacuna: AUTORIZADA
                   </p>

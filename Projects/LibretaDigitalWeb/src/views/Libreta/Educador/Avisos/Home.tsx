@@ -1,11 +1,12 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import VacunaSvg from "../../../../assets/vacuna.svg";
 import PaseoVisitaSvg from "../../../../assets/paseos-y-visitas.svg";
 import ReunionApoderadosSvg from "../../../../assets/reunion-apoderados.svg";
 import ActividadesDiariasSvf from "../../../../assets/actividades-diarias.svg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const EducadorAvisosHome = () => {
+  const { slide } = useParams();
   const initPathName: string = "/educador";
   const slides = [
     {
@@ -41,9 +42,9 @@ const EducadorAvisosHome = () => {
       para <strong>Revisar y Autorizar</strong>.`,
       buttonText: "Continuar",
       href: initPathName + "/avisos/paseos-visitas/listado-menores",
-      isSecondButton: false,
-      secondButtonText: "",
-      secondButtonHref: "",
+      isSecondButton: true,
+      secondButtonText: "Revisar",
+      secondButtonHref: initPathName + "/avisos/paseos-visitas/listado-paseos",
       imgSrc: PaseoVisitaSvg,
     },
     {
@@ -60,9 +61,10 @@ const EducadorAvisosHome = () => {
       <br />para revisar.`,
       buttonText: "Continuar",
       href: initPathName + "/avisos/reuniones-apoderados/listado-menores",
-      isSecondButton: false,
-      secondButtonText: "",
-      secondButtonHref: "",
+      isSecondButton: true,
+      secondButtonText: "Revisar",
+      secondButtonHref:
+        initPathName + "/avisos/reuniones-apoderados/listado-reuniones",
       imgSrc: ReunionApoderadosSvg,
     },
     {
@@ -80,9 +82,10 @@ const EducadorAvisosHome = () => {
         y <strong>Confirmar tu Conocimiento</strong>.`,
       buttonText: "Continuar",
       href: initPathName + "/avisos/itinerario-jornada/listado-menores",
-      isSecondButton: false,
-      secondButtonText: "",
-      secondButtonHref: "",
+      isSecondButton: true,
+      secondButtonText: "Revisar",
+      secondButtonHref:
+        initPathName + "/avisos/itinerario-jornada/listado-actividades",
       imgSrc: ActividadesDiariasSvf,
     },
   ];
@@ -92,6 +95,24 @@ const EducadorAvisosHome = () => {
   const startX = useRef(0);
   const [translate, setTranslate] = useState(0);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (
+      slide &&
+      parseInt(slide) > 0 &&
+      parseInt(slide) < 5 &&
+      parseInt(slide) <= slides.length
+    ) {
+      setCurrentIndex(parseInt(slide) - 1);
+    }
+  }, [slide, slides.length]);
+
+  useEffect(() => {
+    const newPath = `${initPathName}/avisos/home/${currentIndex + 1}`;
+    if (window.location.pathname !== newPath) {
+      window.history.replaceState(null, "", newPath);
+    }
+  }, [currentIndex, navigate]);
 
   const goToNextSlide = () => {
     setCurrentIndex((prevIndex) =>
@@ -182,7 +203,7 @@ const EducadorAvisosHome = () => {
               className="flex-shrink-0 w-full flex flex-col items-center justify-center px-6 text-center"
               style={{ minWidth: "100%" }}
             >
-              <h2 className="text-xl font-bold text-blue-600 mb-4">
+              <h2 className="text-xl font-bold text-green-700 mb-4">
                 {slide.heading}
               </h2>
               <p
@@ -202,7 +223,7 @@ const EducadorAvisosHome = () => {
               <div className="fixed -bottom-20 w-full flex flex-col justify-center">
                 <div className="flex flex-row justify-center">
                   <button
-                    className="bg-figma-blue-button text-white w-80 text-lg font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-blue-700"
+                    className="bg-figma-green text-white w-80 text-lg font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-blue-700"
                     onClick={() => {
                       navigate(slide.href);
                     }}
@@ -214,7 +235,7 @@ const EducadorAvisosHome = () => {
                 {slide.isSecondButton && (
                   <div className="flex flex-row justify-center mt-2">
                     <button
-                      className="bg-figma-light-blue-button text-white w-80 text-lg font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-blue-700"
+                      className="bg-green-500 text-white w-80 text-lg font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-blue-700"
                       onClick={() => {
                         navigate(slide.secondButtonHref);
                       }}
@@ -236,7 +257,7 @@ const EducadorAvisosHome = () => {
             key={index}
             onClick={() => goToSlide(index)}
             className={`w-5 h-5 rounded-full ${
-              currentIndex === index ? "bg-blue-600" : "bg-gray-300"
+              currentIndex === index ? "bg-figma-green" : "bg-gray-300"
             }`}
           />
         ))}

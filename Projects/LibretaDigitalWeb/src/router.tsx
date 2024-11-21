@@ -23,12 +23,13 @@ import ConfirmarReunionesApoderadosMenor from "./views/Libreta/Apoderado/Avisos/
 import ItinerarioJornadaListadoMenores from "./views/Libreta/Apoderado/Avisos/ItinerarioJornada/ListadoMenores";
 import ConfirmarItinerarioJornadaMenor from "./views/Libreta/Apoderado/Avisos/ItinerarioJornada/Confirmar";
 import EducadorAvisosHome from "./views/Libreta/Educador/Avisos/Home";
-import ListadoNivelesAutorizadosVacuna from "./views/Libreta/Educador/Avisos/Vacunas/ListadoNiveles";
+import ListadoNivelesAutorizadosVacuna from "./views/Libreta/Educador/Avisos/Vacunas/ListadoNivelesAutorizadosVacuna";
 import ListadoMenoresAutorizadosVacunas from "./views/Libreta/Educador/Avisos/Vacunas/ListadoMenoresAutorizados";
 import RevisarVacunaMenor from "./views/Libreta/Educador/Avisos/Vacunas/RevisarAutorizacion";
 import ListadoAvisarNivelesEducador from "./views/Libreta/Educador/Avisos/Vacunas/ListadoAvisarNiveles";
 import SolicitarVacunas from "./views/Libreta/Educador/Avisos/Vacunas/SolicitarVacunas";
 import UnderConstruction from "./views/home/UnderConstruction";
+import LibretaDirectorHome from "./views/Libreta/Director/LibretaDirectorHome";
 
 export const Router = () => {
   return (
@@ -42,10 +43,10 @@ export const Router = () => {
           <Route path="*" element={<LibretaRedirect />} />
         </Route>
 
-        <Route path="/educador" element={<LibretaLayout />}>
+        <Route path="/director" element={<LibretaLayout />}>
           <Route path="*" element={<UnderConstruction />} />
-          <Route path="" element={<LibretaEducadorHome />} index />
-          <Route path="home" element={<LibretaEducadorHome />} />
+          <Route path="" element={<LibretaDirectorHome />} index />
+          <Route path="home" element={<LibretaDirectorHome />} />
           <Route path="perfil" element={<PerfilUsuario />} />
           <Route path="comunicados" element={<EducadorComunicados />} />
           <Route path="crear-comunicado" element={<CrearComunicado />} />
@@ -58,6 +59,68 @@ export const Router = () => {
               />
               <Route
                 path="menores-por-nivel/:id"
+                element={<ListadoMenoresAutorizadosVacunas />}
+              />
+              <Route
+                path="revisar-menor/:id"
+                element={<RevisarVacunaMenor />}
+              />
+              <Route
+                path="avisar-niveles-menores"
+                element={<ListadoAvisarNivelesEducador />}
+              />
+              <Route
+                path="solicitar-vacunas/:id"
+                element={<SolicitarVacunas />}
+              />
+            </Route>
+            <Route path="paseos-visitas">
+              <Route
+                path="listado-menores"
+                element={<PaseosVisitasListadoMenores />}
+              />
+              <Route path="menor/:id" element={<AutorizarPaseoVisitaMenor />} />
+            </Route>
+            <Route path="reuniones-apoderados">
+              <Route
+                path="listado-menores"
+                element={<ReunionesApoderadosListadoMenores />}
+              />
+              <Route
+                path="menor/:id"
+                element={<ConfirmarReunionesApoderadosMenor />}
+              />
+            </Route>
+            <Route path="itinerario-jornada">
+              <Route
+                path="listado-menores"
+                element={<ItinerarioJornadaListadoMenores />}
+              />
+              <Route
+                path="menor/:id"
+                element={<ConfirmarItinerarioJornadaMenor />}
+              />
+            </Route>
+          </Route>
+        </Route>
+
+        <Route path="/educador" element={<LibretaLayout />}>
+          <Route path="*" element={<UnderConstruction />} />
+          <Route path="" element={<LibretaEducadorHome />} index />
+          <Route path="home" element={<LibretaEducadorHome />} />
+          <Route path="perfil" element={<PerfilUsuario />} />
+          <Route path="comunicados" element={<EducadorComunicados />} />
+          <Route path="crear-comunicado" element={<CrearComunicado />} />
+          <Route path="avisos">
+            <Route path="home" element={<EducadorAvisosHome />} />
+            <Route path="home/:slide" element={<EducadorAvisosHome />} />
+            <Route path="vacunas">
+              <Route
+                path="revisar-niveles-menores"
+                element={<ListadoNivelesAutorizadosVacuna />}
+              />
+              <Route
+                path="menores-por-nivel/:idNivel"
                 element={<ListadoMenoresAutorizadosVacunas />}
               />
               <Route
