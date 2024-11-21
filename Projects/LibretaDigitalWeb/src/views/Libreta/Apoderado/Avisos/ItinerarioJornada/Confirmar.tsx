@@ -14,6 +14,7 @@ const ConfirmarItinerarioJornadaMenor = () => {
     nombreMenor: string;
     nivel: string;
     tituloActividad: string;
+    fechaActividad: string;
     descActividad: string;
     realizado: boolean | null;
     confirmado: boolean | null;
@@ -114,6 +115,9 @@ const ConfirmarItinerarioJornadaMenor = () => {
                 <p>
                   <strong>Actividad:</strong> {menor?.tituloActividad}
                 </p>
+                <p>
+                  <strong>Fecha:</strong> {menor?.fechaActividad.split(".").join("-")}
+                </p>
                 <p className="mb-2">
                   <strong>Descripción:</strong>
                   <br />
@@ -121,13 +125,13 @@ const ConfirmarItinerarioJornadaMenor = () => {
                 </p>
                 <div className="mb-2">
                   {menor?.realizado ? (
-                    <p className="text-blue-600">Actividad REALIZADA</p>
+                    <p className="text-black">Actividad REALIZADA</p>
                   ) : (
                     <p className="text-gray-600">Actividad NO REALIZADA</p>
                   )}
                 </div>
                 {menor?.confirmado ? (
-                  <p className="font-bold text-blue-600">
+                  <p className="font-bold text-green-700">
                     <strong>Estado: Conocimiento confirmado</strong>
                   </p>
                 ) : menor?.confirmado != null && !menor?.confirmado ? (

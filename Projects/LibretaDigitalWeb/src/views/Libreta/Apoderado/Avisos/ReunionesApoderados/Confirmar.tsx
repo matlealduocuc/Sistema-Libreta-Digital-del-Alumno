@@ -15,7 +15,6 @@ const ConfirmarReunionesApoderadosMenor = () => {
     nivel: string;
     tituloReunion: string;
     sala: string;
-    descReunion: string;
     temasTratar: string[];
     fechaReunion: string;
     confirmado: boolean | null;
@@ -91,13 +90,13 @@ const ConfirmarReunionesApoderadosMenor = () => {
 
   return (
     <Spin spinning={loading}>
-      <div className="flex flex-col mt-4 w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
+      <div className="flex flex-col w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
         <main className="flex-1 p-4">
           {/* Paso 1 */}
           {step === 1 && (
             <div className="text-center">
               <h2 className="text-xl font-bold">Estado de Autorización</h2>
-              <p className="mb-4 pt-8">
+              <p className="mb-4 pt-4">
                 Haz click en <strong>"Continuar"</strong>
                 <br />
                 para <strong>Confirmar tu Asistencia</strong>
@@ -119,13 +118,8 @@ const ConfirmarReunionesApoderadosMenor = () => {
                 <p>
                   <strong>Fecha:</strong> {menor?.fechaReunion}
                 </p>
-                <p>
-                  <strong>Descripción:</strong>
-                  <br />
-                  {menor?.descReunion}
-                </p>
-                <div className="py-4">
-                  <p className="pb-4">
+                <div className="pb-4">
+                  <p>
                     <strong>Temas a tratar:</strong>
                   </p>
                   {menor?.temasTratar.map((tema) => (
@@ -133,7 +127,7 @@ const ConfirmarReunionesApoderadosMenor = () => {
                   ))}
                 </div>
                 {menor?.confirmado ? (
-                  <p className="font-bold text-blue-600">
+                  <p className="font-bold text-green-700">
                     <strong>Estado: Asistencia confirmada</strong>
                   </p>
                 ) : menor?.confirmado != null && !menor?.confirmado ? (

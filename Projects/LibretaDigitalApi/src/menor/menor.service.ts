@@ -64,53 +64,63 @@ export class MenorService {
   }
 
   async getMenoresVacunasByApoderado(idApoderado: number) {
-    return await this.prisma.menor.findMany({
+    return await this.prisma.lda_vacuna.findMany({
       where: {
-        iden_per_apoderado: idApoderado,
-        flag_activo: true,
-        flag_eliminado: false,
-      },
-      select: {
-        id: true,
-        per_persona: {
-          select: {
-            primerNombre: true,
-            apellidoP: true,
-            apellidoM: true,
-            fech_nacimiento: true,
-          },
+        nmro_agno: {
+          equals: new Date().getFullYear(),
         },
         lda_vacuna_menor: {
-          where: {
-            lda_vacuna: {
-              nmro_agno: {
-                equals: new Date().getFullYear(),
-              },
-            },
-          },
-          select: {
-            flag_autorizado: true,
-            lda_vacuna: {
-              select: {
-                desc_nombre: true,
-                fech_vacunacion: true,
-              },
+          some: {
+            lda_menor: {
+              iden_per_apoderado: idApoderado,
+              flag_activo: true,
+              flag_eliminado: false,
             },
           },
         },
-        lda_nivel_menor: {
+      },
+      select: {
+        iden_vacuna: true,
+        desc_nombre: true,
+        fech_vacunacion: true,
+        lda_vacuna_menor: {
           where: {
-            flag_activo: true,
-            flag_eliminado: false,
-            lda_nivel: {
+            lda_menor: {
+              iden_per_apoderado: idApoderado,
               flag_activo: true,
               flag_eliminado: false,
             },
           },
           select: {
-            lda_nivel: {
+            flag_autorizado: true,
+            lda_menor: {
               select: {
-                desc_nombre: true,
+                id: true,
+                per_persona: {
+                  select: {
+                    primerNombre: true,
+                    segundoNombre: true,
+                    apellidoP: true,
+                    apellidoM: true,
+                  },
+                },
+                lda_nivel_menor: {
+                  where: {
+                    flag_activo: true,
+                    flag_eliminado: false,
+                    lda_nivel: {
+                      flag_activo: true,
+                      flag_eliminado: false,
+                    },
+                  },
+                  select: {
+                    lda_nivel: {
+                      select: {
+                        desc_nombre: true,
+                      },
+                    },
+                  },
+                },
               },
             },
           },
@@ -182,13 +192,6 @@ export class MenorService {
                 fech_vacunacion: true,
               },
             },
-          },
-        },
-        per_persona_lda_menor_iden_per_apoderadoToper_persona: {
-          select: {
-            primerNombre: true,
-            apellidoP: true,
-            apellidoM: true,
           },
         },
       },
@@ -550,7 +553,6 @@ export class MenorService {
             lda_reunion: {
               select: {
                 desc_titulo: true,
-                desc_descripcion: true,
                 fech_reunion: true,
                 lda_sala: {
                   select: {

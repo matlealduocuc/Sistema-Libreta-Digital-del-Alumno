@@ -142,7 +142,7 @@ const VacunasListadoMenores = () => {
                 <p>Fecha: {menor.fechaVacuna.split(" ")[0].split(".").join("-")}</p>
 
                 {menor.autorizado ? (
-                  <p className="text-blue-600 font-bold">Estado: AUTORIZADO</p>
+                  <p className="text-green-700 font-bold">Estado: AUTORIZADO</p>
                 ) : menor.autorizado != null && !menor.autorizado ? (
                   <p className="text-red-600 font-bold">
                     Estado: NO AUTORIZADO

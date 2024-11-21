@@ -137,7 +137,7 @@ const PaseosVisitasListadoMenores = () => {
           {filteredMenores.length > 0 ? (
             filteredMenores.map((menor) => (
               <div
-                key={menor.idMenor}
+                key={menor.idMenor + "-" + menor.idPaseo}
                 className={`border ${
                   menor.autorizado != null && !menor.autorizado
                     ? "border-gray-300"
@@ -155,7 +155,7 @@ const PaseosVisitasListadoMenores = () => {
                 <p>Inicio: {menor.fechaInicio.split(".").join("-")}</p>
                 <p>Termino: {menor.fechaFin.split(".").join("-")}</p>
                 {menor.autorizado ? (
-                  <p className="text-blue-600 font-bold">Estado: AUTORIZADO</p>
+                  <p className="text-green-700 font-bold">Estado: AUTORIZADO</p>
                 ) : menor.autorizado != null && !menor.autorizado ? (
                   <p className="text-red-600 font-bold">
                     Estado: NO AUTORIZADO

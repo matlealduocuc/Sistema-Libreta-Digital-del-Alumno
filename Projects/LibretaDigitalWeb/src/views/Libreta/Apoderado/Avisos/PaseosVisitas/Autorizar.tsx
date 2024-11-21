@@ -130,7 +130,7 @@ const AutorizarPaseoVisitaMenor = () => {
                   <strong>Termino:</strong> {menor?.fechaFin}
                 </p>
                 {menor?.autorizado ? (
-                  <p className="font-bold text-blue-600">
+                  <p className="font-bold text-green-700">
                     <strong>Estado: Visita Autorizada</strong>
                   </p>
                 ) : menor?.autorizado != null && !menor?.autorizado ? (

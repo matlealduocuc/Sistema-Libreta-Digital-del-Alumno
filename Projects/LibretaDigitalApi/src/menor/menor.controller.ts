@@ -43,23 +43,28 @@ export class MenorController {
     const menores = await this.menorService.getMenoresVacunasByApoderado(
       +user.idPersona,
     );
-    const menoresDto = menores.map((menor) => ({
-      id: menor.id,
-      nombre:
-        menor.per_persona.apellidoM != null
-          ? menor.per_persona.primerNombre +
-            ' ' +
-            menor.per_persona.apellidoP +
-            ' ' +
-            menor.per_persona.apellidoM
-          : menor.per_persona.primerNombre + ' ' + menor.per_persona.apellidoP,
-      nivel: menor.lda_nivel_menor[0]?.lda_nivel?.desc_nombre,
-      vacuna: menor.lda_vacuna_menor[0]?.lda_vacuna?.desc_nombre,
-      fechaVacuna: formatFecha2(
-        menor.lda_vacuna_menor[0]?.lda_vacuna?.fech_vacunacion.toISOString(),
-      ),
-      autorizado: menor.lda_vacuna_menor[0]?.flag_autorizado ?? null,
-    }));
+    const menoresDto = menores.map((menor) => {
+      const menorPer = menor.lda_vacuna_menor[0]?.lda_menor;
+      return {
+        id: menorPer.id,
+        nombre:
+          menorPer.per_persona.apellidoM != null
+            ? menorPer.per_persona.primerNombre +
+              ' ' +
+              menorPer.per_persona.apellidoP +
+              ' ' +
+              menorPer.per_persona.apellidoM
+            : menorPer.per_persona.primerNombre +
+              ' ' +
+              menorPer.per_persona.apellidoP,
+        nivel:
+          menor.lda_vacuna_menor[0]?.lda_menor?.lda_nivel_menor[0]?.lda_nivel
+            ?.desc_nombre,
+        vacuna: menor.desc_nombre,
+        fechaVacuna: formatFecha2(menor.fech_vacunacion.toISOString()),
+        autorizado: menor.lda_vacuna_menor[0]?.flag_autorizado ?? null,
+      };
+    });
 
     menoresDto.sort((a, b) => {
       if (a.autorizado === false) return -1;
@@ -82,8 +87,6 @@ export class MenorController {
         +idMenor,
         +user.idPersona,
       );
-    const apoderado =
-      menorVacuna.per_persona_lda_menor_iden_per_apoderadoToper_persona;
 
     const menoresDto = {
       idMenor: menorVacuna.id,
@@ -99,22 +102,11 @@ export class MenorController {
             menorVacuna.per_persona.apellidoP,
 
       nivel: menorVacuna.lda_nivel_menor[0]?.lda_nivel?.desc_nombre,
-      nombreVacuna:
-        menorVacuna.lda_vacuna_menor[0]?.lda_vacuna?.desc_nombre +
-        ' ' +
-        formatFecha1(
-          menorVacuna.lda_vacuna_menor[0]?.lda_vacuna?.fech_vacunacion.toISOString(),
-        ),
+      nombreVacuna: menorVacuna.lda_vacuna_menor[0]?.lda_vacuna?.desc_nombre,
+      fechaVacuna: formatFecha1(
+        menorVacuna.lda_vacuna_menor[0]?.lda_vacuna?.fech_vacunacion.toISOString(),
+      ),
       idVacuna: menorVacuna.lda_vacuna_menor[0]?.lda_vacuna?.iden_vacuna,
-      nombreApoderado:
-        apoderado.apellidoM != null
-          ? apoderado.primerNombre +
-            ' ' +
-            apoderado.apellidoP +
-            ' ' +
-            apoderado.apellidoM
-          : apoderado.primerNombre + ' ' + apoderado.apellidoP,
-
       autorizado: menorVacuna.lda_vacuna_menor[0]?.flag_autorizado ?? null,
     };
     return menoresDto;
@@ -307,7 +299,6 @@ export class MenorController {
 
       nivel: reunion.lda_nivel_menor[0]?.lda_nivel?.desc_nombre,
       tituloReunion: reunion.lda_reunion_menor[0]?.lda_reunion?.desc_titulo,
-      descReunion: reunion.lda_reunion_menor[0]?.lda_reunion?.desc_descripcion,
       temasTratar:
         reunion.lda_reunion_menor[0]?.lda_reunion?.lda_reunion_tema.map(
           (tema) => tema.desc_tema,
@@ -362,7 +353,7 @@ export class MenorController {
               menor.per_persona.apellidoP,
         nivel: menor.lda_nivel_menor[0]?.lda_nivel?.desc_nombre,
         actividad: itinerario.desc_titulo,
-        fechaItinerario: formatFecha2(itinerario.fech_itinerario.toISOString()),
+        fechaItinerario: formatFecha1(itinerario.fech_itinerario.toISOString()),
         realizado: itinerario.flag_realizado ?? null,
         confirmado: itinerario.lda_itinerario_menor[0]?.flag_confirmado ?? null,
       };
@@ -407,11 +398,10 @@ export class MenorController {
 
       nivel: itinerario.lda_nivel_menor[0]?.lda_nivel?.desc_nombre,
       tituloActividad:
-        itinerario.lda_itinerario_menor[0]?.lda_itinerario?.desc_titulo +
-        ' ' +
-        formatFecha1(
-          itinerario.lda_itinerario_menor[0]?.lda_itinerario?.fech_itinerario.toISOString(),
-        ),
+        itinerario.lda_itinerario_menor[0]?.lda_itinerario?.desc_titulo,
+      fechaActividad: formatFecha1(
+        itinerario.lda_itinerario_menor[0]?.lda_itinerario?.fech_itinerario.toISOString(),
+      ),
       descActividad:
         itinerario.lda_itinerario_menor[0]?.lda_itinerario?.desc_descripcion,
       confirmado: itinerario.lda_itinerario_menor[0]?.flag_confirmado ?? null,

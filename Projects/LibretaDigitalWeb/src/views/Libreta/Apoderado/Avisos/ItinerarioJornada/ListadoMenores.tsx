@@ -134,7 +134,7 @@ const ItinerarioJornadaListadoMenores = () => {
           {filteredMenores.length > 0 ? (
             filteredMenores.map((menor) => (
               <div
-                key={menor.idMenor}
+                key={menor.idMenor + "-" + menor.idItinerario}
                 className={`border ${
                   menor.confirmado != null && !menor.confirmado
                     ? "border-gray-300"
@@ -147,17 +147,14 @@ const ItinerarioJornadaListadoMenores = () => {
                 <h2 className="font-semibold">{menor.nombre}</h2>
                 <p>Nivel: {menor.nivel}</p>
                 <h2 className="font-semibold">Actividad: {menor.actividad}</h2>
-                <p>
-                  Fecha:{" "}
-                  {menor.fechaItinerario.split(" ")[0].split(".").join("-")}
-                </p>
+                <p>Fecha: {menor.fechaItinerario.split(".").join("-")}</p>
                 {menor.realizado ? (
-                  <p className="text-blue-600">Actividad Realizada</p>
+                  <p className="text-black">Actividad Realizada</p>
                 ) : (
                   <p className="text-gray-600">Actividad Sin Realizar</p>
                 )}
                 {menor.confirmado ? (
-                  <p className="text-blue-600 font-bold">
+                  <p className="text-green-700 font-bold">
                     Conocimiento: CONFIRMADO
                   </p>
                 ) : menor.confirmado != null && !menor.confirmado ? (

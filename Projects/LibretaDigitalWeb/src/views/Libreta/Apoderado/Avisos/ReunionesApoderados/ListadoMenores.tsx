@@ -134,7 +134,7 @@ const ReunionesApoderadosListadoMenores = () => {
           {filteredMenores.length > 0 ? (
             filteredMenores.map((menor) => (
               <div
-                key={menor.idMenor}
+                key={menor.idMenor + "-" + menor.idReunion}
                 className={`border ${
                   menor.confirmado != null && !menor.confirmado
                     ? "border-gray-300"
@@ -149,7 +149,7 @@ const ReunionesApoderadosListadoMenores = () => {
                 <p>Fecha: {menor.fechaReunion.split(".").join("-")}</p>
 
                 {menor.confirmado ? (
-                  <p className="text-blue-600 font-bold">Estado: CONFIRMADO</p>
+                  <p className="text-green-700 font-bold">Estado: CONFIRMADO</p>
                 ) : menor.confirmado != null && !menor.confirmado ? (
                   <p className="text-red-600 font-bold">
                     Estado: NO CONFIRMADO

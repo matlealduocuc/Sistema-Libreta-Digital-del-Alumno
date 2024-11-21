@@ -12,8 +12,8 @@ const AutorizarVacunaMenor = () => {
     nombreMenor: string;
     nivel: string;
     nombreVacuna: string;
+    fechaVacuna: string;
     idVacuna: number;
-    nombreApoderado: string;
     autorizado: boolean | null;
   }>();
   const [loading, setLoading] = useState<boolean>(true);
@@ -108,10 +108,11 @@ const AutorizarVacunaMenor = () => {
                   <strong>Vacuna:</strong> {menor?.nombreVacuna}
                 </p>
                 <p>
-                  <strong>Apoderado:</strong> {menor?.nombreApoderado}
+                  <strong>Fecha:</strong>{" "}
+                  {menor?.fechaVacuna.split(".").join("-")}
                 </p>
                 {menor?.autorizado ? (
-                  <p className="font-bold text-blue-600">
+                  <p className="font-bold text-green-700">
                     <strong>Estado: Vacuna Autorizada</strong>
                   </p>
                 ) : menor?.autorizado != null && !menor?.autorizado ? (
