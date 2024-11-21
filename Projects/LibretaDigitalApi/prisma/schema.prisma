@@ -207,7 +207,6 @@ model lda_comunicado_menor {
 model lda_reunion {
   iden_reunion      Int                 @id(map: "lda_reunion_pk") @default(autoincrement())
   desc_titulo       String              @db.VarChar
-  desc_descripcion  String              @db.VarChar
   fech_reunion      DateTime            @db.Timestamp(6)
   iden_sala         Int
   flag_activo       Boolean             @default(true)
@@ -315,7 +314,7 @@ model lda_itinerario {
   iden_itinerario      Int                    @id(map: "lda_itinerario_pk") @default(autoincrement())
   desc_titulo          String                 @db.VarChar
   desc_descripcion     String                 @db.VarChar
-  fech_itinerario      DateTime               @db.Timestamp(6)
+  fech_itinerario      DateTime               @db.Date
   flag_activo          Boolean                @default(true)
   flag_eliminado       Boolean                @default(false)
   iden_usr_creador     Int
