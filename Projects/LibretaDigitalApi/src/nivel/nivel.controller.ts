@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { NivelService } from './nivel.service';
 import { ActiveUser } from 'src/common/decorators/active-user.decorator';
 import { Auth } from 'src/auth/decorators/auth.decorator';
@@ -22,5 +22,34 @@ export class NivelController {
       };
     });
     return nivelesDto;
+  }
+
+  @Get('getMenoresByNivel/:idNivel')
+  @Auth(Rol.EDUCADOR)
+  async getMenoresByNivel(
+    @ActiveUser() user,
+    @Param('idNivel') idNivel: number,
+  ) {
+    const menores = await this.nivelService.getMenoresByNivel(
+      +user.idPersona,
+      +idNivel,
+    );
+    const menoresDto = menores.map((menor) => {
+      return {
+        idenMenor: menor.id,
+        descNombre:
+          menor.per_persona.apellidoM != null
+            ? menor.per_persona.primerNombre +
+              ' ' +
+              menor.per_persona.apellidoP +
+              ' ' +
+              menor.per_persona.apellidoM
+            : menor.per_persona.primerNombre +
+              ' ' +
+              menor.per_persona.apellidoP,
+        autorizado: menor.lda_vacuna_menor[0]?.flag_autorizado,
+      };
+    });
+    return menoresDto;
   }
 }

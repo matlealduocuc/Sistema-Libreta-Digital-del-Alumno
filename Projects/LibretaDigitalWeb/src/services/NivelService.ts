@@ -32,6 +32,16 @@ export class NivelService {
       ifAxiosError(error);
     }
   }
+
+  async getMenoresByNivel(idNivel: number) {
+    try {
+      const response = await api.get("/nivel/getMenoresByNivel/" + idNivel);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
 }
 
 const ifAxiosError = (error: unknown): error is AxiosError => {

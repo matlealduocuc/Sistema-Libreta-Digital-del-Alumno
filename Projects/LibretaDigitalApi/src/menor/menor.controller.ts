@@ -43,8 +43,9 @@ export class MenorController {
     const menores = await this.menorService.getMenoresVacunasByApoderado(
       +user.idPersona,
     );
+    console.log(menores);
     const menoresDto = menores.map((menor) => {
-      const menorPer = menor.lda_vacuna_menor[0]?.lda_menor;
+      const menorPer = menor;
       return {
         id: menorPer.id,
         nombre:
@@ -57,11 +58,11 @@ export class MenorController {
             : menorPer.per_persona.primerNombre +
               ' ' +
               menorPer.per_persona.apellidoP,
-        nivel:
-          menor.lda_vacuna_menor[0]?.lda_menor?.lda_nivel_menor[0]?.lda_nivel
-            ?.desc_nombre,
-        vacuna: menor.desc_nombre,
-        fechaVacuna: formatFecha2(menor.fech_vacunacion.toISOString()),
+        nivel: menor.lda_nivel_menor[0]?.lda_nivel?.desc_nombre,
+        vacuna: menor.lda_vacuna_menor[0]?.lda_vacuna.desc_nombre,
+        fechaVacuna: formatFecha2(
+          menor.lda_vacuna_menor[0]?.lda_vacuna.fech_vacunacion.toISOString(),
+        ),
         autorizado: menor.lda_vacuna_menor[0]?.flag_autorizado ?? null,
       };
     });

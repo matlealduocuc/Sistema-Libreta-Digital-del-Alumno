@@ -113,13 +113,14 @@ export const Router = () => {
           <Route path="crear-comunicado" element={<CrearComunicado />} />
           <Route path="avisos">
             <Route path="home" element={<EducadorAvisosHome />} />
+            <Route path="home/:slide" element={<EducadorAvisosHome />} />
             <Route path="vacunas">
               <Route
                 path="revisar-niveles-menores"
                 element={<ListadoNivelesAutorizadosVacuna />}
               />
               <Route
-                path="menores-por-nivel/:id"
+                path="menores-por-nivel/:idNivel"
                 element={<ListadoMenoresAutorizadosVacunas />}
               />
               <Route
