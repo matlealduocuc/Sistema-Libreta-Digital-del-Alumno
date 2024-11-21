@@ -1,42 +1,55 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { NivelService } from './nivel.service';
-import { CreateNivelDto } from './dto/create-nivel.dto';
-import { UpdateNivelDto } from './dto/update-nivel.dto';
+import { ActiveUser } from 'src/common/decorators/active-user.decorator';
+import { Auth } from 'src/auth/decorators/auth.decorator';
+import { Rol } from 'src/common/enums/rol.enum';
 
 @Controller('nivel')
 export class NivelController {
   constructor(private readonly nivelService: NivelService) {}
 
-  @Post()
-  create(@Body() createNivelDto: CreateNivelDto) {
-    return this.nivelService.create(createNivelDto);
+  @Get('getNivelesWhereSomeVacuna')
+  @Auth(Rol.EDUCADOR)
+  async getNivelesWhereSomeVacuna(@ActiveUser() user) {
+    const niveles = await this.nivelService.getNivelesWhereSomeVacuna(
+      +user.idPersona,
+    );
+    const nivelesDto = niveles.map((nivel) => {
+      return {
+        idenNivel: nivel.iden_nivel,
+        descNombre: nivel.desc_nombre,
+        cantidadMenores: nivel._count.lda_nivel_menor,
+      };
+    });
+    return nivelesDto;
   }
 
-  @Get()
-  findAll() {
-    return this.nivelService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.nivelService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateNivelDto: UpdateNivelDto) {
-    return this.nivelService.update(+id, updateNivelDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.nivelService.remove(+id);
+  @Get('getMenoresByNivel/:idNivel')
+  @Auth(Rol.EDUCADOR)
+  async getMenoresByNivel(
+    @ActiveUser() user,
+    @Param('idNivel') idNivel: number,
+  ) {
+    const menores = await this.nivelService.getMenoresByNivel(
+      +user.idPersona,
+      +idNivel,
+    );
+    const menoresDto = menores.map((menor) => {
+      return {
+        idenMenor: menor.id,
+        descNombre:
+          menor.per_persona.apellidoM != null
+            ? menor.per_persona.primerNombre +
+              ' ' +
+              menor.per_persona.apellidoP +
+              ' ' +
+              menor.per_persona.apellidoM
+            : menor.per_persona.primerNombre +
+              ' ' +
+              menor.per_persona.apellidoP,
+        autorizado: menor.lda_vacuna_menor[0]?.flag_autorizado,
+      };
+    });
+    return menoresDto;
   }
 }

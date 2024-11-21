@@ -4,6 +4,8 @@ import {
   faBell,
   faCalendar,
   faLightbulb,
+  faPenToSquare,
+  IconDefinition,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from "react-router-dom";
@@ -17,6 +19,7 @@ const LibretaFooter = () => {
   let textoHome: string = "Inicio";
   let textoAvisos: string = "Autoriza";
   let textoAsistencia: string = "Asistencia";
+  let iconoAsistencia: IconDefinition = faCalendar;
   let textoMensajes: string = "Mensajes";
   if (!isLoading && data) {
     switch (data.rol) {
@@ -24,6 +27,7 @@ const LibretaFooter = () => {
         textoHome = "Inicio";
         textoAvisos = "Autoriza";
         textoAsistencia = "Asistencia";
+        iconoAsistencia = faCalendar;
         textoMensajes = "Mensajes";
         bgColorClass = "bg-figma-blue";
         textColorClass = "text-white";
@@ -32,6 +36,7 @@ const LibretaFooter = () => {
         textoHome = "Inicio";
         textoAvisos = "Solicitudes";
         textoAsistencia = "Asistencia";
+        iconoAsistencia = faCalendar;
         textoMensajes = "Mensajes";
         bgColorClass = "bg-figma-green";
         textColorClass = "text-white";
@@ -39,13 +44,17 @@ const LibretaFooter = () => {
       case "director":
         textoHome = "Inicio";
         textoAvisos = "Solicitudes";
-        textoAsistencia = "Asistencia";
+        textoAsistencia = "Ingresos";
+        iconoAsistencia = faPenToSquare;
         textoMensajes = "Mensajes";
+        bgColorClass = "bg-figma-purple";
+        textColorClass = "text-white";
         break;
       default:
         textoHome = "Inicio";
         textoAvisos = "Asistencia";
         textoAsistencia = "Asistencia";
+        iconoAsistencia = faCalendar;
         textoMensajes = "Mensajes";
         break;
     }
@@ -84,7 +93,7 @@ const LibretaFooter = () => {
               className="flex flex-col items-center"
             >
               <FontAwesomeIcon
-                icon={faCalendar}
+                icon={iconoAsistencia}
                 color="white"
                 size="lg"
                 className="p-1 w-6"

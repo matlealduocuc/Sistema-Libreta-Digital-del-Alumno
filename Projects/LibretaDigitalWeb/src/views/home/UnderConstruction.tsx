@@ -7,14 +7,19 @@ const UnderConstruction = () => {
   const navigate = useNavigate();
   const rol = ObtenerRolUser();
   let bgTitle = "bg-figma-blue";
+  let bgButton = "bg-figma-blue";
   switch (rol) {
     case "apoderado":
       bgTitle = "bg-figma-blue";
+      bgButton = "bg-figma-blue";
       break;
     case "educador":
       bgTitle = "bg-figma-green";
+      bgButton = "bg-figma-green";
       break;
     case "director":
+      bgTitle = "bg-figma-purple";
+      bgButton = "bg-figma-purple";
       break;
     default:
       break;
@@ -54,7 +59,7 @@ const UnderConstruction = () => {
             </div>
             <div className="w-full flex justify-center">
               <button
-                className="bg-figma-blue-button text-white w-80 text-lg font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-blue-700"
+                className={`${bgButton} text-white w-80 text-lg font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-blue-700`}
                 onClick={() => {
                   navigate(-1);
                 }}

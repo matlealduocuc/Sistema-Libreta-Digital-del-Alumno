@@ -33,6 +33,8 @@ const LibretaHeader: React.FC<LibretaHeaderProps> = ({ title }) => {
         textColorClass = "text-white";
         break;
       case "director":
+        bgColorClass = "bg-figma-purple";
+        textColorClass = "text-white";
         break;
       default:
         break;

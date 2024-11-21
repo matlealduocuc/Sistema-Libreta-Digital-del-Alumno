@@ -64,63 +64,63 @@ export class MenorService {
   }
 
   async getMenoresVacunasByApoderado(idApoderado: number) {
-    return await this.prisma.lda_vacuna.findMany({
+    return await this.prisma.menor.findMany({
       where: {
-        nmro_agno: {
-          equals: new Date().getFullYear(),
-        },
         lda_vacuna_menor: {
           some: {
-            lda_menor: {
-              iden_per_apoderado: idApoderado,
-              flag_activo: true,
-              flag_eliminado: false,
+            lda_vacuna: {
+              nmro_agno: {
+                equals: new Date().getFullYear(),
+              },
             },
           },
         },
+        iden_per_apoderado: idApoderado,
+        flag_activo: true,
+        flag_eliminado: false,
       },
       select: {
-        iden_vacuna: true,
-        desc_nombre: true,
-        fech_vacunacion: true,
-        lda_vacuna_menor: {
+        id: true,
+        per_persona: {
+          select: {
+            primerNombre: true,
+            segundoNombre: true,
+            apellidoP: true,
+            apellidoM: true,
+          },
+        },
+        lda_nivel_menor: {
           where: {
-            lda_menor: {
-              iden_per_apoderado: idApoderado,
+            flag_activo: true,
+            flag_eliminado: false,
+            lda_nivel: {
               flag_activo: true,
               flag_eliminado: false,
             },
           },
           select: {
-            flag_autorizado: true,
-            lda_menor: {
+            lda_nivel: {
               select: {
-                id: true,
-                per_persona: {
-                  select: {
-                    primerNombre: true,
-                    segundoNombre: true,
-                    apellidoP: true,
-                    apellidoM: true,
-                  },
-                },
-                lda_nivel_menor: {
-                  where: {
-                    flag_activo: true,
-                    flag_eliminado: false,
-                    lda_nivel: {
-                      flag_activo: true,
-                      flag_eliminado: false,
-                    },
-                  },
-                  select: {
-                    lda_nivel: {
-                      select: {
-                        desc_nombre: true,
-                      },
-                    },
-                  },
-                },
+                desc_nombre: true,
+              },
+            },
+          },
+        },
+        lda_vacuna_menor: {
+          where: {
+            lda_vacuna: {
+              nmro_agno: {
+                equals: new Date().getFullYear(),
+              },
+            },
+          },
+          select: {
+            flag_autorizado: true,
+            lda_vacuna: {
+              select: {
+                iden_vacuna: true,
+                desc_nombre: true,
+                fech_vacunacion: true,
               },
             },
           },
