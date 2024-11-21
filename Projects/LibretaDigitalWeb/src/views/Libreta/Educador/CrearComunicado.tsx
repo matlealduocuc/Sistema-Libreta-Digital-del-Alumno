@@ -84,7 +84,7 @@ const CrearComunicado = () => {
         setLoadingFull(true);
         try {
           const menores =
-            await menorController.getSelectMenoresApoderadoByIdGrado(
+            await menorController.getSelectMenoresApoderadoByIdNivel(
               Number(grado)
             );
           if (menores) {

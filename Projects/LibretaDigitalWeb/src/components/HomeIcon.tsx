@@ -1,5 +1,6 @@
 import { faHome } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon, SizeProp } from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { SizeProp } from "@fortawesome/fontawesome-svg-core";
 
 interface HomeIconProps {
   color?: string;

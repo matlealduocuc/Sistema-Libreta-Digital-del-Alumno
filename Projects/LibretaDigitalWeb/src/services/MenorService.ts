@@ -15,6 +15,7 @@ export class MenorService {
   }
 
   async getMenoresByApoderado(idPersona: number) {
+    console.log(idPersona);
     return [
       {
         id: 1,
