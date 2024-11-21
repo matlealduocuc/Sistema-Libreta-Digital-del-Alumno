@@ -11,7 +11,7 @@ export const AuthLayout = () => {
 
   useEffect(() => {
     setLoadingLayout(isLoading);
-    if (!isLoading && !isError) return navigate("/libreta");
+    if (!isLoading && !isError) return navigate("/libretaRedirect");
   }, [isLoading, isError, navigate]);
 
   return (

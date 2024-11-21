@@ -29,6 +29,7 @@ export class UsuarioService {
     const usuario = await this.prisma.usuario.findFirst({
       where: {
         eliminado: false,
+        activo: true,
         AND: {
           persona: {
             run: run,
@@ -36,9 +37,9 @@ export class UsuarioService {
         },
       },
       include: {
-        persona: { include: { TipoIdentificador: true } },
-        usr_rol_usuario: {
-          select: { usr_rol: { select: { desc_rol: true } } },
+        persona: { include: { TipoIdentificador: true, per_sexo: true } },
+        usr_rol: {
+          select: { desc_rol: true },
         },
       },
     });

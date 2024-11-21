@@ -1,9 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { LoginRutDto } from './dto/login-rut.dto';
-import { PrismaService } from 'src/prisma.service';
 import { UsuarioService } from 'src/usuario/usuario.service';
 import { JwtService } from '@nestjs/jwt';
-import { PersonaService } from 'src/persona/persona.service';
 import { AuthorizedUserDto } from './dto/authorized-user.dto';
 
 @Injectable()
@@ -26,7 +24,8 @@ export class AuthService {
 
     const persona = usuario.persona;
     const tipoIdentificacion = persona.TipoIdentificador;
-    const rolesUsuario = usuario.usr_rol_usuario;
+    const sexo = persona.per_sexo;
+    const rolUsuario = usuario.usr_rol;
 
     const personAuthDto = {
       idPersona: persona.id,
@@ -38,10 +37,11 @@ export class AuthService {
       dv: persona.char_dv,
       dni: persona.desc_dni,
       tipoIdentificacion: tipoIdentificacion.tipo,
+      sexo: sexo.code_sexo,
     };
 
     const payload: any = {
-      rol: rolesUsuario.map((x) => x.usr_rol.desc_rol),
+      rol: rolUsuario.desc_rol,
       idUsuario: usuario.id,
       idPersona: persona.id,
     };
@@ -57,7 +57,7 @@ export class AuthService {
       token,
       personAuthDto,
       usuario.id,
-      rolesUsuario.map((x) => x.usr_rol.desc_rol),
+      rolUsuario.desc_rol,
     );
   }
 }

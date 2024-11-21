@@ -38,9 +38,9 @@ const PerfilUsuario = () => {
           const nombreCompleto = ObtenerNombreCompletoJoined(perfil);
           setUser({
             name: nombreCompleto,
-            email: perfil.email ?? "",
-            phone: perfil.telefono ?? "",
-            address: perfil.direccion ?? "",
+            email: perfil.email ?? "No registrado",
+            phone: perfil.telefono ?? "No registrado",
+            address: perfil.direccion ?? "No registrado",
             rut: perfil.run + "-" + perfil.dv,
           });
           setEditData({
@@ -112,126 +112,131 @@ const PerfilUsuario = () => {
   };
 
   return (
-    <Spin spinning={loadingFull}>
-      <div className="p-4 max-w-lg mx-auto bg-white shadow-md rounded-lg">
-        <div className="flex items-center justify-center mb-6">
-          <div className="bg-gray-300 rounded-full h-24 w-24 flex items-center justify-center">
-            <span className="text-4xl font-bold text-gray-600">
-              {user.name?.charAt(0) ?? "?"}{" "}
-              {/* Muestra la primera letra del nombre */}
-            </span>
+    <div className="px-4">
+      <Spin spinning={loadingFull}>
+        <div className="p-4 max-w-lg mx-auto bg-white shadow-md rounded-lg">
+          <div className="flex items-center justify-center">
+            <div className="bg-gray-300 rounded-full h-24 w-24 flex items-center justify-center">
+              <span className="text-4xl font-bold text-gray-600">
+                {user.name?.charAt(0) ?? "?"}{" "}
+                {/* Muestra la primera letra del nombre */}
+              </span>
+            </div>
           </div>
-        </div>
+          <small className="flex justify-center pt-0 pb-4">
+            Rol: {usuario.rol}
+          </small>
 
-        <div className="space-y-4">
-          {/* Rut del usuario */}
-          <div className="bg-gray-100 p-4 rounded-lg shadow-sm">
-            <h2 className="font-semibold text-lg">Rut</h2>
-            <p className="text-gray-700">{user.rut}</p>
+          <div className="space-y-4">
+            {/* Rut del usuario */}
+            <div className="bg-gray-100 p-4 py-2 rounded-lg shadow-sm">
+              <h2 className="font-semibold text-lg">Rut</h2>
+              <p className="text-gray-700">{user.rut}</p>
+            </div>
+
+            {/* Nombre del usuario */}
+            <div className="bg-gray-100 p-4 py-2 rounded-lg shadow-sm">
+              <h2 className="font-semibold text-lg">Nombre</h2>
+              <p className="text-gray-700">{user.name}</p>
+            </div>
+
+            {/* Email */}
+            <div className="bg-gray-100 p-4 py-2 rounded-lg shadow-sm">
+              <h2 className="font-semibold text-lg">Correo Electrónico</h2>
+              <p className="text-gray-700">{user.email}</p>
+            </div>
+
+            {/* Teléfono */}
+            <div className="bg-gray-100 p-4 py-2 rounded-lg shadow-sm">
+              <h2 className="font-semibold text-lg">Teléfono</h2>
+              <p className="text-gray-700">{user.phone}</p>
+            </div>
+
+            {/* Dirección */}
+            <div className="bg-gray-100 p-4 py-2 rounded-lg shadow-sm">
+              <h2 className="font-semibold text-lg">Dirección</h2>
+              <p className="text-gray-700">{user.address}</p>
+            </div>
           </div>
 
-          {/* Nombre del usuario */}
-          <div className="bg-gray-100 p-4 rounded-lg shadow-sm">
-            <h2 className="font-semibold text-lg">Nombre</h2>
-            <p className="text-gray-700">{user.name}</p>
+          <div className="mt-6 text-center">
+            <button
+              className="bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700 transition"
+              onClick={showModal}
+            >
+              Editar Perfil
+            </button>
           </div>
 
-          {/* Email */}
-          <div className="bg-gray-100 p-4 rounded-lg shadow-sm">
-            <h2 className="font-semibold text-lg">Correo Electrónico</h2>
-            <p className="text-gray-700">{user.email}</p>
+          <div className="mt-6 text-center">
+            <button
+              className="bg-red-600 text-white py-2 px-6 rounded-full hover:bg-red-700 transition"
+              onClick={handleCerrarSesion}
+            >
+              Cerrar sesión
+            </button>
           </div>
 
-          {/* Teléfono */}
-          <div className="bg-gray-100 p-4 rounded-lg shadow-sm">
-            <h2 className="font-semibold text-lg">Teléfono</h2>
-            <p className="text-gray-700">{user.phone}</p>
-          </div>
+          {!isLoading && data && data.rol.includes("admin") && (
+            <div className="mt-6">
+              <hr />
+              <div className="flex justify-center mt-6">
+                <span>- Zona de Admin -</span>
+              </div>
+              <div className="mt-6 text-center">
+                <button
+                  className="bg-white text-black border-2 border-gray-700 py-2 px-6 rounded-full hover:bg-gray-400 transition"
+                  onClick={() => navigate("/")}
+                >
+                  Ir a sitio de administración
+                </button>
+              </div>
+            </div>
+          )}
 
-          {/* Dirección */}
-          <div className="bg-gray-100 p-4 rounded-lg shadow-sm">
-            <h2 className="font-semibold text-lg">Dirección</h2>
-            <p className="text-gray-700">{user.address}</p>
-          </div>
-        </div>
-
-        <div className="mt-6 text-center">
-          <button
-            className="bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700 transition"
-            onClick={showModal}
+          {/* Modal de edición */}
+          <Modal
+            title="Editar Perfil"
+            open={isModalOpen}
+            onOk={handleOk}
+            onCancel={handleCancel}
+            okText="Guardar"
+            okButtonProps={{ loading: loadingModal }}
+            cancelText="Cancelar"
+            cancelButtonProps={{ disabled: loadingModal }}
           >
-            Editar Perfil
-          </button>
+            <Spin spinning={loadingModal}>
+              <div className="space-y-4">
+                <div>
+                  <label className="block mb-1">Correo Electrónico</label>
+                  <Input
+                    name="email"
+                    value={editData.email || ""}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div>
+                  <label className="block mb-1">Teléfono</label>
+                  <Input
+                    name="phone"
+                    value={editData.phone || ""}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div>
+                  <label className="block mb-1">Dirección</label>
+                  <Input
+                    name="address"
+                    value={editData.address || ""}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </div>
+            </Spin>
+          </Modal>
         </div>
-
-        <div className="mt-6 text-center">
-          <button
-            className="bg-red-600 text-white py-2 px-6 rounded-full hover:bg-red-700 transition"
-            onClick={handleCerrarSesion}
-          >
-            Cerrar sesión
-          </button>
-        </div>
-
-        {!isLoading && data.rol.includes("admin") && (
-          <div className="mt-6">
-            <hr />
-            <div className="flex justify-center mt-6">
-              <span>- Zona de Admin -</span>
-            </div>
-            <div className="mt-6 text-center">
-              <button
-                className="bg-white text-black border-2 border-gray-700 py-2 px-6 rounded-full hover:bg-gray-400 transition"
-                onClick={() => navigate("/")}
-              >
-                Ir a sitio de administración
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Modal de edición */}
-        <Modal
-          title="Editar Perfil"
-          open={isModalOpen}
-          onOk={handleOk}
-          onCancel={handleCancel}
-          okText="Guardar"
-          okButtonProps={{ loading: loadingModal }}
-          cancelText="Cancelar"
-          cancelButtonProps={{ disabled: loadingModal }}
-        >
-          <Spin spinning={loadingModal}>
-            <div className="space-y-4">
-              <div>
-                <label className="block mb-1">Correo Electrónico</label>
-                <Input
-                  name="email"
-                  value={editData.email || ""}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div>
-                <label className="block mb-1">Teléfono</label>
-                <Input
-                  name="phone"
-                  value={editData.phone || ""}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div>
-                <label className="block mb-1">Dirección</label>
-                <Input
-                  name="address"
-                  value={editData.address || ""}
-                  onChange={handleInputChange}
-                />
-              </div>
-            </div>
-          </Spin>
-        </Modal>
-      </div>
-    </Spin>
+      </Spin>
+    </div>
   );
 };
 

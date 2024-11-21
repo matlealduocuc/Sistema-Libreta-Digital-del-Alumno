@@ -62,7 +62,7 @@ export const Login = () => {
     }
     const isLoginValid = await authController.login(formData);
     if (isLoginValid) {
-      navigate("/libreta");
+      navigate("/libretaRedirect");
     } else {
       setError("password", {
         type: "manual",

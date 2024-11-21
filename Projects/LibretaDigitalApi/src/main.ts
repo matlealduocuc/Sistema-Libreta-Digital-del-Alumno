@@ -14,7 +14,9 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Sistema Libreta Digital del Alumno API')
-    .setDescription('La descripicón de la API del sistema de la libreta digital del alumno')
+    .setDescription(
+      'La descripicón de la API del sistema de la libreta digital del alumno',
+    )
     .setVersion('0.1')
     .build();
   const document = SwaggerModule.createDocument(app, config);

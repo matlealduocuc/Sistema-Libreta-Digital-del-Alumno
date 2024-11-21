@@ -5,8 +5,5 @@ import { AuthGuard } from '../guards/auth.guard';
 import { RolesGuard } from '../guards/roles.guard';
 
 export function Auth(roles: Rol | Rol[]) {
-  return applyDecorators(
-    Roles(roles),
-    UseGuards(AuthGuard, RolesGuard)
-);
+  return applyDecorators(Roles(roles), UseGuards(AuthGuard, RolesGuard));
 }
