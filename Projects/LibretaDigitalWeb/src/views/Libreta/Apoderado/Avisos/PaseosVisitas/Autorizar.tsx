@@ -91,11 +91,11 @@ const AutorizarPaseoVisitaMenor = () => {
 
   return (
     <Spin spinning={loading}>
-      <div className="flex flex-col mt-9 w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
-        <main className="flex-1 p-4">
+      <div className="flex flex-col w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
+        <main className="flex-1 px-4 py-2">
           {/* Paso 1: Estado de Autorización */}
           {step === 1 && (
-            <div className="text-center space-y-6">
+            <div className="text-center space-y-4">
               <h2 className="text-xl font-bold mb-4">Estado de Autorización</h2>
               <p className="mb-4">
                 En esta sección encontrarás información
