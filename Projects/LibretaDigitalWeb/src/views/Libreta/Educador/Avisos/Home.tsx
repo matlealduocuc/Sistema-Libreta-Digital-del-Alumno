@@ -177,7 +177,7 @@ const EducadorAvisosHome = () => {
       onTouchEnd={handleDragEnd}
     >
       {/* Header */}
-      <div className="fixed top-[24px] w-full py-3 flex items-center justify-between px-4 bg-figma-green text-white">
+      <div className="fixed top-[24px] z-50 w-full py-3 flex items-center justify-between px-4 bg-figma-green text-white">
         <button onClick={goToPreviousSlide} className="font-bold text-2xl">
           {`<`}
         </button>
@@ -188,7 +188,7 @@ const EducadorAvisosHome = () => {
       </div>
 
       {/* Slides Container */}
-      <div className="relative w-full h-[66vh] overflow-hidden mt-24">
+      <div className="relative w-full h-[66vh] overflow-hidden mt-14">
         <div
           className="flex transition-transform duration-300 ease-in-out"
           style={{
@@ -211,7 +211,7 @@ const EducadorAvisosHome = () => {
                 dangerouslySetInnerHTML={{ __html: slide.description }}
               ></p>
 
-              <div className="my-6 w-auto max-w-xs">
+              <div className="my-2 w-auto max-w-xs">
                 <img
                   style={{ objectFit: "contain" }}
                   src={slide.imgSrc}

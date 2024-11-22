@@ -28,7 +28,7 @@ const UnderConstruction = () => {
   return (
     <div className="flex flex-col items-center bg-white">
       <div
-        className={`w-full py-3 flex items-center justify-center px-4 ${bgTitle} text-white`}
+        className={`w-full py-2 flex items-center justify-center px-4 ${bgTitle} text-white`}
       >
         <h1 className="text-xl font-bold">¡Oops!</h1>
       </div>

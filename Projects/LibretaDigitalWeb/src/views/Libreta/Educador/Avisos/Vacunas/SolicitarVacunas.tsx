@@ -23,22 +23,22 @@ const SolicitarVacunas = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col mt-9 w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
-      <main className="flex-1 p-4">
+    <div className="min-h-screen flex flex-col w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
+      <main className="flex-1 px-4 py-2">
         {/* Paso 1 */}
         {step === 1 && (
           <div className="text-center">
-            <h2 className="text-xl font-bold mb-8">
+            <h2 className="text-xl font-bold mb-4">
               Solicitud de Autorización
             </h2>
-            <p className="mb-12">
+            <p className="mb-4">
               Haz click en <strong>“Continuar”</strong>
               <br />
               para solicitar la Autorización
               <br />
               de <strong>Vacuna contra la Influenza</strong>.
             </p>
-            <div className="border border-gray-300 rounded-lg p-4 mb-16 bg-white">
+            <div className="border border-gray-300 rounded-lg p-4 mb-4 bg-white">
               <p>
                 <strong>Nivel:</strong> {nivelVacuna.nombre}
               </p>
@@ -131,13 +131,6 @@ const SolicitarVacunas = () => {
           </div>
         )}
       </main>
-
-      <footer className="bg-white border-t border-gray-300 p-4 flex justify-around">
-        <button className="text-blue-600">Inicio</button>
-        <button className="text-blue-600">Avisos</button>
-        <button className="text-blue-600">Mensaje</button>
-        <button className="text-blue-600">Info</button>
-      </footer>
     </div>
   );
 };

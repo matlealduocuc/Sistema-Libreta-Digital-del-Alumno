@@ -86,7 +86,7 @@ const PaseosVisitasListadoMenores = () => {
 
   return (
     <Spin spinning={loading}>
-      <div className="p-4 w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
+      <div className="px-4 py-2 w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-xl font-bold">Listado de Menores</h1>
         </div>
