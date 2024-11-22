@@ -19,7 +19,7 @@ const RevisarVacunaMenor = () => {
 
   return (
     <div className="min-h-screen flex flex-col mt-9 w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
-      <main className="flex-1 p-4">
+      <main className="flex-1 px-4 py-2">
         <div className="text-center space-y-6">
           <h2 className="text-xl font-bold mb-4">Estado de Autorización</h2>
           <p className="mb-4">
@@ -53,13 +53,6 @@ const RevisarVacunaMenor = () => {
           </button>
         </div>
       </main>
-
-      <footer className="bg-white border-t border-gray-300 p-4 flex justify-around">
-        <button className="text-blue-600">Inicio</button>
-        <button className="text-blue-600">Avisos</button>
-        <button className="text-blue-600">Mensaje</button>
-        <button className="text-blue-600">Info</button>
-      </footer>
     </div>
   );
 };

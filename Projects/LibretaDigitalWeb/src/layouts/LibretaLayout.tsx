@@ -108,7 +108,7 @@ const LibretaLayout = () => {
         <LibretaHeader title={title} />
         <main
           className={`flex-grow p-0 ${
-            pathsQuitarHeader.includes(pathName) ? "pt-8" : "pt-24"
+            pathsQuitarHeader.includes(pathName) ? "pt-8" : "pt-[84px]"
           } pb-20`}
         >
           <Outlet />

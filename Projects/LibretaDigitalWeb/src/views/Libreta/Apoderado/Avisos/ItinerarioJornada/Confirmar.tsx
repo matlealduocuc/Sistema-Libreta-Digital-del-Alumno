@@ -90,11 +90,11 @@ const ConfirmarItinerarioJornadaMenor = () => {
 
   return (
     <Spin spinning={loading}>
-      <div className="flex flex-col mt-4 w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
-        <main className="flex-1 p-4">
+      <div className="flex flex-col w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
+        <main className="flex-1 px-4 py-2">
           {/* Paso 1 */}
           {step === 1 && (
-            <div className="text-center space-y-10">
+            <div className="text-center space-y-4">
               <h2 className="text-xl font-bold mb-6">
                 Confirmación de Actividad
               </h2>
@@ -116,7 +116,8 @@ const ConfirmarItinerarioJornadaMenor = () => {
                   <strong>Actividad:</strong> {menor?.tituloActividad}
                 </p>
                 <p>
-                  <strong>Fecha:</strong> {menor?.fechaActividad.split(".").join("-")}
+                  <strong>Fecha:</strong>{" "}
+                  {menor?.fechaActividad.split(".").join("-")}
                 </p>
                 <p className="mb-2">
                   <strong>Descripción:</strong>
