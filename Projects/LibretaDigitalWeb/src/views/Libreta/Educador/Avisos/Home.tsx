@@ -11,16 +11,15 @@ const EducadorAvisosHome = () => {
   const slides = [
     {
       title: "Vacunas",
-      heading: "¡Autoriza y Protege!",
-      description: `Aquí podrás conocer novedades acerca
+      heading: "¡Solicita Autorización",
+      description: `Aquí podrás enviar a los Apoderados tus
       <br />
-      de las próximas <strong>Vacunas</strong> y <strong>Recomendaciones</strong>
-      <br />
-      de la autoridad sanitaria.
+      <strong>Solicitudes de Autorización de Vacunas</strong>.
       <br />
       <br />
-      Haz click en <strong>"Continuar"</strong>
-      <br />para ver el detalle y el Estado de Autorización.`,
+      Haz click en <strong>“Solicitar”</strong> para enviar una <strong>Solicitud,</strong>
+      <br />
+      o en <strong>“Revisar”</strong> para ver el <strong>Estado de las Solicitudes.</strong>`,
       buttonText: "Solicitar",
       href: initPathName + "/avisos/vacunas/avisar-niveles-menores",
       isSecondButton: true,
@@ -31,16 +30,16 @@ const EducadorAvisosHome = () => {
     },
     {
       title: "Paseos y Visitas",
-      heading: "¡Aprender Divertido!",
-      description: `En esta sección encontrarás información
-      <br />
-      sobre los <strong>Paseos y Visitas</strong>.
+      heading: "¡Responsabilidad Siempre!",
+      description: `Gestiona aquí los <strong>Paseos y Visitas.</strong>
       <br />
       <br />
-      Haz clic en <strong>“Continuar”</strong>
+      Haz clic en <strong>Solicitar</strong> para Crear, Asignar y
       <br />
-      para <strong>Revisar y Autorizar</strong>.`,
-      buttonText: "Continuar",
+      Solicitar <strong>Autorización de Paseos y Visitas,</strong>
+      <br />
+      o en “Revisar” para ver el <strong>Estado de las Solicitudes</strong>.`,
+      buttonText: "Solicitar",
       href: initPathName + "/avisos/paseos-visitas/listado-menores",
       isSecondButton: true,
       secondButtonText: "Revisar",
@@ -49,17 +48,16 @@ const EducadorAvisosHome = () => {
     },
     {
       title: "Reuniones de Apoderados",
-      heading: "¡Participar es Clave!",
-      description: `Descubre las fechas y temas
-      <br />
-      de las <strong>Próximas Reuniones</strong>
-      <br />
-      y Confirmar tu Asistencia.
+      heading: "¡Comunidad Participativa! ",
+      description: `Gestiona tus <strong>Reuniones de Apoderados.</strong>
       <br />
       <br />
-      Haz clic en <strong>“Continuar”</strong>
-      <br />para revisar.`,
-      buttonText: "Continuar",
+      Haz clic en <strong>“Solicitar”</strong> para Crear, Asignar
+      <br />
+      y Solicitar <strong>Confirmación de Asistencia</strong>,
+      <br />
+      o en “Revisar” para ver el Estado de tus Solicitudes.`,
+      buttonText: "Solicitar",
       href: initPathName + "/avisos/reuniones-apoderados/listado-menores",
       isSecondButton: true,
       secondButtonText: "Revisar",
@@ -69,18 +67,16 @@ const EducadorAvisosHome = () => {
     },
     {
       title: "Itinerario de Jornada",
-      heading: "¡Actividades Diarias!",
-      description: `Conoce las <strong>Experiencias Educativas</strong>
-        <br />
-        y mantente al tanto de su evolución.
-        <br />
-        <br />
-        Haz clic en <strong>“Continuar”</strong>
-        <br />
-        para ver las Actividades Diarias
-        <br />
-        y <strong>Confirmar tu Conocimiento</strong>.`,
-      buttonText: "Continuar",
+      heading: "¡Apoderados Informados!",
+      description: `Informa a los apoderados de <strong>Actividades de los Menores.</strong>
+      <br />
+      <br />
+      Haz clic en <strong>“Solicitar”</strong> para Crear, Asignar
+      <br />
+      y Solicitar <strong>Confirmación de Conocimiento</strong>,
+      <br />
+      o en <strong>“Revisar”</strong> para ver el <strong>Estado de tus Solicitudes.</strong>`,
+      buttonText: "Solicitar",
       href: initPathName + "/avisos/itinerario-jornada/listado-menores",
       isSecondButton: true,
       secondButtonText: "Revisar",
@@ -207,7 +203,7 @@ const EducadorAvisosHome = () => {
                 {slide.heading}
               </h2>
               <p
-                className="text-gray-700"
+                className="text-gray-700 text-sm"
                 dangerouslySetInnerHTML={{ __html: slide.description }}
               ></p>
 
