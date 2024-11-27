@@ -4,10 +4,11 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ObtenerInitPathName } from "@/common/FuncionesComunesUsuario";
 import { PaseoController } from "@/controllers/PaseoController";
+import { ReunionController } from "@/controllers/ReunionController";
 
-const ListadoNivelesAutorizadosPaseo = () => {
-  const { idPaseo } = useParams<{
-    idPaseo: string;
+const ListadoNivelesConfirmadosReunion = () => {
+  const { idReunion } = useParams<{
+    idReunion: string;
   }>();
   const { isLoading } = useAuth();
   const [niveles, setNiveles] = useState<
@@ -19,16 +20,18 @@ const ListadoNivelesAutorizadosPaseo = () => {
   >([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState<boolean>(true);
-  const paseoController = new PaseoController();
+  const reunionController = new ReunionController();
   const navigate = useNavigate();
   const initPathName = ObtenerInitPathName();
 
   useEffect(() => {
     const fetchNiveles = async () => {
       setLoading(true);
-      if (!isLoading && idPaseo) {
+      if (!isLoading && idReunion) {
         try {
-          const nivelesData = await paseoController.getNivelesByPaseo(+idPaseo);
+          const nivelesData = await reunionController.getNivelesByReunion(
+            +idReunion
+          );
           if (nivelesData) {
             setNiveles(
               nivelesData.map(
@@ -54,16 +57,16 @@ const ListadoNivelesAutorizadosPaseo = () => {
 
     fetchNiveles();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading, idPaseo]);
+  }, [isLoading, idReunion]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
   const handleNivelClick = (idNivel: number) => {
-    if (idPaseo) {
+    if (idReunion) {
       navigate(
-        `${initPathName}/avisos/paseos-visitas/revisar-listado-menores/${+idPaseo}/${idNivel}`
+        `${initPathName}/avisos/reuniones-apoderados/revisar-listado-menores/${+idReunion}/${idNivel}`
       );
     }
   };
@@ -119,7 +122,7 @@ const ListadoNivelesAutorizadosPaseo = () => {
                 type="search"
                 id="search-niveles"
                 className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Buscar por Nivel"
+                placeholder="Buscar por el nombre del nivel"
                 value={searchTerm}
                 onChange={handleSearch}
               />
@@ -131,7 +134,7 @@ const ListadoNivelesAutorizadosPaseo = () => {
           {filteredNiveles.length > 0 ? (
             filteredNiveles.map((nivel) => (
               <div
-                key={nivel.idNivel + "-" + idPaseo}
+                key={nivel.idNivel + "-" + idReunion}
                 className="border border-gray-300 rounded p-4 shadow-md cursor-pointer"
                 onClick={() => handleNivelClick(nivel.idNivel)}
               >
@@ -150,4 +153,4 @@ const ListadoNivelesAutorizadosPaseo = () => {
   );
 };
 
-export default ListadoNivelesAutorizadosPaseo;
+export default ListadoNivelesConfirmadosReunion;

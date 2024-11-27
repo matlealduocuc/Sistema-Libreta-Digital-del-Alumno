@@ -1,88 +1,89 @@
 import { useAuth } from "@/hooks/useAuth";
 import { Spin } from "antd";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ObtenerInitPathName } from "@/common/FuncionesComunesUsuario";
-import { PaseoController } from "@/controllers/PaseoController";
+import { ReunionController } from "@/controllers/ReunionController";
 
-const ListadoNivelesAutorizadosPaseo = () => {
-  const { idPaseo } = useParams<{
-    idPaseo: string;
-  }>();
+const ListadoReunionRevisar = () => {
   const { isLoading } = useAuth();
-  const [niveles, setNiveles] = useState<
+  const [reuniones, setReuniones] = useState<
     {
-      idNivel: number;
-      descNombre: string;
-      cantidadMenores: number;
+      idReunion: number;
+      reunion: string;
+      sala: string;
+      fechaReunion: string;
     }[]
   >([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState<boolean>(true);
-  const paseoController = new PaseoController();
+  const reunionController = new ReunionController();
   const navigate = useNavigate();
   const initPathName = ObtenerInitPathName();
 
   useEffect(() => {
-    const fetchNiveles = async () => {
+    const fetchReuniones = async () => {
       setLoading(true);
-      if (!isLoading && idPaseo) {
+      if (!isLoading) {
         try {
-          const nivelesData = await paseoController.getNivelesByPaseo(+idPaseo);
-          if (nivelesData) {
-            setNiveles(
-              nivelesData.map(
-                (nivel: {
-                  idNivel: number;
-                  descNombre: string;
-                  cantidadMenores: number;
+          const reunionesData =
+            await reunionController.getReunionesByEducador();
+          if (reunionesData) {
+            setReuniones(
+              reunionesData.map(
+                (reunion: {
+                  idReunion: number;
+                  reunion: string;
+                  sala: string;
+                  fechaReunion: string;
                 }) => ({
-                  idNivel: nivel.idNivel,
-                  descNombre: nivel.descNombre,
-                  cantidadMenores: nivel.cantidadMenores,
+                  idReunion: reunion.idReunion,
+                  reunion: reunion.reunion,
+                  sala: reunion.sala,
+                  fechaReunion: reunion.fechaReunion,
                 })
               )
             );
           }
         } catch (error) {
-          console.error("Error fetching niveles:", error);
+          console.error("Error fetching reuniones:", error);
         } finally {
           setLoading(false);
         }
       }
     };
 
-    fetchNiveles();
+    fetchReuniones();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading, idPaseo]);
+  }, [isLoading]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
-  const handleNivelClick = (idNivel: number) => {
-    if (idPaseo) {
-      navigate(
-        `${initPathName}/avisos/paseos-visitas/revisar-listado-menores/${+idPaseo}/${idNivel}`
-      );
-    }
+  const handlePaseoClick = (idReunion: number) => {
+    navigate(
+      `${initPathName}/avisos/reuniones-apoderados/revisar-listado-niveles/${idReunion}`
+    );
   };
 
-  const filteredNiveles = niveles.filter((nivel) =>
-    nivel.descNombre.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredReuniones = reuniones.filter((reunion) =>
+    reunion.reunion.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <Spin spinning={loading}>
       <div className="px-4 py-2 w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
         <div className="flex justify-between items-center mb-2">
-          <h1 className="text-xl font-bold">¡Revisa el Detalle por Nivel!</h1>
+          <h1 className="text-xl font-bold">
+            ¡Revisa el listado de Reuniones!
+          </h1>
         </div>
         <div className="border border-gray-300 rounded-lg p-2 mb-2 text-sm bg-gray-200">
           <span>
-            Selecciona un <strong>Nivel</strong> para ver
+            Selecciona una <strong>Reunión</strong>
             <br />
-            el <strong>Estado de Autorización por Menor.</strong>
+            para ver el <strong>Detalle por Nivel.</strong>
           </span>
         </div>
 
@@ -92,7 +93,7 @@ const ListadoNivelesAutorizadosPaseo = () => {
             onSubmit={(e) => e.preventDefault()}
           >
             <label
-              htmlFor="search-niveles"
+              htmlFor="search"
               className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
             >
               Buscar
@@ -117,9 +118,9 @@ const ListadoNivelesAutorizadosPaseo = () => {
               </div>
               <input
                 type="search"
-                id="search-niveles"
+                id="search"
                 className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Buscar por Nivel"
+                placeholder="Buscar por Reunión"
                 value={searchTerm}
                 onChange={handleSearch}
               />
@@ -128,20 +129,21 @@ const ListadoNivelesAutorizadosPaseo = () => {
         </div>
 
         <div className="grid gap-2">
-          {filteredNiveles.length > 0 ? (
-            filteredNiveles.map((nivel) => (
+          {filteredReuniones.length > 0 ? (
+            filteredReuniones.map((reunion) => (
               <div
-                key={nivel.idNivel + "-" + idPaseo}
+                key={reunion.idReunion}
                 className="border border-gray-300 rounded p-4 shadow-md cursor-pointer"
-                onClick={() => handleNivelClick(nivel.idNivel)}
+                onClick={() => handlePaseoClick(reunion.idReunion)}
               >
-                <h2 className="font-semibold">{nivel.descNombre}</h2>
-                <p>Cantidad menores: {nivel.cantidadMenores}</p>
+                <h2 className="font-semibold">{reunion.reunion}</h2>
+                <p>Sala: {reunion.sala}</p>
+                <p>Fecha: {reunion.fechaReunion.split(".").join("-")}</p>
               </div>
             ))
           ) : (
             <p className="text-gray-500 text-center">
-              No se encontraron niveles.
+              No se encontraron reuniones asignadas.
             </p>
           )}
         </div>
@@ -150,4 +152,4 @@ const ListadoNivelesAutorizadosPaseo = () => {
   );
 };
 
-export default ListadoNivelesAutorizadosPaseo;
+export default ListadoReunionRevisar;

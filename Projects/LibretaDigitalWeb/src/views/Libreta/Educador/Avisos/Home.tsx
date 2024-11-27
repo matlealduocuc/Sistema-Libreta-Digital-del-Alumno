@@ -19,7 +19,7 @@ const EducadorAvisosHome = () => {
       <br />
       Haz click en <strong>“Solicitar”</strong> para enviar una <strong>Solicitud,</strong>
       <br />
-      o en <strong>“Revisar”</strong> para ver el <strong>Estado de las Solicitudes.</strong>`,
+      o en <strong>"Revisar"</strong> para ver el <strong>Estado de las Solicitudes.</strong>`,
       buttonText: "Solicitar",
       href: initPathName + "/avisos/vacunas/avisar-niveles-menores",
       isSecondButton: true,
@@ -38,7 +38,7 @@ const EducadorAvisosHome = () => {
       <br />
       Solicitar <strong>Autorización de Paseos y Visitas,</strong>
       <br />
-      o en “Revisar” para ver el <strong>Estado de las Solicitudes</strong>.`,
+      o en <strong>"Revisar"</strong> para ver el <strong>Estado de las Solicitudes</strong>.`,
       buttonText: "Solicitar",
       href: initPathName + "/avisos/paseos-visitas/listado-menores",
       isSecondButton: true,
@@ -57,13 +57,13 @@ const EducadorAvisosHome = () => {
       <br />
       y Solicitar <strong>Confirmación de Asistencia</strong>,
       <br />
-      o en “Revisar” para ver el Estado de tus Solicitudes.`,
+      o en <strong>"Revisar"</strong> para ver el <strong>Estado de tus Solicitudes<strong>.`,
       buttonText: "Solicitar",
       href: initPathName + "/avisos/reuniones-apoderados/listado-menores",
       isSecondButton: true,
       secondButtonText: "Revisar",
       secondButtonHref:
-        initPathName + "/avisos/reuniones-apoderados/listado-reuniones",
+        initPathName + "/avisos/reuniones-apoderados/revisar-listado-reuniones",
       imgSrc: ReunionApoderadosSvg,
     },
     {

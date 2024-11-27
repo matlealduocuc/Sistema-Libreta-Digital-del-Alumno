@@ -3,6 +3,7 @@ import { Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { NivelController } from "@/controllers/NivelController";
+import { ObtenerInitPathName } from "@/common/FuncionesComunesUsuario";
 
 const ListadoMenoresAutorizadosVacunas = () => {
   const { idNivel } = useParams();
@@ -13,6 +14,7 @@ const ListadoMenoresAutorizadosVacunas = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState<boolean>(true);
   const nivelController = new NivelController();
+  const initPathName = ObtenerInitPathName();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -54,7 +56,9 @@ const ListadoMenoresAutorizadosVacunas = () => {
 
   const handleMenorClick = (idMenor: number) => {
     if (idNivel) {
-      navigate(`/educador/avisos/vacunas/revisar-menor/${+idNivel}/${idMenor}`);
+      navigate(
+        `${initPathName}/avisos/vacunas/revisar-menor/${+idNivel}/${idMenor}`
+      );
     }
   };
 

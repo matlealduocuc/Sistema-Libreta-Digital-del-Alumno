@@ -63,37 +63,36 @@ const LibretaLayout = () => {
   const primerNombreUpper: string = usuario?.persona.primerNombre.toUpperCase();
   const bienvenidaText: string = `${bienvenidoSexo} ${primerNombreUpper}`;
 
+  const avisosPath = initPathName + "/avisos";
   const pageTitles: { [key: string]: string } = {
     [initPathName]: bienvenidaText,
     [initPathName + "/"]: bienvenidaText,
-    [initPathName + "/avisos"]: "Avisos",
     [initPathName + "/comunicate"]: "Comunícate",
     [initPathName + "/informate"]: "Infórmate",
     [initPathName + "/perfil"]: "Perfil del Usuario",
-    [initPathName + "/avisos/home"]: "Avisos",
-    [initPathName + "/avisos/vacunas/listado-menores"]: "Vacunas",
-    [initPathName + "/avisos/vacunas/menor"]: "Vacunas",
-    [initPathName + "/avisos/paseos-visitas/listado-menores"]:
-      "Paseos y Visitas",
-    [initPathName + "/avisos/paseos-visitas/menor"]: "Paseos y Visitas",
-    [initPathName + "/avisos/reuniones-apoderados/listado-menores"]:
+    [avisosPath]: "Avisos",
+    [avisosPath + "/home"]: "Avisos",
+    [avisosPath + "/vacunas/listado-menores"]: "Vacunas",
+    [avisosPath + "/vacunas/menor"]: "Vacunas",
+    [avisosPath + "/paseos-visitas/listado-menores"]: "Paseos y Visitas",
+    [avisosPath + "/paseos-visitas/menor"]: "Paseos y Visitas",
+    [avisosPath + "/reuniones-apoderados/listado-menores"]:
       "Reuniones de Apoderados",
-    [initPathName + "/avisos/reuniones-apoderados/menor"]:
-      "Reuniones de Apoderados",
-    [initPathName + "/avisos/itinerario-jornada/listado-menores"]:
+    [avisosPath + "/reuniones-apoderados/menor"]: "Reuniones de Apoderados",
+    [avisosPath + "/itinerario-jornada/listado-menores"]:
       "Itinerario de Jornada",
-    [initPathName + "/avisos/itinerario-jornada/menor"]:
-      "Itinerario de Jornada",
-    [initPathName + "/avisos/vacunas/revisar-niveles-menores"]: "Vacunas",
-    [initPathName + "/avisos/vacunas/menores-por-nivel"]: "Vacunas",
-    [initPathName + "/avisos/vacunas/revisar-menor"]: "Vacunas",
-    [initPathName + "/avisos/paseos-visitas/revisar-listado-paseos"]:
+    [avisosPath + "/itinerario-jornada/menor"]: "Itinerario de Jornada",
+    [avisosPath + "/vacunas/revisar-niveles-menores"]: "Vacunas",
+    [avisosPath + "/vacunas/menores-por-nivel"]: "Vacunas",
+    [avisosPath + "/vacunas/revisar-menor"]: "Vacunas",
+    [avisosPath + "/paseos-visitas/revisar-listado-paseos"]: "Paseos y Visitas",
+    [avisosPath + "/paseos-visitas/revisar-listado-niveles"]:
       "Paseos y Visitas",
-    [initPathName + "/avisos/paseos-visitas/revisar-listado-niveles"]:
+    [avisosPath + "/paseos-visitas/revisar-listado-menores"]:
       "Paseos y Visitas",
-    [initPathName + "/avisos/paseos-visitas/revisar-listado-menores"]:
-      "Paseos y Visitas",
-    [initPathName + "/avisos/paseos-visitas/revisar-menor"]: "Paseos y Visitas",
+    [avisosPath + "/paseos-visitas/revisar-menor"]: "Paseos y Visitas",
+    [avisosPath + "/reuniones-apoderados/listado-reuniones"]:
+      "Reunión de Apoderados",
     [initPathName + "/comunicados"]: "Mensajes",
     [initPathName + "/comunicados/home"]: "Mensajes",
     [initPathName + "/comunicados/listado-comunicados"]: "Mensajes",
@@ -101,24 +100,25 @@ const LibretaLayout = () => {
   };
 
   const pathsWithOneParam: string[] = [
-    initPathName + "/avisos/vacunas/menor",
-    initPathName + "/avisos/paseos-visitas/menor",
-    initPathName + "/avisos/reuniones-apoderados/menor",
-    initPathName + "/avisos/itinerario-jornada/menor",
-    initPathName + "/avisos/vacunas/menores-por-nivel",
-    initPathName + "/avisos/paseos-visitas/revisar-listado-niveles",
-    initPathName + "/avisos/paseos-visitas/revisar-listado-menores",
+    avisosPath + "/vacunas/menor",
+    avisosPath + "/vacunas/menores-por-nivel",
+    avisosPath + "/paseos-visitas/revisar-listado-niveles",
+    avisosPath + "/paseos-visitas/revisar-listado-menores",
     initPathName + "/comunicados/listado-comunicados",
   ];
 
   const pathsWithTwoParams: string[] = [
-    initPathName + "/avisos/paseos-visitas/revisar-listado-menores",
-    initPathName + "/avisos/vacunas/revisar-menor",
+    avisosPath + "/paseos-visitas/menor",
+    avisosPath + "/reuniones-apoderados/menor",
+    avisosPath + "/itinerario-jornada/menor",
+    avisosPath + "/vacunas/revisar-menor",
+    avisosPath + "/paseos-visitas/revisar-listado-menores",
+    avisosPath + "/reuniones-apoderados/listado-menores",
     initPathName + "/comunicados/comunicado",
   ];
 
   const pathsWithThreeParams: string[] = [
-    initPathName + "/avisos/paseos-visitas/revisar-menor",
+    avisosPath + "/paseos-visitas/revisar-menor",
   ];
 
   const title: string =

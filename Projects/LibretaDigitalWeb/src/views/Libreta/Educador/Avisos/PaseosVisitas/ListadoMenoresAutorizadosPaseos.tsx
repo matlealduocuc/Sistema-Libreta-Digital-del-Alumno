@@ -83,7 +83,9 @@ const ListadoMenoresAutorizadosPaseo = () => {
     <Spin spinning={loading}>
       <div className="px-4 py-2 w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
         <div className="flex justify-between items-center mb-2">
-          <h1 className="text-xl font-bold">¡Revisa Autorizaciones según Menor!</h1>
+          <h1 className="text-xl font-bold">
+            ¡Revisa Autorizaciones según Menor!
+          </h1>
         </div>
         <div className="border border-gray-300 rounded-lg p-2 mb-2 text-sm bg-gray-200">
           <span>
@@ -126,7 +128,7 @@ const ListadoMenoresAutorizadosPaseo = () => {
                 type="search"
                 id="search-menores"
                 className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Buscar por el nombre del menor"
+                placeholder="Buscar por Menor"
                 value={searchTerm}
                 onChange={handleSearch}
               />

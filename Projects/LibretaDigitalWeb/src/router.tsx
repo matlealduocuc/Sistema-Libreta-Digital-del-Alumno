@@ -33,6 +33,8 @@ import RevisarPaseoMenor from "./views/Libreta/Educador/Avisos/PaseosVisitas/Rev
 import ApoderadoComunicadosHome from "./views/Libreta/Apoderado/Comunicados/ComunicadosHome";
 import ListadoComunicadosMenores from "./views/Libreta/Apoderado/Comunicados/ListadoComunicadosMenores";
 import LeerComunicado from "./views/Libreta/Apoderado/Comunicados/LeerComunicado";
+import ListadoReunionRevisar from "./views/Libreta/Educador/Avisos/ReunionesApoderados/ListadoPaseosRevisar";
+import ListadoNivelesConfirmadosReunion from "./views/Libreta/Educador/Avisos/ReunionesApoderados/ListadoNivelesConfirmadosReunion";
 
 export const Router = () => {
   return (
@@ -155,8 +157,12 @@ export const Router = () => {
             </Route>
             <Route path="reuniones-apoderados">
               <Route
-                path="listado-menores"
-                element={<ReunionesApoderadosListadoMenores />}
+                path="revisar-listado-reuniones"
+                element={<ListadoReunionRevisar />}
+              />
+              <Route
+                path="revisar-listado-niveles/:idReunion"
+                element={<ListadoNivelesConfirmadosReunion />}
               />
               <Route
                 path="menor/:id"
@@ -197,7 +203,7 @@ export const Router = () => {
                 element={<PaseosVisitasListadoMenores />}
               />
               <Route
-                path="menor/:idMenor/paseo/:idPaseo"
+                path="menor/:idMenor/:idPaseo"
                 element={<AutorizarPaseoVisitaMenor />}
               />
             </Route>
@@ -207,7 +213,7 @@ export const Router = () => {
                 element={<ReunionesApoderadosListadoMenores />}
               />
               <Route
-                path="menor/:idMenor/reunion/:idReunion"
+                path="menor/:idMenor/:idReunion"
                 element={<ConfirmarReunionesApoderadosMenor />}
               />
             </Route>
@@ -217,7 +223,7 @@ export const Router = () => {
                 element={<ItinerarioJornadaListadoMenores />}
               />
               <Route
-                path="menor/:idMenor/itinerario/:idItinerario"
+                path="menor/:idMenor/:idItinerario"
                 element={<ConfirmarItinerarioJornadaMenor />}
               />
             </Route>

@@ -115,31 +115,33 @@ const PerfilUsuario = () => {
     <div className="px-4">
       <Spin spinning={loadingFull}>
         <div className="p-4 max-w-lg mx-auto bg-white shadow-md rounded-lg">
-          <div className="flex items-center justify-center">
-            <div className="bg-gray-300 rounded-full h-24 w-24 flex items-center justify-center">
-              <span className="text-4xl font-bold text-gray-600">
-                {user.name?.charAt(0) ?? "?"}{" "}
-                {/* Muestra la primera letra del nombre */}
-              </span>
+          <div className="flex flex-row items-center justify-between mb-3">
+            <div className="flex flex-col">
+              <div className="bg-gray-300 rounded-full h-24 w-24 flex items-center justify-center">
+                <span className="text-4xl font-bold text-gray-600">
+                  {user.name?.charAt(0) ?? "?"}{" "}
+                  {/* Muestra la primera letra del nombre */}
+                </span>
+              </div>
+              <div className="flex flex-row justify-center align-text-bottom pt-4">
+                <small>Rol: {usuario.rol}</small>
+              </div>
+            </div>
+            <div className="space-y-3 w-full ms-4">
+              <div className="bg-gray-100 p-4 py-2 rounded-lg shadow-sm">
+                <h2 className="font-semibold text-lg">Rut</h2>
+                <p className="text-gray-700">{user.rut}</p>
+              </div>
+
+              {/* Nombre del usuario */}
+              <div className="bg-gray-100 p-4 py-2 rounded-lg shadow-sm">
+                <h2 className="font-semibold text-lg">Nombre</h2>
+                <p className="text-gray-700">{user.name}</p>
+              </div>
             </div>
           </div>
-          <small className="flex justify-center pt-0 pb-4">
-            Rol: {usuario.rol}
-          </small>
 
-          <div className="space-y-4">
-            {/* Rut del usuario */}
-            <div className="bg-gray-100 p-4 py-2 rounded-lg shadow-sm">
-              <h2 className="font-semibold text-lg">Rut</h2>
-              <p className="text-gray-700">{user.rut}</p>
-            </div>
-
-            {/* Nombre del usuario */}
-            <div className="bg-gray-100 p-4 py-2 rounded-lg shadow-sm">
-              <h2 className="font-semibold text-lg">Nombre</h2>
-              <p className="text-gray-700">{user.name}</p>
-            </div>
-
+          <div className="space-y-3">
             {/* Email */}
             <div className="bg-gray-100 p-4 py-2 rounded-lg shadow-sm">
               <h2 className="font-semibold text-lg">Correo Electrónico</h2>

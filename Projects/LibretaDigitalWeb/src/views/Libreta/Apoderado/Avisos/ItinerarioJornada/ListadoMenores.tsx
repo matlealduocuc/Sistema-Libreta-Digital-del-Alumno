@@ -73,7 +73,7 @@ const ItinerarioJornadaListadoMenores = () => {
 
   const handleMenorClick = (idMenor: number, idItinerario: number) => {
     navigate(
-      `/apoderado/avisos/itinerario-jornada/menor/${idMenor}/itinerario/${idItinerario}`
+      `/apoderado/avisos/itinerario-jornada/menor/${idMenor}/${idItinerario}`
     );
   };
 

@@ -76,7 +76,7 @@ const PaseosVisitasListadoMenores = () => {
 
   const handleMenorClick = (idMenor: number, idPaseo: number) => {
     navigate(
-      `/apoderado/avisos/paseos-visitas/menor/${idMenor}/paseo/${idPaseo}`
+      `/apoderado/avisos/paseos-visitas/menor/${idMenor}/${idPaseo}`
     );
   };
 

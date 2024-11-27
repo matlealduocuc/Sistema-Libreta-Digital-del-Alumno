@@ -1,4 +1,3 @@
-import { ObtenerInitPathName } from "@/common/FuncionesComunesUsuario";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -6,7 +5,6 @@ const SolicitarVacunas = () => {
   const { id } = useParams();
   console.log(id);
   const [step, setStep] = useState(1);
-  const initPathName = ObtenerInitPathName();
   const navigate = useNavigate();
 
   const nivelVacuna = {
@@ -20,7 +18,7 @@ const SolicitarVacunas = () => {
     if (step < 3) {
       setStep(step + 1);
     } else {
-      navigate(initPathName);
+      navigate("/apoderado");
     }
   };
 

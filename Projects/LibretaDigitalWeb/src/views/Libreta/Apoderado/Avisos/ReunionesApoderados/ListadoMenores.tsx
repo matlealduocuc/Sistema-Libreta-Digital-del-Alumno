@@ -73,7 +73,7 @@ const ReunionesApoderadosListadoMenores = () => {
 
   const handleMenorClick = (idMenor: number, idReunion: number) => {
     navigate(
-      `/apoderado/avisos/reuniones-apoderados/menor/${idMenor}/reunion/${idReunion}`
+      `/apoderado/avisos/reuniones-apoderados/menor/${idMenor}/${idReunion}`
     );
   };
 

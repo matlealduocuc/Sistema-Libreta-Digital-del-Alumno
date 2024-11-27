@@ -21,6 +21,7 @@ export class ReunionApoderadoController {
       return {
         idReunion: reunion.iden_reunion,
         reunion: reunion.desc_titulo,
+        sala: reunion.lda_sala.desc_nombre,
         fechaReunion: formatFecha2(reunion.fech_reunion.toISOString()),
       };
     });

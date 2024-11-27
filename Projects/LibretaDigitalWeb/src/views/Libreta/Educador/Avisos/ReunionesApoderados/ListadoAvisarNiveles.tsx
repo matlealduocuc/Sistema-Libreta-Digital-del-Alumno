@@ -1,44 +1,44 @@
 import { useAuth } from "@/hooks/useAuth";
 import { Spin } from "antd";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { AuthorizedUserDto } from "@/dtos/Auth/AuthorizedUserDto";
+import { NivelController } from "@/controllers/NivelController";
 import { ObtenerInitPathName } from "@/common/FuncionesComunesUsuario";
-import { PaseoController } from "@/controllers/PaseoController";
 
-const ListadoNivelesAutorizadosPaseo = () => {
-  const { idPaseo } = useParams<{
-    idPaseo: string;
-  }>();
+const ListadoAvisarNivelesEducador = () => {
   const { isLoading } = useAuth();
   const [niveles, setNiveles] = useState<
-    {
-      idNivel: number;
-      descNombre: string;
-      cantidadMenores: number;
-    }[]
+    { id: number; nombre: string; cantidadMenores: number }[]
   >([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState<boolean>(true);
-  const paseoController = new PaseoController();
+  const storedUser = localStorage.getItem("AUTH_USER");
+  const usuario: AuthorizedUserDto = storedUser ? JSON.parse(storedUser) : null;
+  const persona = usuario?.persona;
+  const idPersona = persona?.idPersona;
+  const nivelController = new NivelController();
   const navigate = useNavigate();
   const initPathName = ObtenerInitPathName();
 
   useEffect(() => {
     const fetchNiveles = async () => {
       setLoading(true);
-      if (!isLoading && idPaseo) {
+      if (!isLoading && idPersona) {
         try {
-          const nivelesData = await paseoController.getNivelesByPaseo(+idPaseo);
+          const nivelesData = await nivelController.getNivelesByEducador(
+            idPersona
+          );
           if (nivelesData) {
             setNiveles(
               nivelesData.map(
                 (nivel: {
-                  idNivel: number;
-                  descNombre: string;
+                  id: number;
+                  nombre: string;
                   cantidadMenores: number;
                 }) => ({
-                  idNivel: nivel.idNivel,
-                  descNombre: nivel.descNombre,
+                  id: nivel.id,
+                  nombre: nivel.nombre,
                   cantidadMenores: nivel.cantidadMenores,
                 })
               )
@@ -54,39 +54,28 @@ const ListadoNivelesAutorizadosPaseo = () => {
 
     fetchNiveles();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading, idPaseo]);
+  }, [isLoading]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
-  const handleNivelClick = (idNivel: number) => {
-    if (idPaseo) {
-      navigate(
-        `${initPathName}/avisos/paseos-visitas/revisar-listado-menores/${+idPaseo}/${idNivel}`
-      );
-    }
+  const handleNivelClick = (id: number) => {
+    navigate(`${initPathName}/avisos/vacunas/solicitar-vacunas/${id}`);
   };
 
   const filteredNiveles = niveles.filter((nivel) =>
-    nivel.descNombre.toLowerCase().includes(searchTerm.toLowerCase())
+    nivel.nombre.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <Spin spinning={loading}>
       <div className="px-4 py-2 w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
         <div className="flex justify-between items-center mb-2">
-          <h1 className="text-xl font-bold">¡Revisa el Detalle por Nivel!</h1>
-        </div>
-        <div className="border border-gray-300 rounded-lg p-2 mb-2 text-sm bg-gray-200">
-          <span>
-            Selecciona un <strong>Nivel</strong> para ver
-            <br />
-            el <strong>Estado de Autorización por Menor.</strong>
-          </span>
+          <h1 className="text-xl font-bold">Listado de Niveles</h1>
         </div>
 
-        <div className="mb-2">
+        <div className="mb-4">
           <form
             className="max-w-full mx-auto"
             onSubmit={(e) => e.preventDefault()}
@@ -119,7 +108,7 @@ const ListadoNivelesAutorizadosPaseo = () => {
                 type="search"
                 id="search-niveles"
                 className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Buscar por Nivel"
+                placeholder="Buscar por el nombre del nivel"
                 value={searchTerm}
                 onChange={handleSearch}
               />
@@ -127,15 +116,15 @@ const ListadoNivelesAutorizadosPaseo = () => {
           </form>
         </div>
 
-        <div className="grid gap-2">
+        <div className="grid gap-4">
           {filteredNiveles.length > 0 ? (
             filteredNiveles.map((nivel) => (
               <div
-                key={nivel.idNivel + "-" + idPaseo}
+                key={nivel.id}
                 className="border border-gray-300 rounded p-4 shadow-md cursor-pointer"
-                onClick={() => handleNivelClick(nivel.idNivel)}
+                onClick={() => handleNivelClick(nivel.id)}
               >
-                <h2 className="font-semibold">{nivel.descNombre}</h2>
+                <h2 className="font-semibold">{nivel.nombre}</h2>
                 <p>Cantidad menores: {nivel.cantidadMenores}</p>
               </div>
             ))
@@ -150,4 +139,4 @@ const ListadoNivelesAutorizadosPaseo = () => {
   );
 };
 
-export default ListadoNivelesAutorizadosPaseo;
+export default ListadoAvisarNivelesEducador;
