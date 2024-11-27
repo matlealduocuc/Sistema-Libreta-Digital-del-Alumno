@@ -36,7 +36,7 @@ const LibretaApoderadoHome = () => {
     {
       icon: faLightbulb,
       title: "Mensajes",
-      url: initPathName + "/comunicados",
+      url: initPathName + "/comunicados/home",
       parragraph: (
         <p className="text-sm text-center p-1">
           Accede a los <strong>Comunicados</strong>

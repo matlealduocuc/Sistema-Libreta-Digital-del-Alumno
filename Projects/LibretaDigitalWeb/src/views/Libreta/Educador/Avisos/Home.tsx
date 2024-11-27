@@ -43,7 +43,8 @@ const EducadorAvisosHome = () => {
       href: initPathName + "/avisos/paseos-visitas/listado-menores",
       isSecondButton: true,
       secondButtonText: "Revisar",
-      secondButtonHref: initPathName + "/avisos/paseos-visitas/listado-paseos",
+      secondButtonHref:
+        initPathName + "/avisos/paseos-visitas/revisar-listado-paseos",
       imgSrc: PaseoVisitaSvg,
     },
     {
@@ -161,6 +162,18 @@ const EducadorAvisosHome = () => {
     setTranslate(0);
   };
 
+  const numberOfSlides = [0, 1, 2, 3];
+
+  document.onkeydown = function (e) {
+    if (e.key === "ArrowRight") {
+      goToNextSlide();
+    } else if (e.key === "ArrowLeft") {
+      goToPreviousSlide();
+    } else if (numberOfSlides.includes(parseInt(e.key) - 1)) {
+      goToSlide(parseInt(e.key) - 1);
+    }
+  };
+
   return (
     <div
       className="flex flex-col items-center bg-white"
@@ -219,7 +232,7 @@ const EducadorAvisosHome = () => {
               <div className="fixed -bottom-20 w-full flex flex-col justify-center">
                 <div className="flex flex-row justify-center">
                   <button
-                    className="bg-figma-green text-white w-80 text-lg font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-blue-700"
+                    className="bg-figma-green text-white w-80 text-lg font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-green-700 transition-colors"
                     onClick={() => {
                       navigate(slide.href);
                     }}
@@ -231,7 +244,7 @@ const EducadorAvisosHome = () => {
                 {slide.isSecondButton && (
                   <div className="flex flex-row justify-center mt-2">
                     <button
-                      className="bg-green-500 text-white w-80 text-lg font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-blue-700"
+                      className="bg-green-500 text-white w-80 text-lg font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-green-400 transition-colors"
                       onClick={() => {
                         navigate(slide.secondButtonHref);
                       }}

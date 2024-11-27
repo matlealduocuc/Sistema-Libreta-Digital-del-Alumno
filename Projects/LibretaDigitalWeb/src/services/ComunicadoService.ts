@@ -5,7 +5,6 @@ export class ComunicadoService {
   async getComunicadosByGrado(idGrado: number) {
     try {
       const response = await api.get("/comunicado/obtenerByGrado/" + idGrado);
-      console.log(response.data);
       return response.data;
     } catch (error) {
       ifAxiosError(error);
@@ -15,7 +14,46 @@ export class ComunicadoService {
   async getTiposComunicado() {
     try {
       const response = await api.get("/comunicado/getTipos");
-      console.log("Response data:", response.data);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async getComunicadosByMenor(idMenor: number) {
+    try {
+      const response = await api.get(
+        `/comunicado/getComunicadosByMenor/${idMenor}`
+      );
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async getComunicadoByMenorComunicado(idMenor: number, idComunicado: number) {
+    try {
+      const response = await api.get(
+        `/comunicado/getComunicadoByMenorComunicado/${idMenor}/${idComunicado}`
+      );
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async confirmaConocimientoComunicadoMenor(
+    idMenor: number,
+    idComunicado: number
+  ) {
+    try {
+      const response = await api.post(
+        "/comunicado/confirmaConocimientoComunicadoMenor",
+        {
+          idMenor,
+          idComunicado,
+        }
+      );
       return response.data;
     } catch (error) {
       ifAxiosError(error);

@@ -5,17 +5,6 @@ import { PrismaService } from 'src/prisma.service';
 export class MenorService {
   constructor(private prisma: PrismaService) {}
 
-  async getMenores() {
-    const menores = await this.prisma.menor.findMany();
-    return menores;
-  }
-
-  getMenor(id: number) {
-    return this.prisma.menor.findUnique({
-      where: { id: id },
-    });
-  }
-
   async getSelectMenoresApoderadoByIdNivel(idNivel: number) {
     return await this.prisma.menor.findMany({
       where: {
@@ -239,66 +228,59 @@ export class MenorService {
   }
 
   async getMenoresPaseosByApoderado(idApoderado: number) {
-    return await this.prisma.lda_paseo.findMany({
+    return await this.prisma.lda_paseo_menor.findMany({
       where: {
-        lda_paseo_menor: {
-          some: {
-            lda_menor: {
-              iden_per_apoderado: idApoderado,
-              flag_activo: true,
-              flag_eliminado: false,
-            },
-          },
+        lda_menor: {
+          iden_per_apoderado: idApoderado,
+          flag_activo: true,
+          flag_eliminado: false,
+        },
+        lda_paseo: {
+          flag_activo: true,
+          flag_eliminado: false,
         },
       },
       select: {
-        iden_paseo: true,
-        desc_titulo: true,
-        fech_inicio: true,
-        fech_fin: true,
-        lda_tipo_paseo: {
+        flag_autorizado: true,
+        lda_menor: {
           select: {
-            desc_tipo_paseo: true,
-          },
-        },
-        lda_paseo_menor: {
-          where: {
-            lda_menor: {
-              iden_per_apoderado: idApoderado,
-              flag_activo: true,
-              flag_eliminado: false,
+            id: true,
+            per_persona: {
+              select: {
+                primerNombre: true,
+                segundoNombre: true,
+                apellidoP: true,
+                apellidoM: true,
+              },
+            },
+            lda_nivel_menor: {
+              where: {
+                flag_activo: true,
+                flag_eliminado: false,
+                lda_nivel: {
+                  flag_activo: true,
+                  flag_eliminado: false,
+                },
+              },
+              select: {
+                lda_nivel: {
+                  select: {
+                    desc_nombre: true,
+                  },
+                },
+              },
             },
           },
+        },
+        lda_paseo: {
           select: {
-            flag_autorizado: true,
-            lda_menor: {
+            iden_paseo: true,
+            desc_titulo: true,
+            fech_inicio: true,
+            fech_fin: true,
+            lda_tipo_paseo: {
               select: {
-                id: true,
-                per_persona: {
-                  select: {
-                    primerNombre: true,
-                    segundoNombre: true,
-                    apellidoP: true,
-                    apellidoM: true,
-                  },
-                },
-                lda_nivel_menor: {
-                  where: {
-                    flag_activo: true,
-                    flag_eliminado: false,
-                    lda_nivel: {
-                      flag_activo: true,
-                      flag_eliminado: false,
-                    },
-                  },
-                  select: {
-                    lda_nivel: {
-                      select: {
-                        desc_nombre: true,
-                      },
-                    },
-                  },
-                },
+                desc_tipo_paseo: true,
               },
             },
           },
@@ -425,65 +407,58 @@ export class MenorService {
   }
 
   async getMenoresReunionesByApoderado(idApoderado: number) {
-    return await this.prisma.lda_reunion.findMany({
+    return await this.prisma.lda_reunion_menor.findMany({
       where: {
-        lda_reunion_menor: {
-          some: {
-            lda_menor: {
-              iden_per_apoderado: idApoderado,
-              flag_activo: true,
-              flag_eliminado: false,
-            },
-          },
+        lda_menor: {
+          iden_per_apoderado: idApoderado,
+          flag_activo: true,
+          flag_eliminado: false,
+        },
+        lda_reunion: {
+          flag_activo: true,
+          flag_eliminado: false,
         },
       },
       select: {
-        iden_reunion: true,
-        desc_titulo: true,
-        fech_reunion: true,
-        lda_sala: {
+        flag_confirmado: true,
+        lda_menor: {
           select: {
-            desc_nombre: true,
-          },
-        },
-        lda_reunion_menor: {
-          where: {
-            lda_menor: {
-              iden_per_apoderado: idApoderado,
-              flag_activo: true,
-              flag_eliminado: false,
+            id: true,
+            per_persona: {
+              select: {
+                primerNombre: true,
+                segundoNombre: true,
+                apellidoP: true,
+                apellidoM: true,
+              },
+            },
+            lda_nivel_menor: {
+              where: {
+                flag_activo: true,
+                flag_eliminado: false,
+                lda_nivel: {
+                  flag_activo: true,
+                  flag_eliminado: false,
+                },
+              },
+              select: {
+                lda_nivel: {
+                  select: {
+                    desc_nombre: true,
+                  },
+                },
+              },
             },
           },
+        },
+        lda_reunion: {
           select: {
-            flag_confirmado: true,
-            lda_menor: {
+            iden_reunion: true,
+            desc_titulo: true,
+            fech_reunion: true,
+            lda_sala: {
               select: {
-                id: true,
-                per_persona: {
-                  select: {
-                    primerNombre: true,
-                    segundoNombre: true,
-                    apellidoP: true,
-                    apellidoM: true,
-                  },
-                },
-                lda_nivel_menor: {
-                  where: {
-                    flag_activo: true,
-                    flag_eliminado: false,
-                    lda_nivel: {
-                      flag_activo: true,
-                      flag_eliminado: false,
-                    },
-                  },
-                  select: {
-                    lda_nivel: {
-                      select: {
-                        desc_nombre: true,
-                      },
-                    },
-                  },
-                },
+                desc_nombre: true,
               },
             },
           },
@@ -616,63 +591,56 @@ export class MenorService {
   }
 
   async getMenoresItinerariosByApoderado(idApoderado: number) {
-    return await this.prisma.lda_itinerario.findMany({
+    return await this.prisma.lda_itinerario_menor.findMany({
       where: {
-        lda_itinerario_menor: {
-          some: {
-            lda_menor: {
-              iden_per_apoderado: idApoderado,
-              flag_activo: true,
-              flag_eliminado: false,
-            },
-          },
+        lda_menor: {
+          iden_per_apoderado: idApoderado,
+          flag_activo: true,
+          flag_eliminado: false,
+        },
+        lda_itinerario: {
+          flag_activo: true,
+          flag_eliminado: false,
         },
       },
       select: {
-        iden_itinerario: true,
-        desc_titulo: true,
-        fech_itinerario: true,
-        flag_realizado: true,
-        lda_itinerario_menor: {
-          where: {
-            lda_menor: {
-              iden_per_apoderado: idApoderado,
-              flag_activo: true,
-              flag_eliminado: false,
-            },
-          },
+        flag_confirmado: true,
+        lda_menor: {
           select: {
-            flag_confirmado: true,
-            lda_menor: {
+            id: true,
+            per_persona: {
               select: {
-                id: true,
-                per_persona: {
-                  select: {
-                    primerNombre: true,
-                    segundoNombre: true,
-                    apellidoP: true,
-                    apellidoM: true,
-                  },
+                primerNombre: true,
+                segundoNombre: true,
+                apellidoP: true,
+                apellidoM: true,
+              },
+            },
+            lda_nivel_menor: {
+              where: {
+                flag_activo: true,
+                flag_eliminado: false,
+                lda_nivel: {
+                  flag_activo: true,
+                  flag_eliminado: false,
                 },
-                lda_nivel_menor: {
-                  where: {
-                    flag_activo: true,
-                    flag_eliminado: false,
-                    lda_nivel: {
-                      flag_activo: true,
-                      flag_eliminado: false,
-                    },
-                  },
+              },
+              select: {
+                lda_nivel: {
                   select: {
-                    lda_nivel: {
-                      select: {
-                        desc_nombre: true,
-                      },
-                    },
+                    desc_nombre: true,
                   },
                 },
               },
             },
+          },
+        },
+        lda_itinerario: {
+          select: {
+            iden_itinerario: true,
+            desc_titulo: true,
+            fech_itinerario: true,
+            flag_realizado: true,
           },
         },
       },
@@ -789,5 +757,25 @@ export class MenorService {
       },
     });
     return updated;
+  }
+
+  async getMenoresByApoderado(idApoderado: number) {
+    return await this.prisma.menor.findMany({
+      where: {
+        iden_per_apoderado: {
+          equals: idApoderado,
+        },
+      },
+      select: {
+        id: true,
+        per_persona: {
+          select: {
+            primerNombre: true,
+            apellidoP: true,
+            apellidoM: true,
+          },
+        },
+      },
+    });
   }
 }

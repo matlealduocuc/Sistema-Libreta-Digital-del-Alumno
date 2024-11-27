@@ -84,6 +84,20 @@ const LibretaLayout = () => {
       "Itinerario de Jornada",
     [initPathName + "/avisos/itinerario-jornada/menor"]:
       "Itinerario de Jornada",
+    [initPathName + "/avisos/vacunas/revisar-niveles-menores"]: "Vacunas",
+    [initPathName + "/avisos/vacunas/menores-por-nivel"]: "Vacunas",
+    [initPathName + "/avisos/vacunas/revisar-menor"]: "Vacunas",
+    [initPathName + "/avisos/paseos-visitas/revisar-listado-paseos"]:
+      "Paseos y Visitas",
+    [initPathName + "/avisos/paseos-visitas/revisar-listado-niveles"]:
+      "Paseos y Visitas",
+    [initPathName + "/avisos/paseos-visitas/revisar-listado-menores"]:
+      "Paseos y Visitas",
+    [initPathName + "/avisos/paseos-visitas/revisar-menor"]: "Paseos y Visitas",
+    [initPathName + "/comunicados"]: "Mensajes",
+    [initPathName + "/comunicados/home"]: "Mensajes",
+    [initPathName + "/comunicados/listado-comunicados"]: "Mensajes",
+    [initPathName + "/comunicados/comunicado"]: "Mensajes",
   };
 
   const pathsWithOneParam: string[] = [
@@ -91,6 +105,20 @@ const LibretaLayout = () => {
     initPathName + "/avisos/paseos-visitas/menor",
     initPathName + "/avisos/reuniones-apoderados/menor",
     initPathName + "/avisos/itinerario-jornada/menor",
+    initPathName + "/avisos/vacunas/menores-por-nivel",
+    initPathName + "/avisos/paseos-visitas/revisar-listado-niveles",
+    initPathName + "/avisos/paseos-visitas/revisar-listado-menores",
+    initPathName + "/comunicados/listado-comunicados",
+  ];
+
+  const pathsWithTwoParams: string[] = [
+    initPathName + "/avisos/paseos-visitas/revisar-listado-menores",
+    initPathName + "/avisos/vacunas/revisar-menor",
+    initPathName + "/comunicados/comunicado",
+  ];
+
+  const pathsWithThreeParams: string[] = [
+    initPathName + "/avisos/paseos-visitas/revisar-menor",
   ];
 
   const title: string =
@@ -99,6 +127,14 @@ const LibretaLayout = () => {
         location.pathname.split("/").slice(0, -1).join("/")
       )
         ? location.pathname.split("/").slice(0, -1).join("/")
+        : pathsWithTwoParams.includes(
+            location.pathname.split("/").slice(0, -2).join("/")
+          )
+        ? location.pathname.split("/").slice(0, -2).join("/")
+        : pathsWithThreeParams.includes(
+            location.pathname.split("/").slice(0, -3).join("/")
+          )
+        ? location.pathname.split("/").slice(0, -3).join("/")
         : location.pathname
     ] || "Libreta Digital";
 

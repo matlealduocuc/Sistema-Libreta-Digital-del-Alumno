@@ -6,7 +6,6 @@ export class PerfilService {
   async getPerfil(idPersona: number) {
     try {
       const response = await api.get("/persona/obtener/" + idPersona);
-      console.log(response.data);
       return response.data;
     } catch (error) {
       if (isAxiosError(error) && error.response) {
@@ -17,9 +16,7 @@ export class PerfilService {
 
   async updatePerfil(updatedData: UpdatePersonaDto) {
     try {
-      console.log("Sending updated data:", updatedData);
       const response = await api.post("persona/actualizar", updatedData);
-      console.log("Response data:", response.data);
       return response.data;
     } catch (error) {
       if (isAxiosError(error) && error.response) {

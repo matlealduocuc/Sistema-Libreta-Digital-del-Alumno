@@ -1,19 +1,13 @@
 import api from "@/lib/axios";
 import { AxiosError, isAxiosError } from "axios";
 
-export class NivelService {
-  async getNivelesWhereSomeVacuna() {
+export class VacunaService {
+  async getMenorByNivelMenor(idNivel: number, idMenor: number) {
     try {
-      const response = await api.get("/nivel/getNivelesWhereSomeVacuna");
-      return response.data;
-    } catch (error) {
-      ifAxiosError(error);
-    }
-  }
-
-  async getMenoresByNivel(idNivel: number) {
-    try {
-      const response = await api.get("/nivel/getMenoresByNivel/" + idNivel);
+      const response = await api.get(
+        `/vacuna/getMenorByNivelMenor/${idNivel}/${idMenor}`
+      );
+      console.log(response.data);
       return response.data;
     } catch (error) {
       ifAxiosError(error);

@@ -41,7 +41,7 @@ const LibretaEducadorHome = () => {
     {
       icon: faLightbulb,
       title: "Mensajes",
-      url: initPathName + "/comunicados",
+      url: initPathName + "/comunicados/home",
       parragraph: (
         <p className="text-sm text-center p-1">
           Envía <strong>Mensajes y Documentos</strong>

@@ -1,80 +1,98 @@
 import { useAuth } from "@/hooks/useAuth";
 import { Spin } from "antd";
 import React, { useEffect, useState } from "react";
-// import { useNavigate, useParams } from "react-router-dom";
-import { NivelController } from "@/controllers/NivelController";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { ObtenerInitPathName } from "@/common/FuncionesComunesUsuario";
+import { PaseoController } from "@/controllers/PaseoController";
 
-const ListadoMenoresAutorizadosVacunas = () => {
-  const { idNivel } = useParams();
+const ListadoNivelesAutorizadosPaseo = () => {
+  const { idPaseo } = useParams<{
+    idPaseo: string;
+  }>();
   const { isLoading } = useAuth();
-  const [menores, setMenores] = useState<
-    { idenMenor: number; descNombre: string; autorizado: boolean | null }[]
+  const [niveles, setNiveles] = useState<
+    {
+      idNivel: number;
+      descNombre: string;
+      cantidadMenores: number;
+    }[]
   >([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState<boolean>(true);
-  const nivelController = new NivelController();
-  // const navigate = useNavigate();
+  const paseoController = new PaseoController();
+  const navigate = useNavigate();
+  const initPathName = ObtenerInitPathName();
 
   useEffect(() => {
-    const fetchMenores = async () => {
+    const fetchNiveles = async () => {
       setLoading(true);
-      if (!isLoading && idNivel) {
+      if (!isLoading && idPaseo) {
         try {
-          const menoresData = await nivelController.getMenoresByNivel(+idNivel);
-          if (menoresData) {
-            setMenores(
-              menoresData.map(
-                (menor: {
-                  idenMenor: number;
+          const nivelesData = await paseoController.getNivelesByPaseo(+idPaseo);
+          if (nivelesData) {
+            setNiveles(
+              nivelesData.map(
+                (nivel: {
+                  idNivel: number;
                   descNombre: string;
-                  autorizado: boolean | null;
+                  cantidadMenores: number;
                 }) => ({
-                  idenMenor: menor.idenMenor,
-                  descNombre: menor.descNombre,
-                  autorizado: menor.autorizado,
+                  idNivel: nivel.idNivel,
+                  descNombre: nivel.descNombre,
+                  cantidadMenores: nivel.cantidadMenores,
                 })
               )
             );
           }
         } catch (error) {
-          console.error("Error fetching menores:", error);
+          console.error("Error fetching niveles:", error);
         } finally {
           setLoading(false);
         }
       }
     };
 
-    fetchMenores();
+    fetchNiveles();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading, idNivel]);
+  }, [isLoading, idPaseo]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
-  // const handleMenorClick = (id: number) => {
-  //   navigate(`/educador/avisos/vacunas/revisar-menor/${id}`);
-  // };
+  const handleNivelClick = (idNivel: number) => {
+    if (idPaseo) {
+      navigate(
+        `${initPathName}/avisos/paseos-visitas/revisar-listado-menores/${+idPaseo}/${idNivel}`
+      );
+    }
+  };
 
-  const filteredMenores = menores.filter((menor) =>
-    menor.descNombre.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredNiveles = niveles.filter((nivel) =>
+    nivel.descNombre.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <Spin spinning={loading}>
       <div className="px-4 py-2 w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-xl font-bold">Listado de Menores Autorizados</h1>
+        <div className="flex justify-between items-center mb-2">
+          <h1 className="text-xl font-bold">¡Revisa el Detalle por Nivel!</h1>
+        </div>
+        <div className="border border-gray-300 rounded-lg p-2 mb-2 text-sm bg-gray-200">
+          <span>
+            Selecciona un <strong>Nivel</strong> para ver
+            <br />
+            el <strong>Estado de Autorización por Menor.</strong>
+          </span>
         </div>
 
-        <div className="mb-4">
+        <div className="mb-2">
           <form
             className="max-w-full mx-auto"
             onSubmit={(e) => e.preventDefault()}
           >
             <label
-              htmlFor="search-menores"
+              htmlFor="search-niveles"
               className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
             >
               Buscar
@@ -99,9 +117,9 @@ const ListadoMenoresAutorizadosVacunas = () => {
               </div>
               <input
                 type="search"
-                id="search-menores"
+                id="search-niveles"
                 className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Buscar por el nombre del menor"
+                placeholder="Buscar por el nombre del nivel"
                 value={searchTerm}
                 onChange={handleSearch}
               />
@@ -109,29 +127,21 @@ const ListadoMenoresAutorizadosVacunas = () => {
           </form>
         </div>
 
-        <div className="grid gap-4">
-          {filteredMenores.length > 0 ? (
-            filteredMenores.map((menor) => (
+        <div className="grid gap-2">
+          {filteredNiveles.length > 0 ? (
+            filteredNiveles.map((nivel) => (
               <div
-                key={menor.idenMenor}
+                key={nivel.idNivel + "-" + idPaseo}
                 className="border border-gray-300 rounded p-4 shadow-md cursor-pointer"
-                // onClick={() => handleMenorClick(menor.idenMenor)}
+                onClick={() => handleNivelClick(nivel.idNivel)}
               >
-                <h2 className="font-semibold">{menor.descNombre}</h2>
-                {menor.autorizado ? (
-                  <p className="text-green-700 font-bold">
-                    Estado Vacuna: AUTORIZADA
-                  </p>
-                ) : (
-                  <p className="text-red-700 font-bold">
-                    Estado Vacuna: NO AUTORIZADA
-                  </p>
-                )}
+                <h2 className="font-semibold">{nivel.descNombre}</h2>
+                <p>Cantidad menores: {nivel.cantidadMenores}</p>
               </div>
             ))
           ) : (
             <p className="text-gray-500 text-center">
-              No se encontraron menores.
+              No se encontraron niveles.
             </p>
           )}
         </div>
@@ -140,4 +150,4 @@ const ListadoMenoresAutorizadosVacunas = () => {
   );
 };
 
-export default ListadoMenoresAutorizadosVacunas;
+export default ListadoNivelesAutorizadosPaseo;

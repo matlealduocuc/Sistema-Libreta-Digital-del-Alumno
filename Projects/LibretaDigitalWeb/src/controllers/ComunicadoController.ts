@@ -8,13 +8,29 @@ export class ComunicadoController {
 
   async getComunicadosByGrado(idGrado: number) {
     const perfil = await this._comunicadoService.getComunicadosByGrado(idGrado);
-    console.log(perfil);
     return perfil;
   }
 
   async getTiposComunicado() {
     const tiposComunicado = await this._comunicadoService.getTiposComunicado();
-    console.log(tiposComunicado);
     return tiposComunicado;
+  }
+
+  async getComunicadosByMenor(idMenor: number) {
+    return await this._comunicadoService.getComunicadosByMenor(idMenor);
+  }
+
+  async getComunicadoByMenorComunicado(idMenor: number, idComunicado: number) {
+    return await this._comunicadoService.getComunicadoByMenorComunicado(
+      idMenor,
+      idComunicado
+    );
+  }
+
+  async confirmaConocimientoComunicadoMenor(idMenor: number, idComunicado: number) {
+    return await this._comunicadoService.confirmaConocimientoComunicadoMenor(
+      idMenor,
+      idComunicado
+    );
   }
 }
