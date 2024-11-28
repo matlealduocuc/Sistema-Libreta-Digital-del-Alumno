@@ -2,8 +2,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { PaseoController } from "@/controllers/PaseoController";
 import { ObtenerInitPathName } from "@/common/FuncionesComunesUsuario";
+import { ReunionController } from "@/controllers/ReunionController";
 
 const ListadoMenoresConfirmadosReunion = () => {
   const { idReunion, idNivel } = useParams<{
@@ -16,12 +16,12 @@ const ListadoMenoresConfirmadosReunion = () => {
       idMenor: number;
       nombre: string;
       nombreApoderado: string;
-      autorizado: boolean | null;
+      confirmado: boolean | null;
     }[]
   >([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState<boolean>(true);
-  const paseoController = new PaseoController();
+  const reunionController = new ReunionController();
   const initPathName = ObtenerInitPathName();
   const navigate = useNavigate();
 
@@ -30,7 +30,7 @@ const ListadoMenoresConfirmadosReunion = () => {
       setLoading(true);
       if (!isLoading && idReunion && idNivel) {
         try {
-          const menoresData = await paseoController.getMenoresByPaseoNivel(
+          const menoresData = await reunionController.getMenoresByReunionNivel(
             +idReunion,
             +idNivel
           );
@@ -70,7 +70,7 @@ const ListadoMenoresConfirmadosReunion = () => {
   const handleMenorClick = (idMenor: number) => {
     if (idReunion && idNivel) {
       navigate(
-        `${initPathName}/avisos/paseos-visitas/revisar-menor/${+idReunion}/${+idNivel}/${idMenor}`
+        `${initPathName}/avisos/reuniones-apoderados/revisar-menor/${+idReunion}/${+idNivel}/${idMenor}`
       );
     }
   };
@@ -83,17 +83,23 @@ const ListadoMenoresConfirmadosReunion = () => {
     <Spin spinning={loading}>
       <div className="px-4 py-2 w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
         <div className="flex justify-between items-center mb-2">
-          <h1 className="text-xl font-bold">¡Revisa Autorizaciones según Menor!</h1>
+          <h1 className="text-lg font-bold">
+            ¡Revisa Confirmación según Apoderado!
+          </h1>
         </div>
         <div className="border border-gray-300 rounded-lg p-2 mb-2 text-sm bg-gray-200">
           <span>
-            Selecciona un <strong>Menor</strong> para ver
-            <br />
-            su <strong>Estado de Autorización</strong> para la actividad.
+            Selecciona un <strong>Menor</strong> para ver el{" "}
+            <strong>
+              Estado de
+              <br />
+              Confirmación de Asistencia
+            </strong>{" "}
+            de su apoderado.
           </span>
         </div>
 
-        <div className="mb-4">
+        <div className="mb-2">
           <form
             className="max-w-full mx-auto"
             onSubmit={(e) => e.preventDefault()}
@@ -126,7 +132,7 @@ const ListadoMenoresConfirmadosReunion = () => {
                 type="search"
                 id="search-menores"
                 className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Buscar por el nombre del menor"
+                placeholder="Buscar por Menor"
                 value={searchTerm}
                 onChange={handleSearch}
               />
@@ -134,7 +140,7 @@ const ListadoMenoresConfirmadosReunion = () => {
           </form>
         </div>
 
-        <div className="grid gap-4">
+        <div className="grid gap-2">
           {filteredMenores.length > 0 ? (
             filteredMenores.map((menor) => (
               <div
@@ -144,13 +150,13 @@ const ListadoMenoresConfirmadosReunion = () => {
               >
                 <h2 className="font-semibold">{menor.nombre}</h2>
                 <p>Apoderado: {menor.nombreApoderado}</p>
-                {menor.autorizado ? (
+                {menor.confirmado ? (
                   <p className="text-green-700 font-bold">
-                    Estado Paseo: AUTORIZADA
+                    Estado Reunión: CONFIRMADA
                   </p>
                 ) : (
                   <p className="text-red-700 font-bold">
-                    Estado Paseo: NO AUTORIZADA
+                    Estado Reunión: NO CONFIRMADA
                   </p>
                 )}
               </div>

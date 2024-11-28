@@ -221,4 +221,24 @@ export class ComunicadoService {
     });
     return updated;
   }
+
+  async getNivelesByEducador(idEducador: number) {
+    return await this.prisma.lda_nivel.findMany({
+      where: {
+        flag_activo: true,
+        flag_eliminado: false,
+        lda_nivel_educador: {
+          some: {
+            iden_persona: idEducador,
+            flag_activo: true,
+            flag_eliminado: false,
+          },
+        },
+      },
+      select: {
+        iden_nivel: true,
+        desc_nombre: true,
+      },
+    });
+  }
 }

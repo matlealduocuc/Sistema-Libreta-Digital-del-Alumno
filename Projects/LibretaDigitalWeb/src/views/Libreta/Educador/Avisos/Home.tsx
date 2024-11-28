@@ -82,7 +82,7 @@ const EducadorAvisosHome = () => {
       isSecondButton: true,
       secondButtonText: "Revisar",
       secondButtonHref:
-        initPathName + "/avisos/itinerario-jornada/listado-actividades",
+        initPathName + "/avisos/itinerario-jornada/revisar-listado-itinerario",
       imgSrc: ActividadesDiariasSvf,
     },
   ];

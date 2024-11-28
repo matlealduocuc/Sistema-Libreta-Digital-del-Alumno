@@ -8,6 +8,7 @@ import { NivelModule } from './nivel/nivel.module';
 import { VacunaModule } from './vacuna/vacuna.module';
 import { PaseoModule } from './paseo/paseo.module';
 import { ReunionApoderadoModule } from './reunion-apoderado/reunion-apoderado.module';
+import { ItinerarioModule } from './itinerario/itinerario.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ReunionApoderadoModule } from './reunion-apoderado/reunion-apoderado.mo
     VacunaModule,
     PaseoModule,
     ReunionApoderadoModule,
+    ItinerarioModule,
   ],
 })
 export class AppModule {}

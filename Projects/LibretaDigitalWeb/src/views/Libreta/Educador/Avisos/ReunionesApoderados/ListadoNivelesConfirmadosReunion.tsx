@@ -3,7 +3,6 @@ import { Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ObtenerInitPathName } from "@/common/FuncionesComunesUsuario";
-import { PaseoController } from "@/controllers/PaseoController";
 import { ReunionController } from "@/controllers/ReunionController";
 
 const ListadoNivelesConfirmadosReunion = () => {
@@ -85,7 +84,7 @@ const ListadoNivelesConfirmadosReunion = () => {
           <span>
             Selecciona un <strong>Nivel</strong> para ver
             <br />
-            el <strong>Estado de Autorización por Menor.</strong>
+            la <strong>Confirmación de Asistencia por Apoderado.</strong>
           </span>
         </div>
 

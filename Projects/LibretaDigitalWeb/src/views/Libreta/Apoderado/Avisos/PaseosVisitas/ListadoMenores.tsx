@@ -75,9 +75,7 @@ const PaseosVisitasListadoMenores = () => {
   };
 
   const handleMenorClick = (idMenor: number, idPaseo: number) => {
-    navigate(
-      `/apoderado/avisos/paseos-visitas/menor/${idMenor}/${idPaseo}`
-    );
+    navigate(`/apoderado/avisos/paseos-visitas/menor/${idMenor}/${idPaseo}`);
   };
 
   const filteredMenores = menores.filter((menor) =>
@@ -87,11 +85,18 @@ const PaseosVisitasListadoMenores = () => {
   return (
     <Spin spinning={loading}>
       <div className="px-4 py-2 w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-xl font-bold">Listado de Menores</h1>
+        <div className="flex justify-between items-center mb-2">
+          <h1 className="text-xl font-bold">¡Autoriza una Actividad!</h1>
+        </div>
+        <div className="border border-gray-300 rounded-lg p-2 mb-2 text-sm bg-gray-200">
+          <span>
+            Selecciona un <strong>Menor</strong> del listado
+            <br />
+            para ver el <strong>Detalle.</strong>
+          </span>
         </div>
 
-        <div className="mb-4">
+        <div className="mb-2">
           <form
             className="max-w-full mx-auto"
             onSubmit={(e) => e.preventDefault()}
@@ -124,7 +129,7 @@ const PaseosVisitasListadoMenores = () => {
                 type="search"
                 id="search-menores"
                 className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Buscar por nombre del menor"
+                placeholder="Buscar Menor"
                 value={searchTerm}
                 onChange={handleSearch}
               />
@@ -133,7 +138,7 @@ const PaseosVisitasListadoMenores = () => {
         </div>
 
         {/* Lista de menores */}
-        <div className="grid gap-4">
+        <div className="grid gap-2">
           {filteredMenores.length > 0 ? (
             filteredMenores.map((menor) => (
               <div
@@ -142,7 +147,7 @@ const PaseosVisitasListadoMenores = () => {
                   menor.autorizado != null && !menor.autorizado
                     ? "border-gray-300"
                     : "border-gray-600 bg-gray-300"
-                } rounded p-4 shadow-md cursor-pointer`}
+                } rounded px-4 py-2 shadow-md cursor-pointer`}
                 onClick={() => {
                   handleMenorClick(menor.idMenor, menor.idPaseo);
                 }}

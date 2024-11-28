@@ -2,15 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
-export class ReunionApoderadoService {
+export class ItinerarioService {
   constructor(private prisma: PrismaService) {}
 
-  async getReunionesByEducador(idEducador: number) {
-    return await this.prisma.lda_reunion.findMany({
+  async getItinerariosByEducador(idEducador: number) {
+    return await this.prisma.lda_itinerario.findMany({
       where: {
         flag_activo: true,
         flag_eliminado: false,
-        lda_reunion_menor: {
+        lda_itinerario_menor: {
           some: {
             lda_nivel: {
               flag_activo: true,
@@ -29,29 +29,24 @@ export class ReunionApoderadoService {
         },
       },
       select: {
-        iden_reunion: true,
+        iden_itinerario: true,
         desc_titulo: true,
-        fech_reunion: true,
-        lda_sala: {
-          select: {
-            desc_nombre: true,
-          },
-        },
+        fech_itinerario: true,
       },
     });
   }
 
-  async getNivelesByReunion(idReunion: number, idEducador: number) {
+  async getNivelesByItinerario(idItinerario: number, idEducador: number) {
     return await this.prisma.lda_nivel.findMany({
       where: {
         flag_activo: true,
         flag_eliminado: false,
-        lda_reunion_menor: {
+        lda_itinerario_menor: {
           some: {
-            lda_reunion: {
+            lda_itinerario: {
               flag_activo: true,
               flag_eliminado: false,
-              iden_reunion: idReunion,
+              iden_itinerario: idItinerario,
             },
           },
         },
@@ -82,8 +77,8 @@ export class ReunionApoderadoService {
     });
   }
 
-  async getMenoresByReunionNivel(
-    idReunion: number,
+  async getMenoresByItinerarioNivel(
+    idItinerario: number,
     idNivel: number,
     idEducador: number,
   ) {
@@ -91,12 +86,12 @@ export class ReunionApoderadoService {
       where: {
         flag_activo: true,
         flag_eliminado: false,
-        lda_reunion_menor: {
+        lda_itinerario_menor: {
           some: {
-            lda_reunion: {
+            lda_itinerario: {
               flag_activo: true,
               flag_eliminado: false,
-              iden_reunion: idReunion,
+              iden_itinerario: idItinerario,
             },
             lda_nivel: {
               flag_activo: true,
@@ -137,12 +132,17 @@ export class ReunionApoderadoService {
             apellidoM: true,
           },
         },
-        lda_reunion_menor: {
+        lda_itinerario_menor: {
           where: {
-            lda_reunion: {
-              iden_reunion: idReunion,
+            lda_itinerario: {
+              iden_itinerario: idItinerario,
               flag_activo: true,
               flag_eliminado: false,
+            },
+            lda_nivel: {
+              flag_activo: true,
+              flag_eliminado: false,
+              iden_nivel: idNivel,
             },
           },
         },
@@ -150,8 +150,8 @@ export class ReunionApoderadoService {
     });
   }
 
-  async getMenorByReunionNivelMenor(
-    idReunion: number,
+  async getMenorByItinerarioNivelMenor(
+    idItinerario: number,
     idNivel: number,
     idMenor: number,
     idEducador: number,
@@ -190,17 +190,17 @@ export class ReunionApoderadoService {
             },
           },
         },
-        lda_reunion_menor: {
+        lda_itinerario_menor: {
           some: {
-            lda_reunion: {
+            lda_itinerario: {
               flag_activo: true,
               flag_eliminado: false,
-              iden_reunion: {
-                equals: idReunion,
+              iden_itinerario: {
+                equals: idItinerario,
               },
             },
-            iden_reunion: {
-              equals: idReunion,
+            iden_itinerario: {
+              equals: idItinerario,
             },
           },
         },
@@ -231,28 +231,20 @@ export class ReunionApoderadoService {
             flag_eliminado: false,
           },
         },
-        lda_reunion_menor: {
+        lda_itinerario_menor: {
           where: {
-            iden_reunion: idReunion,
+            iden_itinerario: idItinerario,
             iden_menor: idMenor,
             iden_nivel: idNivel,
           },
           select: {
             flag_confirmado: true,
-            lda_reunion: {
+            lda_itinerario: {
               select: {
                 desc_titulo: true,
-                lda_reunion_tema: {
-                  where: {
-                    flag_eliminado: false,
-                  },
-                },
-                lda_sala: {
-                  select: {
-                    desc_nombre: true,
-                  },
-                },
-                fech_reunion: true,
+                desc_descripcion: true,
+                fech_itinerario: true,
+                flag_realizado: true,
               },
             },
           },

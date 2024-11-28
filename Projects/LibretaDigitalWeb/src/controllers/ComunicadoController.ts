@@ -12,8 +12,7 @@ export class ComunicadoController {
   }
 
   async getTiposComunicado() {
-    const tiposComunicado = await this._comunicadoService.getTiposComunicado();
-    return tiposComunicado;
+    return await this._comunicadoService.getTiposComunicado();
   }
 
   async getComunicadosByMenor(idMenor: number) {
@@ -27,10 +26,17 @@ export class ComunicadoController {
     );
   }
 
-  async confirmaConocimientoComunicadoMenor(idMenor: number, idComunicado: number) {
+  async confirmaConocimientoComunicadoMenor(
+    idMenor: number,
+    idComunicado: number
+  ) {
     return await this._comunicadoService.confirmaConocimientoComunicadoMenor(
       idMenor,
       idComunicado
     );
+  }
+
+  async getNivelesByEducador() {
+    return await this._comunicadoService.getNivelesByEducador();
   }
 }

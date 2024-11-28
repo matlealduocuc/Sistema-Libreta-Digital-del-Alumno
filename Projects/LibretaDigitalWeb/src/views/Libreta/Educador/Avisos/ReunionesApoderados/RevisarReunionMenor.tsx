@@ -1,11 +1,12 @@
-import { VacunaController } from "@/controllers/VacunaController";
+import { ReunionController } from "@/controllers/ReunionController";
 import { useAuth } from "@/hooks/useAuth";
 import { Spin } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-const RevisarVacunaMenor = () => {
-  const { idNivel, idMenor } = useParams<{
+const RevisarReunionMenor = () => {
+  const { idReunion, idNivel, idMenor } = useParams<{
+    idReunion: string;
     idNivel: string;
     idMenor: string;
   }>();
@@ -16,20 +17,23 @@ const RevisarVacunaMenor = () => {
     telApoderado: string;
     emailApoderado: string;
     nivel: string;
-    nombreVacuna: string;
-    fechaVacuna: string;
-    autorizado: boolean | null;
+    tituloReunion: string;
+    sala: string;
+    temasTratar: string[];
+    fechaReunion: string;
+    confirmado: boolean | null;
   }>();
   const [loading, setLoading] = useState<boolean>(true);
-  const vacunaController = new VacunaController();
+  const reunionController = new ReunionController();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMenor = async () => {
       setLoading(true);
-      if (!isLoading && idNivel && idMenor) {
+      if (!isLoading && idReunion && idNivel && idMenor) {
         try {
-          const menorData = await vacunaController.getMenorByNivelMenor(
+          const menorData = await reunionController.getMenorByReunionNivelMenor(
+            +idReunion,
             +idNivel,
             +idMenor
           );
@@ -37,7 +41,7 @@ const RevisarVacunaMenor = () => {
             setMenor(menorData);
           }
         } catch (error) {
-          console.error("Error fetching menores:", error);
+          console.error("Error fetching menor:", error);
         } finally {
           setLoading(false);
         }
@@ -46,19 +50,22 @@ const RevisarVacunaMenor = () => {
 
     fetchMenor();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading, idNivel, idMenor]);
+  }, [isLoading, idReunion, idNivel, idMenor]);
 
   return (
     <Spin spinning={loading}>
-      <div className="min-h-screen flex flex-col w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
+      <div className="flex flex-col w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
         <main className="flex-1 px-4 py-2">
-          <div className="text-center space-y-4">
+          <div className="text-center space-y-2">
             <h2 className="text-xl font-bold mb-2">Estado de Autorización</h2>
             <p className="mb-4">
-              En el recuadro se indica el nombre del menor,
+              En esta sección encontrarás información
               <br />
-              la <strong>Vacuna Pendiente</strong>
-              <br />y su <strong>Estado de Autorización</strong>.
+              de los próximos <strong>Paseos y Visitas.</strong>
+            </p>
+            <p className="mb-4">
+              Se muestra información del <strong>Menor</strong>
+              <br />y de su <strong>Apoderado</strong>.
             </p>
             <div className="border border-gray-300 rounded-lg p-4 mb-4 bg-white">
               <p>
@@ -82,28 +89,39 @@ const RevisarVacunaMenor = () => {
                 </p>
               </div>
               <p>
-                <strong>Vacuna:</strong> {menor?.nombreVacuna}
+                <strong>Reunión:</strong> {menor?.tituloReunion}
               </p>
               <p>
-                <strong>Fecha Vacuna:</strong> {menor?.fechaVacuna}
+                <strong>Sala:</strong> {menor?.sala}
               </p>
-              {menor?.autorizado ? (
-                <p className="font-bold text-green-700">
-                  <strong>Estado: Vacuna Autorizada</strong>
+              <p>
+                <strong>Fecha:</strong> {menor?.fechaReunion}
+              </p>
+              <div className="pb-4">
+                <p>
+                  <strong>Temas a tratar:</strong>
                 </p>
-              ) : menor?.autorizado != null && !menor?.autorizado ? (
+                {menor?.temasTratar.map((tema) => (
+                  <p key={tema}>{tema}</p>
+                ))}
+              </div>
+              {menor?.confirmado ? (
+                <p className="font-bold text-green-700">
+                  <strong>Estado: Asistencia confirmada</strong>
+                </p>
+              ) : menor?.confirmado != null && !menor?.confirmado ? (
                 <p className="font-bold text-red-600">
-                  <strong>Estado: Vacuna No Autorizada</strong>
+                  <strong>Estado: Asistencia no confirmada</strong>
                 </p>
               ) : (
                 <p className="font-bold text-gray-600">
-                  <strong>Estado: Vacuna no solicitada</strong>
+                  <strong>Estado: Asistencia no solicitada</strong>
                 </p>
               )}
             </div>
             <button
               onClick={() => navigate(-1)}
-              className="w-full bg-figma-blue-button text-white py-2 rounded-lg hover:bg-blue-700"
+              className="w-full outline outline-1 outline-figma-blue-button text-figma-blue-button bg-white transition-colors py-2 mt-4 font-semibold rounded-lg hover:outline-none hover:bg-figma-blue-button hover:text-white"
             >
               Volver
             </button>
@@ -114,4 +132,4 @@ const RevisarVacunaMenor = () => {
   );
 };
 
-export default RevisarVacunaMenor;
+export default RevisarReunionMenor;

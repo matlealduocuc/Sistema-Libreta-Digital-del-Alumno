@@ -1,22 +1,22 @@
 import api from "@/lib/axios";
 import { AxiosError, isAxiosError } from "axios";
 
-const path = "/reunion-apoderado";
+const path = "/itinerario";
 
-export class ReunionService {
-  async getReunionesByEducador() {
+export class ItinerarioService {
+  async getItinerariosByEducador() {
     try {
-      const response = await api.get(`${path}/getReunionesByEducador`);
+      const response = await api.get(`${path}/getItinerariosByEducador`);
       return response.data;
     } catch (error) {
       ifAxiosError(error);
     }
   }
 
-  async getNivelesByReunion(idReunion: number) {
+  async getNivelesByItinerario(idItinerario: number) {
     try {
       const response = await api.get(
-        `${path}/getNivelesByReunion/${idReunion}`
+        `${path}/getNivelesByItinerario/${idItinerario}`
       );
       return response.data;
     } catch (error) {
@@ -24,10 +24,10 @@ export class ReunionService {
     }
   }
 
-  async getMenoresByReunionNivel(idReunion: number, idNivel: number) {
+  async getMenoresByItinerarioNivel(idItinerario: number, idNivel: number) {
     try {
       const response = await api.get(
-        `${path}/getMenoresByReunionNivel/${idReunion}/${idNivel}`
+        `${path}/getMenoresByItinerarioNivel/${idItinerario}/${idNivel}`
       );
       return response.data;
     } catch (error) {
@@ -35,14 +35,14 @@ export class ReunionService {
     }
   }
 
-  async getMenorByReunionNivelMenor(
-    idReunion: number,
+  async getMenorByItinerarioNivelMenor(
+    idItinerario: number,
     idNivel: number,
     idMenor: number
   ) {
     try {
       const response = await api.get(
-        `${path}/getMenorByReunionNivelMenor/${idReunion}/${idNivel}/${idMenor}`
+        `${path}/getMenorByItinerarioNivelMenor/${idItinerario}/${idNivel}/${idMenor}`
       );
       return response.data;
     } catch (error) {

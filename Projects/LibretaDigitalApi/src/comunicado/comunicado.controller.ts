@@ -9,10 +9,18 @@ import formatFecha2 from 'src/common/functions/formatFecha2';
 export class ComunicadoController {
   constructor(private readonly comunicadoService: ComunicadoService) {}
 
-  @Get('getTipos')
-  @Auth([Rol.EDUCADOR, Rol.ADMIN, Rol.DIRECTOR])
-  async getGradosByEducadorIdPersona() {
-    return await this.comunicadoService.getTiposComunicado();
+  @Get('getTiposComunicado')
+  @Auth(Rol.EDUCADOR)
+  async getTiposComunicado() {
+    const tipos = await this.comunicadoService.getTiposComunicado();
+    const tiposDto = tipos.map((tipo) => {
+      return {
+        key: tipo.iden_tipo_comunicado,
+        text: tipo.desc_nombre,
+      };
+    });
+
+    return tiposDto;
   }
 
   @Get('getComunicadosByMenor/:idMenor')
@@ -108,5 +116,21 @@ export class ComunicadoController {
       idComunicado,
       +user.idPersona,
     );
+  }
+
+  @Get('getNivelesByEducador')
+  @Auth(Rol.EDUCADOR)
+  async getMenoresByApoderado(@ActiveUser() user) {
+    const niveles = await this.comunicadoService.getNivelesByEducador(
+      +user.idPersona,
+    );
+    const nivelesDto = niveles.map((nivel) => {
+      return {
+        key: nivel.iden_nivel,
+        text: nivel.desc_nombre,
+      };
+    });
+
+    return nivelesDto;
   }
 }

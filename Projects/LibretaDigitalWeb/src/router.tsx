@@ -33,8 +33,14 @@ import RevisarPaseoMenor from "./views/Libreta/Educador/Avisos/PaseosVisitas/Rev
 import ApoderadoComunicadosHome from "./views/Libreta/Apoderado/Comunicados/ComunicadosHome";
 import ListadoComunicadosMenores from "./views/Libreta/Apoderado/Comunicados/ListadoComunicadosMenores";
 import LeerComunicado from "./views/Libreta/Apoderado/Comunicados/LeerComunicado";
-import ListadoReunionRevisar from "./views/Libreta/Educador/Avisos/ReunionesApoderados/ListadoPaseosRevisar";
+import ListadoReunionRevisar from "./views/Libreta/Educador/Avisos/ReunionesApoderados/ListadoReunionRevisar";
 import ListadoNivelesConfirmadosReunion from "./views/Libreta/Educador/Avisos/ReunionesApoderados/ListadoNivelesConfirmadosReunion";
+import ListadoMenoresConfirmadosReunion from "./views/Libreta/Educador/Avisos/ReunionesApoderados/ListadoMenoresConfirmadosReunion";
+import RevisarReunionMenor from "./views/Libreta/Educador/Avisos/ReunionesApoderados/RevisarReunionMenor";
+import ListadoItinerarioRevisar from "./views/Libreta/Educador/Avisos/ItinerarioJornada/ListadoItinerarioRevisar";
+import ListadoNivelesConfirmadosItinerario from "./views/Libreta/Educador/Avisos/ItinerarioJornada/ListadoNivelesConfirmadosItinerario";
+import RevisarItinerarioMenor from "./views/Libreta/Educador/Avisos/ItinerarioJornada/RevisarItinerarioMenor";
+import ListadoMenoresConfirmadosItinerario from "./views/Libreta/Educador/Avisos/ItinerarioJornada/ListadoMenoresConfirmadosItinerario";
 
 export const Router = () => {
   return (
@@ -110,8 +116,6 @@ export const Router = () => {
           <Route path="" element={<LibretaEducadorHome />} index />
           <Route path="home" element={<LibretaEducadorHome />} />
           <Route path="perfil" element={<PerfilUsuario />} />
-          <Route path="comunicados" element={<EducadorComunicados />} />
-          <Route path="crear-comunicado" element={<CrearComunicado />} />
           <Route path="avisos">
             <Route path="home" element={<EducadorAvisosHome />} />
             <Route path="home/:slide" element={<EducadorAvisosHome />} />
@@ -165,20 +169,37 @@ export const Router = () => {
                 element={<ListadoNivelesConfirmadosReunion />}
               />
               <Route
-                path="menor/:id"
-                element={<ConfirmarReunionesApoderadosMenor />}
+                path="revisar-listado-menores/:idReunion/:idNivel"
+                element={<ListadoMenoresConfirmadosReunion />}
+              />
+              <Route
+                path="revisar-menor/:idReunion/:idNivel/:idMenor"
+                element={<RevisarReunionMenor />}
               />
             </Route>
             <Route path="itinerario-jornada">
               <Route
-                path="listado-menores"
-                element={<ItinerarioJornadaListadoMenores />}
+                path="revisar-listado-itinerario"
+                element={<ListadoItinerarioRevisar />}
               />
               <Route
-                path="menor/:id"
-                element={<ConfirmarItinerarioJornadaMenor />}
+                path="revisar-listado-niveles/:idItinerario"
+                element={<ListadoNivelesConfirmadosItinerario />}
+              />
+              <Route
+                path="revisar-listado-menores/:idItinerario/:idNivel"
+                element={<ListadoMenoresConfirmadosItinerario />}
+              />
+              <Route
+                path="revisar-menor/:idItinerario/:idNivel/:idMenor"
+                element={<RevisarItinerarioMenor />}
               />
             </Route>
+          </Route>
+          <Route path="comunicados">
+            <Route path="" element={<EducadorComunicados />} />
+            <Route path="home" element={<EducadorComunicados />} />
+            <Route path="crear-comunicado" element={<CrearComunicado />} />
           </Route>
         </Route>
 

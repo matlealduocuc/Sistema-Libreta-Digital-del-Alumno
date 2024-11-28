@@ -1,12 +1,12 @@
-import { PaseoController } from "@/controllers/PaseoController";
+import { ItinerarioController } from "@/controllers/ItinerarioController";
 import { useAuth } from "@/hooks/useAuth";
 import { Spin } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-const RevisarPaseoMenor = () => {
-  const { idPaseo, idNivel, idMenor } = useParams<{
-    idPaseo: string;
+const RevisarItinerarioMenor = () => {
+  const { idItinerario, idNivel, idMenor } = useParams<{
+    idItinerario: string;
     idNivel: string;
     idMenor: string;
   }>();
@@ -17,32 +17,32 @@ const RevisarPaseoMenor = () => {
     telApoderado: string;
     emailApoderado: string;
     nivel: string;
-    tipoPaseo: string;
-    nombrePaseo: string;
-    descPaseo: string;
-    fechaInicio: string;
-    fechaFin: string;
-    autorizado: boolean | null;
+    tituloActividad: string;
+    fechaActividad: string;
+    descActividad: string;
+    realizado: boolean | null;
+    confirmado: boolean | null;
   }>();
   const [loading, setLoading] = useState<boolean>(true);
-  const paseoController = new PaseoController();
+  const itinerarioController = new ItinerarioController();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMenor = async () => {
       setLoading(true);
-      if (!isLoading && idPaseo && idNivel && idMenor) {
+      if (!isLoading && idItinerario && idNivel && idMenor) {
         try {
-          const menorData = await paseoController.getMenorByPaseoNivelMenor(
-            +idPaseo,
-            +idNivel,
-            +idMenor
-          );
+          const menorData =
+            await itinerarioController.getMenorByItinerarioNivelMenor(
+              +idItinerario,
+              +idNivel,
+              +idMenor
+            );
           if (menorData) {
             setMenor(menorData);
           }
         } catch (error) {
-          console.error("Error fetching menores:", error);
+          console.error("Error fetching menor:", error);
         } finally {
           setLoading(false);
         }
@@ -51,7 +51,7 @@ const RevisarPaseoMenor = () => {
 
     fetchMenor();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading, idPaseo, idNivel, idMenor]);
+  }, [isLoading, idItinerario, idNivel, idMenor]);
 
   return (
     <Spin spinning={loading}>
@@ -90,30 +90,35 @@ const RevisarPaseoMenor = () => {
                 </p>
               </div>
               <p>
-                <strong>{menor?.tipoPaseo}:</strong> {menor?.nombrePaseo}
+                <strong>Actividad:</strong> {menor?.tituloActividad}
+              </p>
+              <p>
+                <strong>Fecha:</strong>{" "}
+                {menor?.fechaActividad.split(".").join("-")}
               </p>
               <p className="mb-2">
                 <strong>Descripción:</strong>
                 <br />
-                {menor?.descPaseo}
+                {menor?.descActividad}
               </p>
-              <p>
-                <strong>Inicio:</strong> {menor?.fechaInicio}
-              </p>
-              <p className="mb-2">
-                <strong>Termino:</strong> {menor?.fechaFin}
-              </p>
-              {menor?.autorizado ? (
+              <div className="mb-2">
+                {menor?.realizado ? (
+                  <p className="text-black">Actividad REALIZADA</p>
+                ) : (
+                  <p className="text-gray-600">Actividad NO REALIZADA</p>
+                )}
+              </div>
+              {menor?.confirmado ? (
                 <p className="font-bold text-green-700">
-                  <strong>Estado: Visita Autorizada</strong>
+                  <strong>Estado: Conocimiento confirmado</strong>
                 </p>
-              ) : menor?.autorizado != null && !menor?.autorizado ? (
+              ) : menor?.confirmado != null && !menor?.confirmado ? (
                 <p className="font-bold text-red-600">
-                  <strong>Estado: Visita No Autorizada</strong>
+                  <strong>Estado: Conocimiento no confirmado</strong>
                 </p>
               ) : (
                 <p className="font-bold text-gray-600">
-                  <strong>Estado: Visita no solicitada</strong>
+                  <strong>Estado: Conocimiento no solicitado</strong>
                 </p>
               )}
             </div>
@@ -130,4 +135,4 @@ const RevisarPaseoMenor = () => {
   );
 };
 
-export default RevisarPaseoMenor;
+export default RevisarItinerarioMenor;

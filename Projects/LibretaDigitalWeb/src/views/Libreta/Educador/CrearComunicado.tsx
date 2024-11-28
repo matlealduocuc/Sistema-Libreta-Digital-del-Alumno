@@ -1,5 +1,4 @@
 import { ComunicadoController } from "@/controllers/ComunicadoController";
-import { GradoController } from "@/controllers/GradoController";
 import { MenorController } from "@/controllers/MenorController";
 import { useAuth } from "@/hooks/useAuth";
 import { Spin } from "antd";
@@ -29,39 +28,31 @@ const CrearComunicado = () => {
   const [textoComunicado, setTextoComunicado] = useState("");
   const [fechaHoraVisible, setFechaHoraVisible] = useState("");
   const [usarFechaHora, setUsarFechaHora] = useState(false);
-  const gradoController = new GradoController();
   const comunicadoController = new ComunicadoController();
   const menorController = new MenorController();
 
   useEffect(() => {
     setLoadingFull(true);
-    const fetchGrados = async () => {
+    const fetchTiposComunicados = async () => {
       if (!isLoading) {
         try {
-          const grados = await gradoController.getGradosByEducadorIdPersona();
-          if (grados) {
+          const tipos = await comunicadoController.getTiposComunicado();
+          if (tipos) {
             setGradosSelect(
-              grados.map(
-                (grado: { iden_grado: number; desc_nombre: string }) => ({
-                  key: grado.iden_grado,
-                  text: grado.desc_nombre,
-                })
-              )
+              tipos.map((tipo: { key: number; text: string }) => ({
+                key: tipo.key,
+                text: tipo.text,
+              }))
             );
           }
           const tiposComunicado =
             await comunicadoController.getTiposComunicado();
           if (tiposComunicado) {
             setTiposComunicadoSelect(
-              tiposComunicado.map(
-                (tipo: {
-                  iden_tipo_comunicado: number;
-                  desc_nombre: string;
-                }) => ({
-                  key: tipo.iden_tipo_comunicado,
-                  text: tipo.desc_nombre,
-                })
-              )
+              tiposComunicado.map((tipo: { key: number; text: string }) => ({
+                key: tipo.key,
+                text: tipo.text,
+              }))
             );
           }
           setLoadingFull(false);
@@ -72,7 +63,7 @@ const CrearComunicado = () => {
       }
     };
 
-    fetchGrados();
+    fetchTiposComunicados();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
@@ -152,11 +143,11 @@ const CrearComunicado = () => {
   return (
     <Spin spinning={loadingFull}>
       <div className="p-4">
-        <h1 className="text-xl font-bold mb-4">Crear Comunicado</h1>
+        <h1 className="text-xl font-bold mb-4">Nuevo Mensaje</h1>
 
         {/* Tipo de comunicado */}
         <div className="mb-4">
-          <label className="block font-semibold mb-1">Tipo de Comunicado</label>
+          <label className="block font-semibold mb-1">Tipo de Mensaje</label>
           <select
             value={tipoComunicado}
             onChange={(e) => setTipoComunicado(e.target.value)}

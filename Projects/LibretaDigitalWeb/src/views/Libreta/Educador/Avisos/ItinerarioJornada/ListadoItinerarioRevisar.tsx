@@ -3,57 +3,54 @@ import { Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ObtenerInitPathName } from "@/common/FuncionesComunesUsuario";
-import { ReunionController } from "@/controllers/ReunionController";
+import { ItinerarioController } from "@/controllers/ItinerarioController";
 
-const ListadoReunionRevisar = () => {
+const ListadoItinerarioRevisar = () => {
   const { isLoading } = useAuth();
-  const [reuniones, setReuniones] = useState<
+  const [itinerarios, setItinerarios] = useState<
     {
-      idReunion: number;
-      reunion: string;
-      sala: string;
-      fechaReunion: string;
+      idItinerario: number;
+      tituloActividad: string;
+      fechaItinerario: string;
     }[]
   >([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState<boolean>(true);
-  const reunionController = new ReunionController();
+  const itinerarioController = new ItinerarioController();
   const navigate = useNavigate();
   const initPathName = ObtenerInitPathName();
 
   useEffect(() => {
-    const fetchReuniones = async () => {
+    const fetchItinerario = async () => {
       setLoading(true);
       if (!isLoading) {
         try {
-          const reunionesData =
-            await reunionController.getReunionesByEducador();
-          if (reunionesData) {
-            setReuniones(
-              reunionesData.map(
-                (reunion: {
-                  idReunion: number;
-                  reunion: string;
-                  sala: string;
-                  fechaReunion: string;
+          const itinerariosData =
+            await itinerarioController.getItinerariosByEducador();
+          if (itinerariosData) {
+            setItinerarios(
+              itinerariosData.map(
+                (itinerario: {
+                  idItinerario: number;
+                  tituloActividad: string;
+                  fechaItinerario: string;
                 }) => ({
-                  idReunion: reunion.idReunion,
-                  reunion: reunion.reunion,
-                  sala: reunion.sala,
-                  fechaReunion: reunion.fechaReunion,
+                  idItinerario: itinerario.idItinerario,
+                  tituloActividad: itinerario.tituloActividad,
+                  fechaItinerario: itinerario.fechaItinerario,
                 })
               )
             );
           }
         } catch (error) {
-          console.error("Error fetching reuniones:", error);
+          console.error("Error fetching itinerarios:", error);
         } finally {
           setLoading(false);
         }
       }
     };
 
-    fetchReuniones();
+    fetchItinerario();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
@@ -61,14 +58,14 @@ const ListadoReunionRevisar = () => {
     setSearchTerm(e.target.value);
   };
 
-  const handlePaseoClick = (idReunion: number) => {
+  const handleItinerarioClick = (idItinerario: number) => {
     navigate(
-      `${initPathName}/avisos/reuniones-apoderados/revisar-listado-niveles/${idReunion}`
+      `${initPathName}/avisos/itinerario-jornada/revisar-listado-niveles/${idItinerario}`
     );
   };
 
-  const filteredReuniones = reuniones.filter((reunion) =>
-    reunion.reunion.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredItinerarios = itinerarios.filter((itinerario) =>
+    itinerario.tituloActividad?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -76,12 +73,12 @@ const ListadoReunionRevisar = () => {
       <div className="px-4 py-2 w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
         <div className="flex justify-between items-center mb-2">
           <h1 className="text-xl font-bold">
-            ¡Revisa el listado de Reuniones!
+            ¡Revisa el listado de Actividades!
           </h1>
         </div>
         <div className="border border-gray-300 rounded-lg p-2 mb-2 text-sm bg-gray-200">
           <span>
-            Selecciona una <strong>Reunión</strong>
+            Selecciona una <strong>Actividad</strong>
             <br />
             para ver el <strong>Detalle por Nivel.</strong>
           </span>
@@ -120,7 +117,7 @@ const ListadoReunionRevisar = () => {
                 type="search"
                 id="search"
                 className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Buscar por Reunión"
+                placeholder="Buscar por Actividad"
                 value={searchTerm}
                 onChange={handleSearch}
               />
@@ -129,16 +126,15 @@ const ListadoReunionRevisar = () => {
         </div>
 
         <div className="grid gap-2">
-          {filteredReuniones.length > 0 ? (
-            filteredReuniones.map((reunion) => (
+          {filteredItinerarios.length > 0 ? (
+            filteredItinerarios.map((reunion) => (
               <div
-                key={reunion.idReunion}
+                key={reunion.idItinerario}
                 className="border border-gray-300 rounded p-4 shadow-md cursor-pointer"
-                onClick={() => handlePaseoClick(reunion.idReunion)}
+                onClick={() => handleItinerarioClick(reunion.idItinerario)}
               >
-                <h2 className="font-semibold">{reunion.reunion}</h2>
-                <p>Sala: {reunion.sala}</p>
-                <p>Fecha: {reunion.fechaReunion.split(".").join("-")}</p>
+                <h2 className="font-semibold">{reunion.tituloActividad}</h2>
+                <p>Fecha: {reunion.fechaItinerario.split(".").join("-")}</p>
               </div>
             ))
           ) : (
@@ -152,4 +148,4 @@ const ListadoReunionRevisar = () => {
   );
 };
 
-export default ListadoReunionRevisar;
+export default ListadoItinerarioRevisar;

@@ -1,10 +1,12 @@
 import api from "@/lib/axios";
 import { AxiosError, isAxiosError } from "axios";
 
+const path = "/comunicado";
+
 export class ComunicadoService {
   async getComunicadosByGrado(idGrado: number) {
     try {
-      const response = await api.get("/comunicado/obtenerByGrado/" + idGrado);
+      const response = await api.get(`${path}/obtenerByGrado/${idGrado}`);
       return response.data;
     } catch (error) {
       ifAxiosError(error);
@@ -13,7 +15,7 @@ export class ComunicadoService {
 
   async getTiposComunicado() {
     try {
-      const response = await api.get("/comunicado/getTipos");
+      const response = await api.get(`${path}/getTiposComunicado`);
       return response.data;
     } catch (error) {
       ifAxiosError(error);
@@ -23,7 +25,7 @@ export class ComunicadoService {
   async getComunicadosByMenor(idMenor: number) {
     try {
       const response = await api.get(
-        `/comunicado/getComunicadosByMenor/${idMenor}`
+        `${path}/getComunicadosByMenor/${idMenor}`
       );
       return response.data;
     } catch (error) {
@@ -34,7 +36,7 @@ export class ComunicadoService {
   async getComunicadoByMenorComunicado(idMenor: number, idComunicado: number) {
     try {
       const response = await api.get(
-        `/comunicado/getComunicadoByMenorComunicado/${idMenor}/${idComunicado}`
+        `${path}/getComunicadoByMenorComunicado/${idMenor}/${idComunicado}`
       );
       return response.data;
     } catch (error) {
@@ -48,12 +50,21 @@ export class ComunicadoService {
   ) {
     try {
       const response = await api.post(
-        "/comunicado/confirmaConocimientoComunicadoMenor",
+        `${path}/confirmaConocimientoComunicadoMenor`,
         {
           idMenor,
           idComunicado,
         }
       );
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async getNivelesByEducador() {
+    try {
+      const response = await api.get(`${path}/getNivelesByEducador`);
       return response.data;
     } catch (error) {
       ifAxiosError(error);
