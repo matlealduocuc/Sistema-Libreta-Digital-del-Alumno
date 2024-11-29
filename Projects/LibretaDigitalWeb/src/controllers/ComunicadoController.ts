@@ -39,4 +39,35 @@ export class ComunicadoController {
   async getNivelesByEducador() {
     return await this._comunicadoService.getNivelesByEducador();
   }
+
+  async enviarComunicado(
+    req: Request & {
+      body: {
+        tipoComunicado: string;
+        nivel: string;
+        textoComunicado: string;
+        enviarATodosMenores: string;
+        menoresSeleccionados: string;
+      };
+      file?: File;
+    }
+  ) {
+    const {
+      tipoComunicado,
+      nivel,
+      textoComunicado,
+      enviarATodosMenores,
+      menoresSeleccionados,
+    } = req.body;
+    const archivoPDF = req.file;
+
+    return await this._comunicadoService.subirComunicado({
+      tipoComunicado,
+      nivel,
+      textoComunicado,
+      enviarATodosMenores: enviarATodosMenores === "true",
+      menoresSeleccionados: JSON.parse(menoresSeleccionados),
+      archivoPDF,
+    });
+  }
 }

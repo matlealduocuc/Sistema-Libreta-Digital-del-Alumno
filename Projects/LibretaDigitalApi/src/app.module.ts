@@ -9,6 +9,8 @@ import { VacunaModule } from './vacuna/vacuna.module';
 import { PaseoModule } from './paseo/paseo.module';
 import { ReunionApoderadoModule } from './reunion-apoderado/reunion-apoderado.module';
 import { ItinerarioModule } from './itinerario/itinerario.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -22,6 +24,10 @@ import { ItinerarioModule } from './itinerario/itinerario.module';
     PaseoModule,
     ReunionApoderadoModule,
     ItinerarioModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads',
+    }),
   ],
 })
 export class AppModule {}

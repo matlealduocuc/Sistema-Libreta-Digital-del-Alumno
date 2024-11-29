@@ -5,6 +5,15 @@ import { Rol } from 'src/common/enums/rol.enum';
 import { ActiveUser } from 'src/common/decorators/active-user.decorator';
 import formatFecha2 from 'src/common/functions/formatFecha2';
 
+interface ComunicadoData {
+  tipoComunicado: string;
+  nivel: string;
+  textoComunicado: string;
+  enviarATodosMenores: boolean;
+  menoresSeleccionados: number[];
+  archivoPDF: File | undefined;
+}
+
 @Controller('comunicado')
 export class ComunicadoController {
   constructor(private readonly comunicadoService: ComunicadoService) {}
@@ -132,5 +141,16 @@ export class ComunicadoController {
     });
 
     return nivelesDto;
+  }
+
+  @Post('subirComunicado')
+  @Auth(Rol.EDUCADOR)
+  async subirComunicado(
+    @ActiveUser() user,
+    @Body()
+    body: ComunicadoData,
+  ) {
+    // const { idMenor, idComunicado } = body;
+    return await this.comunicadoService.subirComunicado(body + user.idPersona);
   }
 }

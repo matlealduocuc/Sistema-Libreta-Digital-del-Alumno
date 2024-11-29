@@ -179,6 +179,7 @@ model lda_comunicado {
 model lda_tipo_comunicado {
   iden_tipo_comunicado Int              @id(map: "lda_tipo_comunicado_pk") @default(autoincrement())
   desc_nombre          String           @db.VarChar
+  nmro_orden           Int?
   lda_comunicado       lda_comunicado[]
 
   @@schema("ADMLDA")
@@ -342,6 +343,15 @@ model lda_nivel_educador {
   flag_eliminado      Boolean   @default(false)
   lda_nivel           lda_nivel @relation(fields: [iden_nivel], references: [iden_nivel], onDelete: NoAction, onUpdate: NoAction, map: "lda_nivel_educador_lda_nivel_fk")
   per_persona         Persona   @relation(fields: [iden_persona], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lda_nivel_educador_per_persona_fk")
+
+  @@schema("ADMLDA")
+}
+
+model lda_archivo {
+  iden_archivo       Int      @id(map: "lda_archivo_pk") @default(autoincrement())
+  desc_nomb_original String   @db.VarChar
+  desc_path          String   @db.VarChar
+  fech_subida        DateTime @db.Timestamp(6)
 
   @@schema("ADMLDA")
 }

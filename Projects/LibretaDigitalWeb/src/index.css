@@ -10,3 +10,7 @@
 a:hover {
   color: white;
 }
+
+.ck-balloon-panel {
+  display: none !important;
+}

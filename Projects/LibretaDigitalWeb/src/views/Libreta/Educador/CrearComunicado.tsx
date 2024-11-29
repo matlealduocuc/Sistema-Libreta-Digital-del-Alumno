@@ -4,6 +4,50 @@ import { useAuth } from "@/hooks/useAuth";
 import { Spin } from "antd";
 import React, { useEffect, useState } from "react";
 
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import {
+  ClassicEditor,
+  Bold,
+  Essentials,
+  Heading,
+  Indent,
+  IndentBlock,
+  Italic,
+  Highlight,
+  Paragraph,
+  Table,
+  Undo,
+  AccessibilityHelp,
+  Alignment,
+  Autoformat,
+  Autosave,
+  BalloonToolbar,
+  BlockQuote,
+  Code,
+  FontBackgroundColor,
+  FontColor,
+  FontFamily,
+  FontSize,
+  GeneralHtmlSupport,
+  HorizontalLine,
+  RemoveFormat,
+  SelectAll,
+  Strikethrough,
+  Subscript,
+  Superscript,
+  TableCaption,
+  TableCellProperties,
+  TableColumnResize,
+  TableProperties,
+  TableToolbar,
+  TextTransformation,
+  Underline,
+} from "ckeditor5";
+
+import translations from "ckeditor5/translations/es.js";
+
+import "ckeditor5/ckeditor5.css";
+
 const CrearComunicado = () => {
   const { isLoading } = useAuth();
   const [loadingFull, setLoadingFull] = React.useState<boolean>(true);
@@ -11,11 +55,11 @@ const CrearComunicado = () => {
   const [tiposComunicadoSelect, setTiposComunicadoSelect] = useState<
     { key: number; text: string }[]
   >([]);
-  const [grado, setGrado] = useState("");
-  const [gradosSelect, setGradosSelect] = useState<
+  const [nivel, setNivel] = useState("");
+  const [nivelesSelect, setNivelesSelect] = useState<
     { key: number; text: string }[]
   >([]);
-  const [enviarATodos, setEnviarATodos] = useState(true);
+  const [enviarATodosMenores, setEnviarATodosMenores] = useState(true);
   const [menoresSelect, setMenoresSelect] = useState<
     { id: number; nombreMenor: string; nombreApoderado: string }[]
   >([]);
@@ -23,11 +67,10 @@ const CrearComunicado = () => {
     []
   );
   const [mostrarSeleccionMenores, setMostrarSeleccionMenores] = useState(false);
-  const [enviarPorCorreo, setEnviarPorCorreo] = useState(true);
-  const [titulo, setTitulo] = useState("");
+  const [enviarPorCorreo, setEnviarPorCorreo] = useState(false);
+  const [asunto, setAsunto] = useState("");
   const [textoComunicado, setTextoComunicado] = useState("");
-  const [fechaHoraVisible, setFechaHoraVisible] = useState("");
-  const [usarFechaHora, setUsarFechaHora] = useState(false);
+  const [archivoPDF, setArchivoPDF] = useState<File | null>(null);
   const comunicadoController = new ComunicadoController();
   const menorController = new MenorController();
 
@@ -36,12 +79,12 @@ const CrearComunicado = () => {
     const fetchTiposComunicados = async () => {
       if (!isLoading) {
         try {
-          const tipos = await comunicadoController.getTiposComunicado();
-          if (tipos) {
-            setGradosSelect(
-              tipos.map((tipo: { key: number; text: string }) => ({
-                key: tipo.key,
-                text: tipo.text,
+          const niveles = await comunicadoController.getNivelesByEducador();
+          if (niveles) {
+            setNivelesSelect(
+              niveles.map((nivel: { key: number; text: string }) => ({
+                key: nivel.key,
+                text: nivel.text,
               }))
             );
           }
@@ -71,29 +114,29 @@ const CrearComunicado = () => {
     setMostrarSeleccionMenores(false);
     setMenoresSeleccionados([]);
     const fetchMenores = async () => {
-      if (grado != "") {
+      if (nivel != "") {
         setLoadingFull(true);
         try {
           const menores =
             await menorController.getSelectMenoresApoderadoByIdNivel(
-              Number(grado)
+              Number(nivel)
             );
           if (menores) {
             setMenoresSelect(
               menores.map(
                 (menor: {
-                  iden_menor: number;
+                  id: number;
                   nombreMenor: string;
                   nombreApoderado: string;
                 }) => ({
-                  id: menor.iden_menor,
+                  id: menor.id,
                   nombreMenor: menor.nombreMenor,
                   nombreApoderado: menor.nombreApoderado,
                 })
               )
             );
           }
-          setEnviarATodos(true);
+          setEnviarATodosMenores(true);
           setLoadingFull(false);
         } catch (error) {
           setLoadingFull(false);
@@ -104,49 +147,54 @@ const CrearComunicado = () => {
 
     fetchMenores();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [grado]);
-
-  const menoresEjemplo = [
-    { id: 1, nombre: "Alejandra González", apoderado: "Carlos González" },
-    { id: 2, nombre: "Juan Pérez", apoderado: "Ana Pérez" },
-    { id: 3, nombre: "Laura Rodríguez", apoderado: "Luis Rodríguez" },
-    // Agrega más ejemplos según sea necesario
-  ];
+  }, [nivel]);
 
   const handleCheckboxChange = (id: number) => {
-    setMenoresSeleccionados((prev) => {
-      if (prev.includes(id)) {
-        return prev.filter((menorId) => menorId !== id);
-      } else {
-        return [...prev, id];
-      }
-    });
+    setMenoresSeleccionados((prev) =>
+      prev.includes(id)
+        ? prev.filter((menorId) => menorId !== id)
+        : [...prev, id]
+    );
   };
 
-  const handleEnviarComunicado = () => {
-    const seleccionados = menoresEjemplo.filter((menor) =>
-      menoresSeleccionados.includes(menor.id)
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setArchivoPDF(event.target.files[0]);
+    }
+  };
+
+  const handleEnviarComunicado = async () => {
+    const formData = new FormData();
+    formData.append("tipoComunicado", tipoComunicado);
+    formData.append("nivel", nivel);
+    formData.append("textoComunicado", textoComunicado);
+    if (archivoPDF) {
+      formData.append("archivoPDF", archivoPDF);
+    }
+    formData.append("enviarATodosMenores", "true");
+    formData.append(
+      "menoresSeleccionados",
+      JSON.stringify(menoresSeleccionados)
     );
-    console.log({
-      tipoComunicado,
-      grado,
-      enviarATodos,
-      menoresSeleccionados: seleccionados,
-      enviarPorCorreo,
-      titulo,
-      textoComunicado,
-      fechaHoraVisible: usarFechaHora ? fechaHoraVisible : null,
-    });
-    alert("Comunicado enviado");
+
+    const enviado = await comunicadoController.enviarComunicado(formData);
   };
 
   return (
     <Spin spinning={loadingFull}>
       <div className="p-4">
-        <h1 className="text-xl font-bold mb-4">Nuevo Mensaje</h1>
+        <h1 className="text-xl font-bold mb-2">Nuevo Mensaje</h1>
+        <div className="border border-gray-300 rounded-lg p-2 mb-2 text-sm bg-gray-200">
+          <span>
+            <strong>Redacta y Envía Mensajes a los Apoderados.</strong>
+            <br />
+            Haz click en <strong>"Nuevo"</strong> para redactar un mensaje y
+            luego en <strong>"Aceptar".</strong>
+          </span>
+        </div>
 
         {/* Tipo de comunicado */}
-        <div className="mb-4">
+        <div className="mb-2">
           <label className="block font-semibold mb-1">Tipo de Mensaje</label>
           <select
             value={tipoComunicado}
@@ -162,44 +210,42 @@ const CrearComunicado = () => {
           </select>
         </div>
 
-        {/* Grado */}
-        <div className="mb-4">
-          <label className="block font-semibold mb-1">Grado</label>
+        <div className="mb-2">
+          <label className="block font-semibold mb-1">Nivel</label>
           <select
-            value={grado}
-            onChange={(e) => setGrado(e.target.value)}
-            className="border border-gray-300 rounded px-3 py-2 w-full text-xs"
+            value={nivel}
+            onChange={(e) => setNivel(e.target.value)}
+            className="border border-gray-300 rounded px-3 py-2 w-full"
           >
-            <option value="">Seleccionar Grado</option>
-            <option value="1">Prueba 1</option>
-            {gradosSelect.map((grado) => (
-              <option key={grado.key} value={grado.key}>
-                {grado.text}
+            <option value="">Seleccionar Nivel</option>
+            {nivelesSelect.map((nivel) => (
+              <option key={nivel.key} value={nivel.key}>
+                {nivel.text}
               </option>
             ))}
           </select>
         </div>
 
         {/* Check de enviar a todos */}
-        {grado != "" && (
-          <div className="mb-4">
+        {nivel != "" && (
+          <div className="mb-2">
             <label className="flex items-center">
               <input
                 type="checkbox"
-                checked={enviarATodos}
-                onChange={(e) => setEnviarATodos(e.target.checked)}
+                checked={enviarATodosMenores}
+                onChange={(e) => setEnviarATodosMenores(e.target.checked)}
                 className="mr-2"
               />
               <p className="text-xs">
-                Enviar a todos los apoderados de menores del grado
+                Enviar a todos los apoderados de menores del nivel
               </p>
             </label>
           </div>
         )}
 
         {/* Botón para seleccionar menores */}
-        {grado != "" && !enviarATodos && (
-          <div className="mb-4">
+        {nivel != "" && !enviarATodosMenores && (
+          <div className="mb-2">
             <button
               onClick={() =>
                 setMostrarSeleccionMenores(!mostrarSeleccionMenores)
@@ -219,18 +265,11 @@ const CrearComunicado = () => {
                       type="checkbox"
                       checked={menoresSeleccionados.includes(menor.id)}
                       onChange={() => handleCheckboxChange(menor.id)}
-                      key={menor.id}
                       className="mr-2 text-sm"
                     />
                     {menor.nombreMenor} - Apoderado: {menor.nombreApoderado}
                   </label>
                 ))}
-                <button
-                  onClick={() => setMostrarSeleccionMenores(false)}
-                  className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                >
-                  Aceptar Selección
-                </button>
               </div>
             )}
 
@@ -253,69 +292,200 @@ const CrearComunicado = () => {
         )}
 
         {/* Check de enviar al correo */}
-        <div className="mb-4">
-          <label className="flex items-center">
-            <input
-              type="checkbox"
-              checked={enviarPorCorreo}
-              onChange={(e) => setEnviarPorCorreo(e.target.checked)}
-              className="mr-2"
-            />
-            Enviar al correo del apoderado
-          </label>
-        </div>
-
-        {/* Check para mostrar campo de fecha y hora de visibilidad */}
-        <div className="mb-4">
-          <label className="flex items-center">
-            <input
-              type="checkbox"
-              checked={usarFechaHora}
-              onChange={(e) => setUsarFechaHora(e.target.checked)}
-              className="mr-2"
-            />
-            Establecer fecha y hora de visibilidad
-          </label>
-        </div>
-
-        {/* Campo de Fecha y Hora de Visibilidad */}
-        {usarFechaHora && (
-          <div className="mb-4">
-            <label className="block font-semibold mb-1">
-              Fecha y hora de visibilidad
+        <div className="mb-2">
+          <del>
+            <label className="flex items-center text-gray-500">
+              <input
+                type="checkbox"
+                checked={enviarPorCorreo}
+                onChange={(e) => setEnviarPorCorreo(e.target.checked)}
+                className="mr-2"
+                disabled={true}
+              />
+              Enviar al correo del apoderado
             </label>
-            <input
-              type="datetime-local"
-              value={fechaHoraVisible}
-              onChange={(e) => setFechaHoraVisible(e.target.value)}
-              className="border border-gray-300 rounded px-3 py-2 w-full"
-            />
-          </div>
-        )}
+          </del>
+        </div>
 
         {/* Título del comunicado */}
-        <div className="mb-4">
-          <label className="block font-semibold mb-1">
-            Título del Comunicado
-          </label>
+        <div className="mb-2">
+          <label className="block font-semibold mb-1">Asunto</label>
           <input
             type="text"
-            value={titulo}
-            onChange={(e) => setTitulo(e.target.value)}
+            value={asunto}
+            onChange={(e) => setAsunto(e.target.value)}
             className="border border-gray-300 rounded px-3 py-2 w-full"
           />
         </div>
 
         {/* Texto del comunicado */}
-        <div className="mb-4">
-          <label className="block font-semibold mb-1">
-            Texto del Comunicado
-          </label>
-          <textarea
-            value={textoComunicado}
-            onChange={(e) => setTextoComunicado(e.target.value)}
-            className="border border-gray-300 rounded px-3 py-2 w-full h-32"
-          ></textarea>
+        <div className="mb-2">
+          <label className="block font-semibold mb-1">Mensaje</label>
+          <CKEditor
+            editor={ClassicEditor}
+            config={{
+              toolbar: {
+                items: [
+                  "undo",
+                  "redo",
+                  "|",
+                  "bold",
+                  "italic",
+                  "underline",
+                  "strikethrough",
+                  "subscript",
+                  "superscript",
+                  "code",
+                  "removeFormat",
+                  "|",
+                  "fontSize",
+                  "fontFamily",
+                  "fontColor",
+                  "fontBackgroundColor",
+                  "|",
+                  "heading",
+                  "|",
+                  "horizontalLine",
+                  "insertTable",
+                  "highlight",
+                  "blockQuote",
+                  "|",
+                  "alignment",
+                  "|",
+                  "outdent",
+                  "indent",
+                ],
+              },
+              plugins: [
+                AccessibilityHelp,
+                Alignment,
+                Autoformat,
+                Autosave,
+                BalloonToolbar,
+                BlockQuote,
+                Bold,
+                Code,
+                Essentials,
+                FontBackgroundColor,
+                FontColor,
+                FontFamily,
+                FontSize,
+                GeneralHtmlSupport,
+                Heading,
+                Highlight,
+                HorizontalLine,
+                Indent,
+                IndentBlock,
+                Italic,
+                Paragraph,
+                RemoveFormat,
+                SelectAll,
+                Strikethrough,
+                Subscript,
+                Superscript,
+                Table,
+                TableCaption,
+                TableCellProperties,
+                TableColumnResize,
+                TableProperties,
+                TableToolbar,
+                TextTransformation,
+                Underline,
+                Undo,
+              ],
+              balloonToolbar: ["bold", "italic"],
+              fontFamily: {
+                supportAllValues: true,
+              },
+              fontSize: {
+                options: [10, 12, 14, "default", 18, 20, 22],
+                supportAllValues: true,
+              },
+              language: "es",
+              placeholder: "Escribe el contenido del comunicado aqui!",
+              heading: {
+                options: [
+                  {
+                    model: "paragraph",
+                    title: "Paragraph",
+                    class: "ck-heading_paragraph",
+                  },
+                  {
+                    model: "heading1",
+                    view: "h1",
+                    title: "Heading 1",
+                    class: "ck-heading_heading1",
+                  },
+                  {
+                    model: "heading2",
+                    view: "h2",
+                    title: "Heading 2",
+                    class: "ck-heading_heading2",
+                  },
+                  {
+                    model: "heading3",
+                    view: "h3",
+                    title: "Heading 3",
+                    class: "ck-heading_heading3",
+                  },
+                  {
+                    model: "heading4",
+                    view: "h4",
+                    title: "Heading 4",
+                    class: "ck-heading_heading4",
+                  },
+                  {
+                    model: "heading5",
+                    view: "h5",
+                    title: "Heading 5",
+                    class: "ck-heading_heading5",
+                  },
+                  {
+                    model: "heading6",
+                    view: "h6",
+                    title: "Heading 6",
+                    class: "ck-heading_heading6",
+                  },
+                ],
+              },
+              htmlSupport: {
+                allow: [
+                  {
+                    name: /^.*$/,
+                    attributes: true,
+                    classes: true,
+                  },
+                ],
+              },
+              table: {
+                contentToolbar: [
+                  "tableColumn",
+                  "tableRow",
+                  "mergeTableCells",
+                  "tableProperties",
+                  "tableCellProperties",
+                ],
+              },
+              translations: [translations],
+            }}
+            data={textoComunicado}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            onChange={(_event: any, editor: any) => {
+              setTextoComunicado(editor.getData());
+            }}
+          />
+        </div>
+
+        <div className="mb-2">
+          <div className="mb-2">
+            <label className="block font-semibold mb-1">Adjuntar PDF</label>
+            <input
+              type="file"
+              accept=".pdf"
+              onChange={handleFileChange}
+              className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none py-2"
+            />
+          </div>
         </div>
 
         {/* Botón enviar comunicado */}
@@ -324,14 +494,13 @@ const CrearComunicado = () => {
           className="bg-blue-600 disabled:bg-blue-300 text-white px-4 py-2 rounded hover:bg-blue-700 w-full"
           disabled={
             tipoComunicado == "" ||
-            grado == "" ||
-            (!enviarATodos && menoresSeleccionados.length >= 0) ||
-            (usarFechaHora && fechaHoraVisible == "") ||
-            titulo.trim() == "" ||
+            nivel == "" ||
+            (!enviarATodosMenores && menoresSeleccionados.length < 1) ||
+            asunto.trim() == "" ||
             textoComunicado.trim() == ""
           }
         >
-          Enviar Comunicado
+          Aceptar
         </button>
       </div>
     </Spin>

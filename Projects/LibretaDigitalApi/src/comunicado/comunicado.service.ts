@@ -5,24 +5,10 @@ import { PrismaService } from 'src/prisma.service';
 export class ComunicadoService {
   constructor(private readonly prisma: PrismaService) {}
 
-  // async getComunicadosByNivel(idNivel: number) {
-  //   return await this.prisma.lda_comunicado.findMany({
-  //     where: {
-  //       lda_comunicado_entities: {
-  //         every: {
-  //           lda_educador: {
-  //             iden_persona: idPersona,
-  //           },
-  //           flag_activo: true,
-  //           flag_eliminado: false,
-  //         },
-  //       },
-  //     },
-  //   });
-  // }
-
   async getTiposComunicado() {
-    return await this.prisma.lda_tipo_comunicado.findMany();
+    return (await this.prisma.lda_tipo_comunicado.findMany()).sort(
+      (a, b) => a.nmro_orden - b.nmro_orden,
+    );
   }
 
   async getComunicadosByMenor(idMenor: number, idApoderado: number) {

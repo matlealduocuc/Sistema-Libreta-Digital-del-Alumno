@@ -3,6 +3,15 @@ import { AxiosError, isAxiosError } from "axios";
 
 const path = "/comunicado";
 
+interface ComunicadoData {
+  tipoComunicado: string;
+  nivel: string;
+  textoComunicado: string;
+  enviarATodosMenores: boolean;
+  menoresSeleccionados: number[];
+  archivoPDF: File | undefined;
+}
+
 export class ComunicadoService {
   async getComunicadosByGrado(idGrado: number) {
     try {
@@ -65,6 +74,15 @@ export class ComunicadoService {
   async getNivelesByEducador() {
     try {
       const response = await api.get(`${path}/getNivelesByEducador`);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async subirComunicado(data: ComunicadoData) {
+    try {
+      const response = await api.post(`${path}/subirComunicado`, data);
       return response.data;
     } catch (error) {
       ifAxiosError(error);
