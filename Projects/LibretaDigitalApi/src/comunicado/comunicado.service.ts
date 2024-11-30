@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
+import { ComunicadoData } from './entities/comunicado.entity';
 
 @Injectable()
 export class ComunicadoService {
@@ -65,6 +66,11 @@ export class ComunicadoService {
           },
         },
       },
+      orderBy: {
+        lda_comunicado: {
+          fech_creacion: 'asc',
+        },
+      },
     });
   }
 
@@ -103,6 +109,7 @@ export class ComunicadoService {
         desc_titulo: true,
         desc_texto: true,
         fech_creacion: true,
+        iden_archivo: true,
         usr_usuario: {
           select: {
             usr_rol: {
@@ -226,5 +233,112 @@ export class ComunicadoService {
         desc_nombre: true,
       },
     });
+  }
+
+  async subirComunicado(comunicado: ComunicadoData, idEducador: number) {
+    const educador = await this.prisma.usuario.findFirst({
+      where: {
+        activo: true,
+        eliminado: false,
+        persona: {
+          id: idEducador,
+          flag_activo: true,
+          flag_eliminado: false,
+          lda_nivel_educador: {
+            some: {
+              flag_activo: true,
+              flag_eliminado: false,
+              iden_nivel: comunicado.nivel,
+            },
+          },
+        },
+      },
+      select: {
+        id: true,
+      },
+    });
+    if (!educador) {
+      return false;
+    }
+    const dateReal = new Date().setMinutes(
+      new Date().getMinutes() - new Date().getTimezoneOffset(),
+    );
+    const comunicadoData: any = {
+      desc_titulo: comunicado.asunto,
+      desc_texto: comunicado.texto,
+      fech_creacion: new Date(dateReal),
+      usr_usuario: {
+        connect: {
+          id: educador.id,
+        },
+      },
+      lda_tipo_comunicado: {
+        connect: {
+          iden_tipo_comunicado: comunicado.tipoComunicado,
+        },
+      },
+    };
+
+    if (comunicado.idArchivo) {
+      comunicadoData.lda_archivo = {
+        connect: {
+          iden_archivo: comunicado.idArchivo,
+        },
+      };
+    }
+
+    const comunicadoCreated = await this.prisma.lda_comunicado.create({
+      data: comunicadoData,
+    });
+
+    if (comunicado.enviarATodosMenores) {
+      const menores = await this.prisma.lda_nivel_menor.findMany({
+        where: {
+          iden_nivel: comunicado.nivel,
+          flag_activo: true,
+          flag_eliminado: false,
+          lda_menor: {
+            flag_activo: true,
+            flag_eliminado: false,
+          },
+        },
+        select: {
+          iden_menor: true,
+        },
+      });
+
+      for (const menor of menores) {
+        await this.prisma.lda_comunicado_menor.create({
+          data: {
+            iden_comunicado: comunicadoCreated.iden_comunicado,
+            iden_menor: menor.iden_menor,
+            iden_nivel: comunicado.nivel,
+            flag_confirmado: false,
+          },
+        });
+      }
+    } else {
+      for (const menorId of comunicado.menoresSeleccionados) {
+        const menor = await this.prisma.menor.findFirst({
+          where: {
+            id: menorId,
+            flag_activo: true,
+            flag_eliminado: false,
+          },
+        });
+
+        if (menor) {
+          await this.prisma.lda_comunicado_menor.create({
+            data: {
+              iden_comunicado: comunicadoCreated.iden_comunicado,
+              iden_menor: menor.id,
+              iden_nivel: comunicado.nivel,
+              flag_confirmado: false,
+            },
+          });
+        }
+      }
+    }
+    return comunicadoCreated;
   }
 }

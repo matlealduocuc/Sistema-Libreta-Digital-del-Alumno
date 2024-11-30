@@ -169,6 +169,8 @@ model lda_comunicado {
   flag_eliminado       Boolean                @default(false)
   iden_usr_creador     Int
   fech_creacion        DateTime               @db.Timestamp(6)
+  iden_archivo         Int?
+  lda_archivo          lda_archivo?           @relation(fields: [iden_archivo], references: [iden_archivo], onDelete: NoAction, onUpdate: NoAction, map: "lda_comunicado_lda_archivo_fk")
   lda_tipo_comunicado  lda_tipo_comunicado    @relation(fields: [iden_tipo_comunicado], references: [iden_tipo_comunicado], onDelete: NoAction, onUpdate: NoAction, map: "lda_comunicado_lda_tipo_comunicado_fk")
   usr_usuario          Usuario                @relation(fields: [iden_usr_creador], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lda_comunicado_usr_usuario_fk")
   lda_comunicado_menor lda_comunicado_menor[]
@@ -348,10 +350,11 @@ model lda_nivel_educador {
 }
 
 model lda_archivo {
-  iden_archivo       Int      @id(map: "lda_archivo_pk") @default(autoincrement())
-  desc_nomb_original String   @db.VarChar
-  desc_path          String   @db.VarChar
-  fech_subida        DateTime @db.Timestamp(6)
+  iden_archivo       Int              @id(map: "lda_archivo_pk") @default(autoincrement())
+  desc_nomb_original String           @db.VarChar
+  desc_path          String           @db.VarChar
+  fech_subida        DateTime         @db.Timestamp(6)
+  lda_comunicado     lda_comunicado[]
 
   @@schema("ADMLDA")
 }

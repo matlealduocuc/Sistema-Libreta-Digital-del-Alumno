@@ -1,16 +1,8 @@
+import { ComunicadoData } from "@/dtos/Comunicado/ComunicadoData";
 import api from "@/lib/axios";
 import { AxiosError, isAxiosError } from "axios";
 
 const path = "/comunicado";
-
-interface ComunicadoData {
-  tipoComunicado: string;
-  nivel: string;
-  textoComunicado: string;
-  enviarATodosMenores: boolean;
-  menoresSeleccionados: number[];
-  archivoPDF: File | undefined;
-}
 
 export class ComunicadoService {
   async getComunicadosByGrado(idGrado: number) {

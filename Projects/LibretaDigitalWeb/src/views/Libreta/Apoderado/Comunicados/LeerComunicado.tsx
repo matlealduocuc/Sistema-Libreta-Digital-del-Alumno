@@ -3,6 +3,11 @@ import { useAuth } from "@/hooks/useAuth";
 import { Spin } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { faDownload } from "@fortawesome/free-solid-svg-icons";
+
+import "ckeditor5/ckeditor5-content.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FileController } from "@/controllers/FileController";
 
 const LeerComunicado = () => {
   const { idMenor, idComunicado } = useParams<{
@@ -18,11 +23,13 @@ const LeerComunicado = () => {
     titulo: string;
     confirmado: boolean | null;
     detalle: string;
+    idArchivo: number | null;
   }>();
   const [loading, setLoading] = useState<boolean>(true);
   const [isErrorConfirmar, setIsErrorConfirmar] = useState<boolean>(true);
   const [step, setStep] = useState(1);
   const comunicadoController = new ComunicadoController();
+  const fileController = new FileController();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -89,20 +96,40 @@ const LeerComunicado = () => {
     }
   };
 
+  const handleClickDownloadPDF = async (
+    idArchivo: number | null | undefined
+  ) => {
+    try {
+      if (idArchivo) {
+        const response = await fileController.fetchFile(idArchivo);
+        console.log(response);
+        const link = document.createElement("a");
+        link.href = response.url;
+        link.target = "_blank";
+        document.body.appendChild(link);
+        link.click();
+      }
+    } catch (error) {
+      console.error("Error al descargar archivo:", error);
+    }
+  };
+
   return (
     <Spin spinning={loading}>
       <div className="flex flex-col w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
         <main className="flex-1 px-4 py-2">
           {/* Paso 1 */}
           {step === 1 && (
-            <div className="text-center space-y-2">
-              <h2 className="text-xl font-bold mb-2">Detalle del Mensaje</h2>
-              <p className="text-sm">
+            <div className="space-y-2">
+              <h2 className="text-xl text-center font-bold mb-2">
+                Detalle del Mensaje
+              </h2>
+              <p className="text-sm text-center">
                 Revisa el detalle del mensaje y
                 <br />
                 haz click en <strong>"Aceptar"</strong> para confirmar lectura.
               </p>
-              <div className="border border-gray-300 rounded-lg px-4 py-2 mb-4 bg-white">
+              <div className="border border-gray-300 rounded-lg text-center px-4 py-2 mb-4 bg-white">
                 <p>
                   <strong>De:</strong> {comunicado?.de}
                 </p>
@@ -135,15 +162,33 @@ const LeerComunicado = () => {
                 )}
               </div>
               <div className="border border-gray-300 rounded-lg px-4 py-2 mb-4 bg-white">
-                <p>
+                <p className="text-center">
                   <strong>Mensaje:</strong>
                 </p>
                 <p
+                  className="ck-content"
                   dangerouslySetInnerHTML={{
                     __html: comunicado?.detalle ?? "",
                   }}
                 ></p>
               </div>
+              {comunicado?.idArchivo && (
+                <div className="border border-gray-300 rounded-lg px-4 py-2 mb-4 bg-white">
+                  <button
+                    className="bg-blue-600 disabled:bg-blue-300 text-white px-4 py-2 rounded hover:bg-blue-700 w-full h-12"
+                    onClick={() => {
+                      handleClickDownloadPDF(comunicado?.idArchivo);
+                    }}
+                  >
+                    <FontAwesomeIcon
+                      icon={faDownload}
+                      color="white"
+                      className="pe-1 w-6"
+                    />
+                    Descargar PDF
+                  </button>
+                </div>
+              )}
               {comunicado?.confirmado != null && !comunicado?.confirmado ? (
                 <button
                   onClick={handleNextStep}

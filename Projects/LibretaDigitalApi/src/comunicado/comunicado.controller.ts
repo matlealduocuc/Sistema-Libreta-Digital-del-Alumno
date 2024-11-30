@@ -4,15 +4,7 @@ import { Auth } from 'src/auth/decorators/auth.decorator';
 import { Rol } from 'src/common/enums/rol.enum';
 import { ActiveUser } from 'src/common/decorators/active-user.decorator';
 import formatFecha2 from 'src/common/functions/formatFecha2';
-
-interface ComunicadoData {
-  tipoComunicado: string;
-  nivel: string;
-  textoComunicado: string;
-  enviarATodosMenores: boolean;
-  menoresSeleccionados: number[];
-  archivoPDF: File | undefined;
-}
+import { ComunicadoData } from './entities/comunicado.entity';
 
 @Controller('comunicado')
 export class ComunicadoController {
@@ -63,12 +55,6 @@ export class ComunicadoController {
     });
 
     comunicadosDto.sort((a, b) => {
-      if (a.confirmado === b.confirmado) {
-        return (
-          new Date(a.fechaComunicado).getTime() -
-          new Date(b.fechaComunicado).getTime()
-        );
-      }
       if (a.confirmado === false) return -1;
       if (b.confirmado === false) return 1;
       if (a.confirmado === true) return -1;
@@ -105,6 +91,7 @@ export class ComunicadoController {
       fechaComunicado: formatFecha2(comunicado.fech_creacion.toISOString()),
       confirmado: comunicado.lda_comunicado_menor[0].flag_confirmado,
       detalle: comunicado.desc_texto,
+      idArchivo: comunicado.iden_archivo,
     };
     return comunicadoDto;
   }
@@ -148,9 +135,8 @@ export class ComunicadoController {
   async subirComunicado(
     @ActiveUser() user,
     @Body()
-    body: ComunicadoData,
+    body: ComunicadoData | any,
   ) {
-    // const { idMenor, idComunicado } = body;
-    return await this.comunicadoService.subirComunicado(body + user.idPersona);
+    return await this.comunicadoService.subirComunicado(body, user.idPersona);
   }
 }

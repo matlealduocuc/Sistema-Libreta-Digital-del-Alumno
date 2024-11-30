@@ -1,3 +1,4 @@
+import { ComunicadoData } from "@/dtos/Comunicado/ComunicadoData";
 import { ComunicadoService } from "@/services/ComunicadoService";
 
 export class ComunicadoController {
@@ -40,34 +41,7 @@ export class ComunicadoController {
     return await this._comunicadoService.getNivelesByEducador();
   }
 
-  async enviarComunicado(
-    req: Request & {
-      body: {
-        tipoComunicado: string;
-        nivel: string;
-        textoComunicado: string;
-        enviarATodosMenores: string;
-        menoresSeleccionados: string;
-      };
-      file?: File;
-    }
-  ) {
-    const {
-      tipoComunicado,
-      nivel,
-      textoComunicado,
-      enviarATodosMenores,
-      menoresSeleccionados,
-    } = req.body;
-    const archivoPDF = req.file;
-
-    return await this._comunicadoService.subirComunicado({
-      tipoComunicado,
-      nivel,
-      textoComunicado,
-      enviarATodosMenores: enviarATodosMenores === "true",
-      menoresSeleccionados: JSON.parse(menoresSeleccionados),
-      archivoPDF,
-    });
+  async enviarComunicado(comunicado: ComunicadoData) {
+    return await this._comunicadoService.subirComunicado(comunicado);
   }
 }

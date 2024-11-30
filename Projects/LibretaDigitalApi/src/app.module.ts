@@ -11,6 +11,7 @@ import { ReunionApoderadoModule } from './reunion-apoderado/reunion-apoderado.mo
 import { ItinerarioModule } from './itinerario/itinerario.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { FileModule } from './file/file.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { join } from 'path';
       rootPath: join(__dirname, '..', 'uploads'),
       serveRoot: '/uploads',
     }),
+    FileModule,
   ],
 })
 export class AppModule {}
