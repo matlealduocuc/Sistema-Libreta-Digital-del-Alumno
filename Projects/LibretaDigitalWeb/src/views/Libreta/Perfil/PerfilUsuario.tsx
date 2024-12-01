@@ -38,9 +38,18 @@ const PerfilUsuario = () => {
           const nombreCompleto = ObtenerNombreCompletoJoined(perfil);
           setUser({
             name: nombreCompleto,
-            email: perfil.email ?? "No registrado",
-            phone: perfil.telefono ?? "No registrado",
-            address: perfil.direccion ?? "No registrado",
+            email:
+              perfil.email != null && perfil.email.trim() != ""
+                ? perfil.email
+                : "No registrado",
+            phone:
+              perfil.telefono != null && perfil.telefono.trim() != ""
+                ? perfil.telefono
+                : "No registrado",
+            address:
+              perfil.direccion != null && perfil.direccion.trim() != ""
+                ? perfil.direccion
+                : "No registrado",
             rut: perfil.run + "-" + perfil.dv,
           });
           setEditData({
