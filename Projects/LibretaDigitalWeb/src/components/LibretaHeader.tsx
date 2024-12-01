@@ -19,6 +19,7 @@ const LibretaHeader: React.FC<LibretaHeaderProps> = ({ title }) => {
     .toLowerCase();
   const pathsQuitarHeader = ["avisos/home"];
   const initPathName = ObtenerInitPathName();
+  const isHome = pathName == "";
 
   let bgColorClass = "bg-black";
   let textColorClass = "text-white";
@@ -49,21 +50,21 @@ const LibretaHeader: React.FC<LibretaHeaderProps> = ({ title }) => {
         <div
           className={`fixed top-[24px] left-0 w-full z-10 ${bgColorClass} ${textColorClass} p-4 flex justify-between items-center`}
         >
-          <ArrowLeftOutlined
-            className="text-xl mr-4"
-            onClick={() => navigate(-1)}
-          />
-          <h1 className="text-xl font-bold">{title}</h1>
+          {isHome != false ? (
+            <div></div>
+          ) : (
+            <ArrowLeftOutlined
+              className="text-xl mr-4"
+              onClick={() => navigate(-1)}
+            />
+          )}
+
+          <h1 className="text-xl font-bold text-center">{title}</h1>
           <NavLink
             to={initPathName + "/perfil"}
             className="flex flex-col items-center"
           >
-            <FontAwesomeIcon
-              icon={faUser}
-              color="white"
-              size="lg"
-              className="p-1 w-6"
-            />
+            <FontAwesomeIcon icon={faUser} color="white" size="lg" />
           </NavLink>
         </div>
       )}

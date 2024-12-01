@@ -16,7 +16,6 @@ export class AuthController {
     const dto = new LoginRutDto(runLimpio, dv, passHash);
 
     const sesionIniciada = await this._authService.login(dto); 
-    console.log(sesionIniciada);
     if (!sesionIniciada) {
       console.error("Error al iniciar sesión");
       return false;

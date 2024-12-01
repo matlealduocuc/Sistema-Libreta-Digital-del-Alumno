@@ -1,18 +1,18 @@
-import { GradoController } from "@/controllers/GradoController";
 import { useAuth } from "@/hooks/useAuth";
 import { Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PlusCircleOutlined } from "@ant-design/icons";
+import { ComunicadoController } from "@/controllers/ComunicadoController";
 
 const EducadorComunicados = () => {
   const { isLoading } = useAuth();
-  const [grado, setGrado] = useState("");
+  const [nivel, setNivel] = useState("");
   const [loadingFull, setLoadingFull] = React.useState<boolean>(true);
   const [comunicados, setComunicados] = useState<
     { id: number; titulo: string; texto: string; estado: boolean }[]
   >([]);
-  const [gradosSelect, setGradosSelect] = useState<
+  const [nivelesSelect, setNivelesSelect] = useState<
     { key: number; text: string }[]
   >([]);
   const [mostrarModal, setMostrarModal] = useState(false);
@@ -22,7 +22,7 @@ const EducadorComunicados = () => {
     texto: string;
     estado: boolean;
   } | null>(null);
-  const gradoController = new GradoController();
+  const comunicadoController = new ComunicadoController();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,21 +30,19 @@ const EducadorComunicados = () => {
     const fetchGrados = async () => {
       if (!isLoading) {
         try {
-          const grados = await gradoController.getGradosByEducadorIdPersona();
-          if (grados) {
-            setGradosSelect(
-              grados.map(
-                (grado: { iden_grado: number; desc_nombre: string }) => ({
-                  key: grado.iden_grado,
-                  text: grado.desc_nombre,
-                })
-              )
+          const niveles = await comunicadoController.getNivelesByEducador();
+          if (niveles) {
+            setNivelesSelect(
+              niveles.map((nivel: { key: number; text: string }) => ({
+                key: nivel.key,
+                text: nivel.text,
+              }))
             );
           }
           setLoadingFull(false);
         } catch (error) {
           setLoadingFull(false);
-          console.error("Error fetching perfil:", error);
+          console.error("Error fetching niveles:", error);
         }
       }
     };
@@ -82,7 +80,7 @@ const EducadorComunicados = () => {
 
   useEffect(() => {
     setComunicados([]);
-  }, [grado]);
+  }, [nivel]);
 
   // Manejar la selección de un comunicado y mostrar el modal
   const handleCardClick = (comunicado: {
@@ -124,10 +122,10 @@ const EducadorComunicados = () => {
   return (
     <Spin spinning={loadingFull}>
       <div className="p-4">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-xl font-bold">Mis Comunicados</h1>
+        <div className="flex justify-between items-center mb-2">
+          <h1 className="text-xl font-bold">Mis Mensajes</h1>
           <button
-            onClick={() => navigate("/educador/crear-comunicado")}
+            onClick={() => navigate("/educador/comunicados/crear-comunicado")}
             className="bg-blue-600 text-white rounded-full p-2 hover:bg-blue-700"
           >
             <div className="flex justify-center">
@@ -136,33 +134,40 @@ const EducadorComunicados = () => {
             </div>
           </button>
         </div>
+        <div className="border border-gray-300 rounded-lg p-2 mb-2 text-sm bg-gray-200">
+          <span>
+            Selecciona un mensaje enviado para revisar.
+            <br />
+            Haz click en <strong>"Nuevo"</strong> para redactar un mensaje y
+            luego en <strong>"Aceptar"</strong>.
+          </span>
+        </div>
 
         {/* Filtro de grado */}
-        <div className="mb-4 flex">
+        <div className="mb-2 flex">
           <select
-            value={grado}
-            onChange={(e) => setGrado(e.target.value)}
+            value={nivel}
+            onChange={(e) => setNivel(e.target.value)}
             className="border text-xs border-gray-300 rounded px-3 py-2 w-full mr-2"
           >
-            <option value="">Seleccionar Grado</option>
-            <option value="1">Prueba 1</option>
-            {gradosSelect.map((grado) => (
-              <option key={grado.key} value={grado.key}>
-                {grado.text}
+            <option value="">Seleccionar Nivel</option>
+            {nivelesSelect.map((nivel) => (
+              <option key={nivel.key} value={nivel.key}>
+                {nivel.text}
               </option>
             ))}
           </select>
           <button
             onClick={handleBuscarComunicados}
             className="bg-blue-600 disabled:bg-blue-300 text-white px-4 py-2 rounded hover:bg-blue-700"
-            disabled={grado === ""}
+            disabled={nivel === ""}
           >
             Buscar
           </button>
         </div>
 
         {/* Lista de comunicados */}
-        <div className="grid gap-4">
+        <div className="grid gap-2">
           {comunicados.map((comunicado) => (
             <div
               key={comunicado.id}

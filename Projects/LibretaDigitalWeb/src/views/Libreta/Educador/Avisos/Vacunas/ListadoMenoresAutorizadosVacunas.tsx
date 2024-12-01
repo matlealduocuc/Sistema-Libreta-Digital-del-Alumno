@@ -1,9 +1,9 @@
 import { useAuth } from "@/hooks/useAuth";
 import { Spin } from "antd";
 import React, { useEffect, useState } from "react";
-// import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { NivelController } from "@/controllers/NivelController";
-import { useParams } from "react-router-dom";
+import { ObtenerInitPathName } from "@/common/FuncionesComunesUsuario";
 
 const ListadoMenoresAutorizadosVacunas = () => {
   const { idNivel } = useParams();
@@ -14,7 +14,8 @@ const ListadoMenoresAutorizadosVacunas = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState<boolean>(true);
   const nivelController = new NivelController();
-  // const navigate = useNavigate();
+  const initPathName = ObtenerInitPathName();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMenores = async () => {
@@ -53,9 +54,13 @@ const ListadoMenoresAutorizadosVacunas = () => {
     setSearchTerm(e.target.value);
   };
 
-  // const handleMenorClick = (id: number) => {
-  //   navigate(`/educador/avisos/vacunas/revisar-menor/${id}`);
-  // };
+  const handleMenorClick = (idMenor: number) => {
+    if (idNivel) {
+      navigate(
+        `${initPathName}/avisos/vacunas/revisar-menor/${+idNivel}/${idMenor}`
+      );
+    }
+  };
 
   const filteredMenores = menores.filter((menor) =>
     menor.descNombre.toLowerCase().includes(searchTerm.toLowerCase())
@@ -65,10 +70,17 @@ const ListadoMenoresAutorizadosVacunas = () => {
     <Spin spinning={loading}>
       <div className="px-4 py-2 w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
         <div className="flex justify-between items-center mb-4">
-          <h1 className="text-xl font-bold">Listado de Menores Autorizados</h1>
+          <h1 className="text-xl font-bold">¡Revisa tus Solicitudes!</h1>
+        </div>
+        <div className="border border-gray-300 rounded-lg p-2 mb-2 text-sm bg-gray-200">
+          <span>
+            Selecciona un <strong>Menor</strong> del listado
+            <br />
+            para ver el <strong>Detalle.</strong>
+          </span>
         </div>
 
-        <div className="mb-4">
+        <div className="mb-2">
           <form
             className="max-w-full mx-auto"
             onSubmit={(e) => e.preventDefault()}
@@ -109,13 +121,13 @@ const ListadoMenoresAutorizadosVacunas = () => {
           </form>
         </div>
 
-        <div className="grid gap-4">
+        <div className="grid gap-2">
           {filteredMenores.length > 0 ? (
             filteredMenores.map((menor) => (
               <div
                 key={menor.idenMenor}
                 className="border border-gray-300 rounded p-4 shadow-md cursor-pointer"
-                // onClick={() => handleMenorClick(menor.idenMenor)}
+                onClick={() => handleMenorClick(menor.idenMenor)}
               >
                 <h2 className="font-semibold">{menor.descNombre}</h2>
                 {menor.autorizado ? (

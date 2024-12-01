@@ -1,32 +1,12 @@
 import api from "@/lib/axios";
 import { AxiosError, isAxiosError } from "axios";
 
-export class NivelService {
-  async getNivelesByEducador(idPersona: number) {
-    console.log(idPersona);
-    return [
-      {
-        id: 1,
-        nombre: "Nivel 1",
-        cantidadMenores: 10,
-      },
-      {
-        id: 2,
-        nombre: "Nivel 2",
-        cantidadMenores: 12,
-      },
-      {
-        id: 3,
-        nombre: "Nivel 3",
-        cantidadMenores: 14,
-      },
-    ];
-  }
+const path = "/nivel";
 
+export class NivelService {
   async getNivelesWhereSomeVacuna() {
     try {
-      const response = await api.get("/nivel/getNivelesWhereSomeVacuna");
-      console.log(response.data);
+      const response = await api.get(`${path}/getNivelesWhereSomeVacuna`);
       return response.data;
     } catch (error) {
       ifAxiosError(error);
@@ -35,8 +15,7 @@ export class NivelService {
 
   async getMenoresByNivel(idNivel: number) {
     try {
-      const response = await api.get("/nivel/getMenoresByNivel/" + idNivel);
-      console.log(response.data);
+      const response = await api.get(`${path}/getMenoresByNivel/${idNivel}`);
       return response.data;
     } catch (error) {
       ifAxiosError(error);

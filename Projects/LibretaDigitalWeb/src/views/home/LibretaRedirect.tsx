@@ -6,12 +6,11 @@ const LibretaRedirect = () => {
 
   const navigate = useNavigate();
 
-  const handleCerrarSesion = () => {
-    localStorage.removeItem("AUTH_USER");
-    navigate("/login");
-  };
-
   if (!isLoading && data) {
+    const handleCerrarSesion = () => {
+      localStorage.removeItem("AUTH_USER");
+      navigate("/login");
+    };
     switch (data.rol) {
       case "apoderado":
         navigate("/apoderado");
@@ -30,7 +29,7 @@ const LibretaRedirect = () => {
   }
 
   return (
-    <div>
+    <div className="flex justify-center align-middle">
       <p>Cargando...</p>
     </div>
   );

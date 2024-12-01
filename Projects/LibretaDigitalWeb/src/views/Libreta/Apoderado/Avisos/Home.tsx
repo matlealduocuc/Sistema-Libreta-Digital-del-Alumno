@@ -150,6 +150,18 @@ const ApoderadoAvisosHome = () => {
     setTranslate(0);
   };
 
+  const numberOfSlides = [0, 1, 2, 3];
+
+  document.onkeydown = function (e) {
+    if (e.key === "ArrowRight") {
+      goToNextSlide();
+    } else if (e.key === "ArrowLeft") {
+      goToPreviousSlide();
+    } else if (numberOfSlides.includes(parseInt(e.key) - 1)) {
+      goToSlide(parseInt(e.key) - 1);
+    }
+  };
+
   return (
     <div
       className="flex flex-col items-center bg-white"

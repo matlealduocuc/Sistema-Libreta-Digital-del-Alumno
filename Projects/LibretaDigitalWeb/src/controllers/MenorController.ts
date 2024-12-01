@@ -10,7 +10,6 @@ export class MenorController {
     const menores = await this._menorService.getSelectMenoresApoderadoByIdNivel(
       idNivel
     );
-    console.log(menores);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const menoresReturn = menores.map((menor: any) => {
       const listNombreMenor = [];
@@ -50,8 +49,8 @@ export class MenorController {
     return menoresReturn;
   }
 
-  async getMenoresByApoderado(idPersona: number) {
-    return await this._menorService.getMenoresByApoderado(idPersona);
+  async getMenoresByApoderado() {
+    return await this._menorService.getMenoresByApoderado();
   }
 
   async getMenoresVacunasByApoderado() {

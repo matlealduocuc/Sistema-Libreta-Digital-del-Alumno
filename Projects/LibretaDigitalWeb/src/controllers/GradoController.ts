@@ -8,7 +8,6 @@ export class GradoController {
 
   async getGradosByEducadorIdPersona() {
     const grados = await this._gradoService.getGradosByEducadorIdPersona();
-    console.log(grados);
     return grados;
   }
 }

@@ -1,15 +1,5 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  ParseIntPipe,
-  Post,
-  Req,
-  Res,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { MenorService } from './menor.service';
-import { Request, Response } from 'express';
 import { Rol } from 'src/common/enums/rol.enum';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 import { ActiveUser } from 'src/common/decorators/active-user.decorator';
@@ -19,18 +9,6 @@ import formatFecha2 from 'src/common/functions/formatFecha2';
 @Controller('menor')
 export class MenorController {
   constructor(private readonly menorService: MenorService) {}
-
-  @Get('get')
-  async getMenores(@Req() request: Request, @Res() response: Response) {
-    const menores = await this.menorService.getMenores();
-    response.status(200).json(menores);
-  }
-
-  @Get('get/:id')
-  getMenor(@Param('id', ParseIntPipe) id: number, @Res() response: Response) {
-    const menor = this.menorService.getMenor(id);
-    response.status(200).json(menor);
-  }
 
   @Get('getSelectMenoresApoderadoByIdNivel/:id')
   async getSelectMenoresApoderadoByIdNivel(@Param('id') idNivel: string) {
@@ -43,7 +21,6 @@ export class MenorController {
     const menores = await this.menorService.getMenoresVacunasByApoderado(
       +user.idPersona,
     );
-    console.log(menores);
     const menoresDto = menores.map((menor) => {
       const menorPer = menor;
       return {
@@ -139,10 +116,10 @@ export class MenorController {
       +user.idPersona,
     );
     const paseosDto = paseos.map((paseo) => {
-      const menor = paseo.lda_paseo_menor[0]?.lda_menor;
+      const menor = paseo.lda_menor;
       return {
-        idMenor: menor.id,
-        idPaseo: paseo.iden_paseo,
+        idMenor: menor?.id,
+        idPaseo: paseo.lda_paseo.iden_paseo,
         nombre:
           menor.per_persona.apellidoM != null
             ? menor.per_persona.primerNombre +
@@ -154,11 +131,11 @@ export class MenorController {
               ' ' +
               menor.per_persona.apellidoP,
         nivel: menor.lda_nivel_menor[0]?.lda_nivel?.desc_nombre,
-        autorizado: paseo.lda_paseo_menor[0]?.flag_autorizado ?? null,
-        paseo: paseo.desc_titulo,
-        tipoPaseo: paseo.lda_tipo_paseo?.desc_tipo_paseo,
-        fechaInicio: formatFecha2(paseo.fech_inicio.toISOString()),
-        fechaFin: formatFecha2(paseo.fech_fin.toISOString()),
+        autorizado: paseo.flag_autorizado ?? null,
+        paseo: paseo.lda_paseo.desc_titulo,
+        tipoPaseo: paseo.lda_paseo.lda_tipo_paseo?.desc_tipo_paseo,
+        fechaInicio: formatFecha2(paseo.lda_paseo.fech_inicio.toISOString()),
+        fechaFin: formatFecha2(paseo.lda_paseo.fech_fin.toISOString()),
       };
     });
 
@@ -239,10 +216,10 @@ export class MenorController {
       +user.idPersona,
     );
     const reunionesDto = reuniones.map((reunion) => {
-      const menor = reunion.lda_reunion_menor[0]?.lda_menor;
+      const menor = reunion.lda_menor;
       return {
         idMenor: menor.id,
-        idReunion: reunion.iden_reunion,
+        idReunion: reunion.lda_reunion.iden_reunion,
         nombre:
           menor.per_persona.apellidoM != null
             ? menor.per_persona.primerNombre +
@@ -254,10 +231,12 @@ export class MenorController {
               ' ' +
               menor.per_persona.apellidoP,
         nivel: menor.lda_nivel_menor[0]?.lda_nivel?.desc_nombre,
-        reunion: reunion.desc_titulo,
-        sala: reunion.lda_sala?.desc_nombre,
-        fechaReunion: formatFecha2(reunion.fech_reunion.toISOString()),
-        confirmado: reunion.lda_reunion_menor[0]?.flag_confirmado ?? null,
+        reunion: reunion.lda_reunion.desc_titulo,
+        sala: reunion.lda_reunion.lda_sala?.desc_nombre,
+        fechaReunion: formatFecha2(
+          reunion.lda_reunion.fech_reunion.toISOString(),
+        ),
+        confirmado: reunion.flag_confirmado ?? null,
       };
     });
 
@@ -338,10 +317,10 @@ export class MenorController {
     const itinerarios =
       await this.menorService.getMenoresItinerariosByApoderado(+user.idPersona);
     const itinerariosDto = itinerarios.map((itinerario) => {
-      const menor = itinerario.lda_itinerario_menor[0]?.lda_menor;
+      const menor = itinerario.lda_menor;
       return {
         idMenor: menor.id,
-        idItinerario: itinerario.iden_itinerario,
+        idItinerario: itinerario.lda_itinerario.iden_itinerario,
         nombre:
           menor.per_persona.apellidoM != null
             ? menor.per_persona.primerNombre +
@@ -353,10 +332,12 @@ export class MenorController {
               ' ' +
               menor.per_persona.apellidoP,
         nivel: menor.lda_nivel_menor[0]?.lda_nivel?.desc_nombre,
-        actividad: itinerario.desc_titulo,
-        fechaItinerario: formatFecha1(itinerario.fech_itinerario.toISOString()),
-        realizado: itinerario.flag_realizado ?? null,
-        confirmado: itinerario.lda_itinerario_menor[0]?.flag_confirmado ?? null,
+        actividad: itinerario.lda_itinerario.desc_titulo,
+        fechaItinerario: formatFecha1(
+          itinerario.lda_itinerario.fech_itinerario.toISOString(),
+        ),
+        realizado: itinerario.lda_itinerario.flag_realizado ?? null,
+        confirmado: itinerario.flag_confirmado ?? null,
       };
     });
 
@@ -430,5 +411,30 @@ export class MenorController {
       +user.idPersona,
     );
     return isAutorizado;
+  }
+
+  @Get('getMenoresByApoderado')
+  @Auth(Rol.APODERADO)
+  async getMenoresByApoderado(@ActiveUser() user) {
+    const menores = await this.menorService.getMenoresByApoderado(
+      +user.idPersona,
+    );
+    const menoresDto = menores.map((menor) => {
+      return {
+        key: menor.id,
+        text:
+          menor.per_persona.apellidoM != null
+            ? menor.per_persona.primerNombre +
+              ' ' +
+              menor.per_persona.apellidoP +
+              ' ' +
+              menor.per_persona.apellidoM
+            : menor.per_persona.primerNombre +
+              ' ' +
+              menor.per_persona.apellidoP,
+      };
+    });
+
+    return menoresDto;
   }
 }
