@@ -5,8 +5,8 @@ import { Login } from "./views/auth/login/Login";
 import LibretaLayout from "./layouts/LibretaLayout";
 import LibretaEducadorHome from "./views/Libreta/Educador/LibretaEducadorHome";
 import PerfilUsuario from "./views/Libreta/Perfil/PerfilUsuario";
-import EducadorComunicados from "./views/Libreta/Educador/EducadorComunicados";
-import CrearComunicado from "./views/Libreta/Educador/CrearComunicado";
+import EducadorComunicados from "./views/Libreta/Educador/Comunicados/EducadorComunicados";
+import CrearComunicado from "./views/Libreta/Educador/Comunicados/CrearComunicado";
 import LibretaRedirect from "./views/home/LibretaRedirect";
 import LibretaApoderadoHome from "./views/Libreta/Apoderado/LibretaApoderadoHome";
 import ApoderadoAvisosHome from "./views/Libreta/Apoderado/Avisos/Home";
@@ -22,7 +22,7 @@ import EducadorAvisosHome from "./views/Libreta/Educador/Avisos/Home";
 import ListadoNivelesAutorizadosVacuna from "./views/Libreta/Educador/Avisos/Vacunas/ListadoNivelesAutorizadosVacuna";
 import ListadoMenoresAutorizadosVacunas from "./views/Libreta/Educador/Avisos/Vacunas/ListadoMenoresAutorizadosVacunas";
 import RevisarVacunaMenor from "./views/Libreta/Educador/Avisos/Vacunas/RevisarVacunaMenor";
-import ListadoAvisarNivelesEducador from "./views/Libreta/Educador/Avisos/Vacunas/ListadoAvisarNiveles";
+// import ListadoAvisarNivelesEducador from "./views/Libreta/Educador/Avisos/Vacunas/ListadoAvisarNiveles";
 import SolicitarVacunas from "./views/Libreta/Educador/Avisos/Vacunas/SolicitarVacunas";
 import UnderConstruction from "./views/home/UnderConstruction";
 import LibretaDirectorHome from "./views/Libreta/Director/LibretaDirectorHome";
@@ -41,6 +41,7 @@ import ListadoItinerarioRevisar from "./views/Libreta/Educador/Avisos/Itinerario
 import ListadoNivelesConfirmadosItinerario from "./views/Libreta/Educador/Avisos/ItinerarioJornada/ListadoNivelesConfirmadosItinerario";
 import RevisarItinerarioMenor from "./views/Libreta/Educador/Avisos/ItinerarioJornada/RevisarItinerarioMenor";
 import ListadoMenoresConfirmadosItinerario from "./views/Libreta/Educador/Avisos/ItinerarioJornada/ListadoMenoresConfirmadosItinerario";
+import EducadorComunicadosHome from "./views/Libreta/Educador/Comunicados/ComunicadosHome";
 
 export const Router = () => {
   return (
@@ -72,10 +73,10 @@ export const Router = () => {
                 path="revisar-menor/:idNivel/:idMenor"
                 element={<RevisarVacunaMenor />}
               />
-              <Route
+              {/* <Route
                 path="avisar-niveles-menores"
                 element={<ListadoAvisarNivelesEducador />}
-              />
+              /> */}
               <Route
                 path="solicitar-vacunas/:id"
                 element={<SolicitarVacunas />}
@@ -132,10 +133,10 @@ export const Router = () => {
                 path="revisar-menor/:idNivel/:idMenor"
                 element={<RevisarVacunaMenor />}
               />
-              <Route
+              {/* <Route
                 path="avisar-niveles-menores"
                 element={<ListadoAvisarNivelesEducador />}
-              />
+              /> */}
               <Route
                 path="solicitar-vacunas/:id"
                 element={<SolicitarVacunas />}
@@ -198,7 +199,11 @@ export const Router = () => {
           </Route>
           <Route path="comunicados">
             <Route path="" element={<EducadorComunicados />} />
-            <Route path="home" element={<EducadorComunicados />} />
+            <Route path="home" element={<EducadorComunicadosHome />} />
+            <Route
+              path="listado-comunicados"
+              element={<EducadorComunicados />}
+            />
             <Route path="crear-comunicado" element={<CrearComunicado />} />
           </Route>
         </Route>

@@ -11,7 +11,7 @@ const EducadorAvisosHome = () => {
   const slides = [
     {
       title: "Vacunas",
-      heading: "¡Solicita Autorización",
+      heading: "¡Solicita Autorización!",
       description: `Aquí podrás enviar a los Apoderados tus
       <br />
       <strong>Solicitudes de Autorización de Vacunas</strong>.
@@ -49,7 +49,7 @@ const EducadorAvisosHome = () => {
     },
     {
       title: "Reuniones de Apoderados",
-      heading: "¡Comunidad Participativa! ",
+      heading: "¡Comunidad Participativa!",
       description: `Gestiona tus <strong>Reuniones de Apoderados.</strong>
       <br />
       <br />
