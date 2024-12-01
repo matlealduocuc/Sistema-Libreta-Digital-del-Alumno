@@ -19,7 +19,7 @@ const EducadorAvisosHome = () => {
       <br />
       Haz click en <strong>“Solicitar”</strong> para enviar una <strong>Solicitud,</strong>
       <br />
-      o en <strong>“Revisar”</strong> para ver el <strong>Estado de las Solicitudes.</strong>`,
+      o en <strong>"Revisar"</strong> para ver el <strong>Estado de las Solicitudes.</strong>`,
       buttonText: "Solicitar",
       href: initPathName + "/avisos/vacunas/avisar-niveles-menores",
       isSecondButton: true,
@@ -38,12 +38,13 @@ const EducadorAvisosHome = () => {
       <br />
       Solicitar <strong>Autorización de Paseos y Visitas,</strong>
       <br />
-      o en “Revisar” para ver el <strong>Estado de las Solicitudes</strong>.`,
+      o en <strong>"Revisar"</strong> para ver el <strong>Estado de las Solicitudes</strong>.`,
       buttonText: "Solicitar",
       href: initPathName + "/avisos/paseos-visitas/listado-menores",
       isSecondButton: true,
       secondButtonText: "Revisar",
-      secondButtonHref: initPathName + "/avisos/paseos-visitas/listado-paseos",
+      secondButtonHref:
+        initPathName + "/avisos/paseos-visitas/revisar-listado-paseos",
       imgSrc: PaseoVisitaSvg,
     },
     {
@@ -56,13 +57,13 @@ const EducadorAvisosHome = () => {
       <br />
       y Solicitar <strong>Confirmación de Asistencia</strong>,
       <br />
-      o en “Revisar” para ver el Estado de tus Solicitudes.`,
+      o en <strong>"Revisar"</strong> para ver el <strong>Estado de tus Solicitudes<strong>.`,
       buttonText: "Solicitar",
       href: initPathName + "/avisos/reuniones-apoderados/listado-menores",
       isSecondButton: true,
       secondButtonText: "Revisar",
       secondButtonHref:
-        initPathName + "/avisos/reuniones-apoderados/listado-reuniones",
+        initPathName + "/avisos/reuniones-apoderados/revisar-listado-reuniones",
       imgSrc: ReunionApoderadosSvg,
     },
     {
@@ -81,7 +82,7 @@ const EducadorAvisosHome = () => {
       isSecondButton: true,
       secondButtonText: "Revisar",
       secondButtonHref:
-        initPathName + "/avisos/itinerario-jornada/listado-actividades",
+        initPathName + "/avisos/itinerario-jornada/revisar-listado-itinerario",
       imgSrc: ActividadesDiariasSvf,
     },
   ];
@@ -161,6 +162,18 @@ const EducadorAvisosHome = () => {
     setTranslate(0);
   };
 
+  const numberOfSlides = [0, 1, 2, 3];
+
+  document.onkeydown = function (e) {
+    if (e.key === "ArrowRight") {
+      goToNextSlide();
+    } else if (e.key === "ArrowLeft") {
+      goToPreviousSlide();
+    } else if (numberOfSlides.includes(parseInt(e.key) - 1)) {
+      goToSlide(parseInt(e.key) - 1);
+    }
+  };
+
   return (
     <div
       className="flex flex-col items-center bg-white"
@@ -219,7 +232,7 @@ const EducadorAvisosHome = () => {
               <div className="fixed -bottom-20 w-full flex flex-col justify-center">
                 <div className="flex flex-row justify-center">
                   <button
-                    className="bg-figma-green text-white w-80 text-lg font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-blue-700"
+                    className="bg-figma-green text-white w-80 text-lg font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-green-700 transition-colors"
                     onClick={() => {
                       navigate(slide.href);
                     }}
@@ -231,7 +244,7 @@ const EducadorAvisosHome = () => {
                 {slide.isSecondButton && (
                   <div className="flex flex-row justify-center mt-2">
                     <button
-                      className="bg-green-500 text-white w-80 text-lg font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-blue-700"
+                      className="bg-green-500 text-white w-80 text-lg font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-green-400 transition-colors"
                       onClick={() => {
                         navigate(slide.secondButtonHref);
                       }}

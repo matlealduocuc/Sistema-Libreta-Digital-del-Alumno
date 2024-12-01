@@ -80,6 +80,7 @@ model Usuario {
   activo         Boolean          @default(true) @map("flag_activo")
   eliminado      Boolean          @default(false) @map("flag_eliminado")
   iden_rol       Int?
+  lda_comunicado lda_comunicado[]
   lda_itinerario lda_itinerario[]
   persona        Persona          @relation(fields: [idPersona], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "usr_usuario_per_persona_fk")
   usr_rol        usr_rol?         @relation(fields: [iden_rol], references: [iden_rol], onDelete: NoAction, onUpdate: NoAction, map: "usr_usuario_usr_rol_fk")
@@ -127,6 +128,7 @@ model lda_nivel {
   flag_activo          Boolean                @default(true)
   flag_eliminado       Boolean                @default(false)
   iden_sala            Int?
+  lda_comunicado_menor lda_comunicado_menor[]
   lda_itinerario_menor lda_itinerario_menor[]
   lda_sala             lda_sala?              @relation(fields: [iden_sala], references: [iden_sala], onDelete: NoAction, onUpdate: NoAction, map: "lda_nivel_lda_sala_fk")
   lda_nivel_educador   lda_nivel_educador[]
@@ -159,35 +161,43 @@ model per_sexo {
 }
 
 model lda_comunicado {
-  iden_comunicado        Int                    @id(map: "lda_comunicado_pk") @default(autoincrement())
-  desc_titulo            String                 @db.VarChar
-  desc_texto             String                 @db.VarChar
-  fech_visible           DateTime               @db.Date
-  iden_tipo_comunicado   Int
-  flag_activo            Boolean                @default(true)
-  flag_eliminado         Boolean                @default(false)
-  flag_need_autorizacion Boolean                @default(false)
-  iden_persona_creador   Int
-  lda_comunicado_menor   lda_comunicado_menor[]
+  iden_comunicado      Int                    @id(map: "lda_comunicado_pk") @default(autoincrement())
+  desc_titulo          String                 @db.VarChar
+  desc_texto           String                 @db.VarChar
+  iden_tipo_comunicado Int
+  flag_activo          Boolean                @default(true)
+  flag_eliminado       Boolean                @default(false)
+  iden_usr_creador     Int
+  fech_creacion        DateTime               @db.Timestamp(6)
+  iden_archivo         Int?
+  lda_archivo          lda_archivo?           @relation(fields: [iden_archivo], references: [iden_archivo], onDelete: NoAction, onUpdate: NoAction, map: "lda_comunicado_lda_archivo_fk")
+  lda_tipo_comunicado  lda_tipo_comunicado    @relation(fields: [iden_tipo_comunicado], references: [iden_tipo_comunicado], onDelete: NoAction, onUpdate: NoAction, map: "lda_comunicado_lda_tipo_comunicado_fk")
+  usr_usuario          Usuario                @relation(fields: [iden_usr_creador], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lda_comunicado_usr_usuario_fk")
+  lda_comunicado_menor lda_comunicado_menor[]
 
   @@schema("ADMLDA")
 }
 
 model lda_tipo_comunicado {
-  iden_tipo_comunicado Int    @id(map: "lda_tipo_comunicado_pk") @default(autoincrement())
-  desc_nombre          String @db.VarChar
+  iden_tipo_comunicado Int              @id(map: "lda_tipo_comunicado_pk") @default(autoincrement())
+  desc_nombre          String           @db.VarChar
+  nmro_orden           Int?
+  lda_comunicado       lda_comunicado[]
 
   @@schema("ADMLDA")
 }
 
 model lda_comunicado_menor {
-  iden_comunicado_elementos Int            @id(map: "lda_comunicado_elementos_pk") @default(autoincrement())
-  iden_comunicado           Int
-  iden_menor                Int?
-  flag_activado             Boolean        @default(true)
-  flag_visto                Boolean        @default(false)
-  lda_comunicado            lda_comunicado @relation(fields: [iden_comunicado], references: [iden_comunicado], onDelete: NoAction, onUpdate: NoAction, map: "lda_comunicado_elementos_lda_comunicado_fk")
-  lda_menor                 Menor?         @relation(fields: [iden_menor], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lda_comunicado_elementos_lda_menor_fk")
+  iden_comunicado_menor Int            @id(map: "lda_comunicado_elementos_pk") @default(autoincrement())
+  iden_comunicado       Int
+  iden_menor            Int
+  flag_activo           Boolean        @default(true)
+  flag_visto            Boolean        @default(false)
+  iden_nivel            Int
+  flag_confirmado       Boolean        @default(false)
+  lda_comunicado        lda_comunicado @relation(fields: [iden_comunicado], references: [iden_comunicado], onDelete: NoAction, onUpdate: NoAction, map: "lda_comunicado_elementos_lda_comunicado_fk")
+  lda_menor             Menor          @relation(fields: [iden_menor], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lda_comunicado_elementos_lda_menor_fk")
+  lda_nivel             lda_nivel      @relation(fields: [iden_nivel], references: [iden_nivel], onDelete: NoAction, onUpdate: NoAction, map: "lda_comunicado_menor_lda_nivel_fk")
 
   @@schema("ADMLDA")
 }
@@ -335,6 +345,16 @@ model lda_nivel_educador {
   flag_eliminado      Boolean   @default(false)
   lda_nivel           lda_nivel @relation(fields: [iden_nivel], references: [iden_nivel], onDelete: NoAction, onUpdate: NoAction, map: "lda_nivel_educador_lda_nivel_fk")
   per_persona         Persona   @relation(fields: [iden_persona], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lda_nivel_educador_per_persona_fk")
+
+  @@schema("ADMLDA")
+}
+
+model lda_archivo {
+  iden_archivo       Int              @id(map: "lda_archivo_pk") @default(autoincrement())
+  desc_nomb_original String           @db.VarChar
+  desc_path          String           @db.VarChar
+  fech_subida        DateTime         @db.Timestamp(6)
+  lda_comunicado     lda_comunicado[]
 
   @@schema("ADMLDA")
 }

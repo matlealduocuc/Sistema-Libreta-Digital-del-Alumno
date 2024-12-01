@@ -68,11 +68,18 @@ const ListadoNivelesAutorizadosVacuna = () => {
   return (
     <Spin spinning={loading}>
       <div className="px-4 py-2 w-full sm:px-32 md:px-40 lg:px-48 xl:px-56">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-xl font-bold">Listado de Niveles</h1>
+        <div className="flex justify-between items-center mb-2">
+          <h1 className="text-xl font-bold">¡Revisa tus Solicitudes!</h1>
+        </div>
+        <div className="border border-gray-300 rounded-lg p-2 mb-2 text-sm bg-gray-200">
+          <span>
+            Selecciona un <strong>Nivel</strong> del listado
+            <br />
+            para ver el <strong>Detalle por Menor.</strong>
+          </span>
         </div>
 
-        <div className="mb-4">
+        <div className="mb-2">
           <form
             className="max-w-full mx-auto"
             onSubmit={(e) => e.preventDefault()}
@@ -113,7 +120,7 @@ const ListadoNivelesAutorizadosVacuna = () => {
           </form>
         </div>
 
-        <div className="grid gap-4">
+        <div className="grid gap-2">
           {filteredNiveles.length > 0 ? (
             filteredNiveles.map((nivel) => (
               <div

@@ -7,41 +7,24 @@ export class MenorService {
       const response = await api.get(
         "/menor/getSelectMenoresApoderadoByIdNivel/" + idNivel
       );
-      console.log(response.data);
       return response.data;
     } catch (error) {
       ifAxiosError(error);
     }
   }
 
-  async getMenoresByApoderado(idPersona: number) {
-    console.log(idPersona);
-    return [
-      {
-        id: 1,
-        nombre: "Menor 1",
-        edad: 10,
-        estadoVacuna: true,
-      },
-      {
-        id: 2,
-        nombre: "Menor 2",
-        edad: 12,
-        estadoVacuna: false,
-      },
-      {
-        id: 3,
-        nombre: "Menor 3",
-        edad: 14,
-        estadoVacuna: false,
-      },
-    ];
+  async getMenoresByApoderado() {
+    try {
+      const response = await api.get("/menor/getMenoresByApoderado");
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
   }
 
   async getMenoresVacunasByApoderado() {
     try {
       const response = await api.get("/menor/getMenoresVacunasByApoderado");
-      console.log(response.data);
       return response.data;
     } catch (error) {
       ifAxiosError(error);
@@ -53,7 +36,6 @@ export class MenorService {
       const response = await api.get(
         "/menor/getMenorVacunasByMenorAndApoderado/" + idMenor
       );
-      console.log(response.data);
       return response.data;
     } catch (error) {
       ifAxiosError(error);
@@ -66,7 +48,6 @@ export class MenorService {
         idMenor,
         idVacuna,
       });
-      console.log(response.data);
       return response.data;
     } catch (error) {
       ifAxiosError(error);
@@ -76,7 +57,6 @@ export class MenorService {
   async getMenoresPaseosByApoderado() {
     try {
       const response = await api.get("/menor/getMenoresPaseosByApoderado");
-      console.log(response.data);
       return response.data;
     } catch (error) {
       ifAxiosError(error);
@@ -91,7 +71,6 @@ export class MenorService {
       const response = await api.get(
         `/menor/getMenorPaseoByMenorPaseoAndApoderado/${idMenor}/${idPaseo}`
       );
-      console.log(response.data);
       return response.data;
     } catch (error) {
       ifAxiosError(error);
@@ -104,7 +83,6 @@ export class MenorService {
         idMenor,
         idPaseo,
       });
-      console.log(response.data);
       return response.data;
     } catch (error) {
       ifAxiosError(error);
@@ -114,7 +92,6 @@ export class MenorService {
   async getMenoresReunionesByApoderado() {
     try {
       const response = await api.get("/menor/getMenoresReunionesByApoderado");
-      console.log(response.data);
       return response.data;
     } catch (error) {
       ifAxiosError(error);
@@ -129,7 +106,6 @@ export class MenorService {
       const response = await api.get(
         `/menor/getMenorReunionByMenorPaseoAndApoderado/${idMenor}/${idReunion}`
       );
-      console.log(response.data);
       return response.data;
     } catch (error) {
       ifAxiosError(error);
@@ -142,7 +118,6 @@ export class MenorService {
         idMenor,
         idReunion,
       });
-      console.log(response.data);
       return response.data;
     } catch (error) {
       ifAxiosError(error);
@@ -152,7 +127,6 @@ export class MenorService {
   async getMenoresItinerariosByApoderado() {
     try {
       const response = await api.get("/menor/getMenoresItinerariosByApoderado");
-      console.log(response.data);
       return response.data;
     } catch (error) {
       ifAxiosError(error);
@@ -167,7 +141,6 @@ export class MenorService {
       const response = await api.get(
         `/menor/getMenorItinerarioByMenorPaseoAndApoderado/${idMenor}/${idItinerario}`
       );
-      console.log(response.data);
       return response.data;
     } catch (error) {
       ifAxiosError(error);
@@ -180,7 +153,6 @@ export class MenorService {
         idMenor,
         idItinerario,
       });
-      console.log(response.data);
       return response.data;
     } catch (error) {
       ifAxiosError(error);
