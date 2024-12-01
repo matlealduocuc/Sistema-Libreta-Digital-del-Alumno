@@ -110,6 +110,11 @@ export class ComunicadoService {
         desc_texto: true,
         fech_creacion: true,
         iden_archivo: true,
+        lda_tipo_comunicado: {
+          select: {
+            desc_nombre: true,
+          },
+        },
         usr_usuario: {
           select: {
             usr_rol: {

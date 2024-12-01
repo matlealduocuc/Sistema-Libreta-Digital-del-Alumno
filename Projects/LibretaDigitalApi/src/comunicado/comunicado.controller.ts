@@ -91,6 +91,7 @@ export class ComunicadoController {
       fechaComunicado: formatFecha2(comunicado.fech_creacion.toISOString()),
       confirmado: comunicado.lda_comunicado_menor[0].flag_confirmado,
       detalle: comunicado.desc_texto,
+      tipo: comunicado.lda_tipo_comunicado.desc_nombre,
       idArchivo: comunicado.iden_archivo,
     };
     return comunicadoDto;

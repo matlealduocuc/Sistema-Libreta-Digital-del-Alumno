@@ -23,6 +23,7 @@ const LeerComunicado = () => {
     titulo: string;
     confirmado: boolean | null;
     detalle: string;
+    tipo: string;
     idArchivo: number | null;
   }>();
   const [loading, setLoading] = useState<boolean>(true);
@@ -145,6 +146,9 @@ const LeerComunicado = () => {
                 </p>
                 <p>
                   <strong>Asunto:</strong> {comunicado?.titulo}
+                </p>
+                <p>
+                  <strong>Tipo:</strong> {comunicado?.tipo}
                 </p>
                 {comunicado?.confirmado ? (
                   <p className="font-bold text-green-700">
