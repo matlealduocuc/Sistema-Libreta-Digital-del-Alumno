@@ -265,51 +265,51 @@ export class VacunaService {
     });
   }
 
-  async solicitarVacunaNivel(
-    nombVacuna: number,
-    fechVacuna: Date,
-    idNivel: number,
-    idEducador: number,
-  ) {
-    const isNivel = await this.prisma.lda_nivel.findFirst({
-      where: {
-        iden_nivel: idNivel,
-        flag_activo: true,
-        flag_eliminado: false,
-        lda_nivel_educador: {
-          some: {
-            iden_persona: idEducador,
-            flag_activo: true,
-            flag_eliminado: false,
-            per_persona: {
-              id: idEducador,
-              flag_activo: true,
-              flag_eliminado: false,
-            },
-          },
-        },
-      },
-    });
-    if (!isNivel) {
-      return false;
-    }
-    const getIden = await this.prisma.lda_comunicado_menor.findFirst({
-      where: {
-        iden_menor: idMenor,
-        iden_comunicado: idComunicado,
-      },
-      select: {
-        iden_comunicado_menor: true,
-      },
-    });
-    const updated = await this.prisma.lda_comunicado_menor.update({
-      data: {
-        flag_confirmado: true,
-      },
-      where: {
-        iden_comunicado_menor: getIden.iden_comunicado_menor,
-      },
-    });
-    return updated;
-  }
+  // async solicitarVacunaNivel(
+  //   nombVacuna: number,
+  //   fechVacuna: Date,
+  //   idNivel: number,
+  //   idEducador: number,
+  // ) {
+  //   const isNivel = await this.prisma.lda_nivel.findFirst({
+  //     where: {
+  //       iden_nivel: idNivel,
+  //       flag_activo: true,
+  //       flag_eliminado: false,
+  //       lda_nivel_educador: {
+  //         some: {
+  //           iden_persona: idEducador,
+  //           flag_activo: true,
+  //           flag_eliminado: false,
+  //           per_persona: {
+  //             id: idEducador,
+  //             flag_activo: true,
+  //             flag_eliminado: false,
+  //           },
+  //         },
+  //       },
+  //     },
+  //   });
+  //   if (!isNivel) {
+  //     return false;
+  //   }
+  //   const getIden = await this.prisma.lda_comunicado_menor.findFirst({
+  //     where: {
+  //       iden_menor: idMenor,
+  //       iden_comunicado: idComunicado,
+  //     },
+  //     select: {
+  //       iden_comunicado_menor: true,
+  //     },
+  //   });
+  //   const updated = await this.prisma.lda_comunicado_menor.update({
+  //     data: {
+  //       flag_confirmado: true,
+  //     },
+  //     where: {
+  //       iden_comunicado_menor: getIden.iden_comunicado_menor,
+  //     },
+  //   });
+  //   return updated;
+  // }
 }

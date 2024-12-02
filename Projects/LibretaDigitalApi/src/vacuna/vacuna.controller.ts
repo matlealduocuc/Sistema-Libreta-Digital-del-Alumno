@@ -152,68 +152,68 @@ export class VacunaController {
     return nivelDto;
   }
 
-  @Post('solicitarVacunaNivel/:idNivel')
-  @Auth(Rol.EDUCADOR)
-  async solicitarVacunaNivel(
-    @ActiveUser() user,
-    @Param('idNivel') idNivel: number,
-    @Body()
-    body: {
-      nombVacuna: number;
-      fechVacuna: Date;
-    },
-  ) {
-    const { nombVacuna, fechVacuna } = body;
-    const nivel = await this.vacunaService.solicitarVacunaNivel(
-      nombVacuna,
-      fechVacuna,
-      +idNivel,
-      +user.idPersona,
-    );
-    const fechaVacuna =
-      nivel.lda_nivel_menor[0]?.lda_menor.lda_vacuna_menor[0]?.lda_vacuna
-        .fech_vacunacion;
-    const solilcitado =
-      nivel.lda_nivel_menor[0]?.lda_menor.lda_vacuna_menor != null &&
-      nivel.lda_nivel_menor[0]?.lda_menor.lda_vacuna_menor.filter(
-        (vacMenor) => vacMenor != null || vacMenor.lda_vacuna != null,
-      ).length != 0;
-    const nivelDto = {
-      idVacuna:
-        nivel.lda_nivel_menor[0]?.lda_menor.lda_vacuna_menor[0]?.lda_vacuna
-          .iden_vacuna,
-      nivel: nivel.desc_nombre,
-      nombreVacuna:
-        nivel.lda_nivel_menor[0]?.lda_menor.lda_vacuna_menor[0]?.lda_vacuna
-          .desc_nombre,
-      nmroMenores: nivel._count.lda_nivel_menor,
-      nmroSolicitados: nivel.lda_nivel_menor.reduce((count, nivMenor) => {
-        return (
-          count +
-          nivMenor.lda_menor.lda_vacuna_menor.filter(
-            (vacMenor) => vacMenor.flag_autorizado != null,
-          ).length
-        );
-      }, 0),
-      nmroNoSolicitados:
-        solilcitado == false
-          ? nivel._count.lda_nivel_menor
-          : nivel.lda_nivel_menor.reduce((count, nivMenor) => {
-              const vacunaMenor = nivMenor.lda_menor.lda_vacuna_menor;
-              return (
-                count +
-                (vacunaMenor.length > 0
-                  ? vacunaMenor.filter(
-                      (vacMenor) => vacMenor.flag_autorizado === null,
-                    ).length
-                  : 1)
-              );
-            }, 0),
-      fechaVacuna:
-        fechaVacuna != null ? formatFecha2(fechaVacuna.toISOString()) : null,
-      solicitado: solilcitado,
-    };
+  // @Post('solicitarVacunaNivel/:idNivel')
+  // @Auth(Rol.EDUCADOR)
+  // async solicitarVacunaNivel(
+  //   @ActiveUser() user,
+  //   @Param('idNivel') idNivel: number,
+  //   @Body()
+  //   body: {
+  //     nombVacuna: number;
+  //     fechVacuna: Date;
+  //   },
+  // ) {
+  //   const { nombVacuna, fechVacuna } = body;
+  //   const nivel = await this.vacunaService.solicitarVacunaNivel(
+  //     nombVacuna,
+  //     fechVacuna,
+  //     +idNivel,
+  //     +user.idPersona,
+  //   );
+  //   const fechaVacuna =
+  //     nivel.lda_nivel_menor[0]?.lda_menor.lda_vacuna_menor[0]?.lda_vacuna
+  //       .fech_vacunacion;
+  //   const solilcitado =
+  //     nivel.lda_nivel_menor[0]?.lda_menor.lda_vacuna_menor != null &&
+  //     nivel.lda_nivel_menor[0]?.lda_menor.lda_vacuna_menor.filter(
+  //       (vacMenor) => vacMenor != null || vacMenor.lda_vacuna != null,
+  //     ).length != 0;
+  //   const nivelDto = {
+  //     idVacuna:
+  //       nivel.lda_nivel_menor[0]?.lda_menor.lda_vacuna_menor[0]?.lda_vacuna
+  //         .iden_vacuna,
+  //     nivel: nivel.desc_nombre,
+  //     nombreVacuna:
+  //       nivel.lda_nivel_menor[0]?.lda_menor.lda_vacuna_menor[0]?.lda_vacuna
+  //         .desc_nombre,
+  //     nmroMenores: nivel._count.lda_nivel_menor,
+  //     nmroSolicitados: nivel.lda_nivel_menor.reduce((count, nivMenor) => {
+  //       return (
+  //         count +
+  //         nivMenor.lda_menor.lda_vacuna_menor.filter(
+  //           (vacMenor) => vacMenor.flag_autorizado != null,
+  //         ).length
+  //       );
+  //     }, 0),
+  //     nmroNoSolicitados:
+  //       solilcitado == false
+  //         ? nivel._count.lda_nivel_menor
+  //         : nivel.lda_nivel_menor.reduce((count, nivMenor) => {
+  //             const vacunaMenor = nivMenor.lda_menor.lda_vacuna_menor;
+  //             return (
+  //               count +
+  //               (vacunaMenor.length > 0
+  //                 ? vacunaMenor.filter(
+  //                     (vacMenor) => vacMenor.flag_autorizado === null,
+  //                   ).length
+  //                 : 1)
+  //             );
+  //           }, 0),
+  //     fechaVacuna:
+  //       fechaVacuna != null ? formatFecha2(fechaVacuna.toISOString()) : null,
+  //     solicitado: solilcitado,
+  //   };
 
-    return nivelDto;
-  }
+  //   return nivelDto;
+  // }
 }

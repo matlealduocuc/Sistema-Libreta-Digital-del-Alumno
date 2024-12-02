@@ -346,4 +346,17 @@ export class ComunicadoService {
     }
     return comunicadoCreated;
   }
+
+  async getAllNiveles() {
+    return await this.prisma.lda_nivel.findMany({
+      where: {
+        flag_activo: true,
+        flag_eliminado: false,
+      },
+      select: {
+        iden_nivel: true,
+        desc_nombre: true,
+      },
+    });
+  }
 }

@@ -44,4 +44,8 @@ export class ComunicadoController {
   async enviarComunicado(comunicado: ComunicadoData) {
     return await this._comunicadoService.subirComunicado(comunicado);
   }
+
+  async getAllNiveles() {
+    return await this._comunicadoService.getAllNiveles();
+  }
 }

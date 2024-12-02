@@ -43,6 +43,10 @@ import RevisarItinerarioMenor from "./views/Libreta/Educador/Avisos/ItinerarioJo
 import ListadoMenoresConfirmadosItinerario from "./views/Libreta/Educador/Avisos/ItinerarioJornada/ListadoMenoresConfirmadosItinerario";
 import EducadorComunicadosHome from "./views/Libreta/Educador/Comunicados/ComunicadosHome";
 import SolicitarVacunasNivel from "./views/Libreta/Educador/Avisos/Vacunas/SolicitarVacunasNivel";
+import DirectorComunicadosHome from "./views/Libreta/Director/Comunicados/DirectorComunicadosHome";
+import DirectorComunicados from "./views/Libreta/Director/Comunicados/DirectorComunicados";
+import CrearComunicadoDirector from "./views/Libreta/Director/Comunicados/CrearComunicadoDirector";
+import DirectorAvisosHome from "./views/Libreta/Director/Avisos/Home";
 
 export const Router = () => {
   return (
@@ -60,7 +64,8 @@ export const Router = () => {
           <Route path="comunicados" element={<EducadorComunicados />} />
           <Route path="crear-comunicado" element={<CrearComunicado />} />
           <Route path="avisos">
-            <Route path="home" element={<EducadorAvisosHome />} />
+            <Route path="home" element={<DirectorAvisosHome />} />
+            <Route path="home/:slide" element={<DirectorAvisosHome />} />
             <Route path="vacunas">
               <Route
                 path="revisar-niveles-menores"
@@ -110,6 +115,18 @@ export const Router = () => {
                 element={<ConfirmarItinerarioJornadaMenor />}
               />
             </Route>
+          </Route>
+          <Route path="comunicados">
+            <Route path="" element={<DirectorComunicadosHome />} />
+            <Route path="home" element={<DirectorComunicadosHome />} />
+            <Route
+              path="listado-comunicados"
+              element={<DirectorComunicados />}
+            />
+            <Route
+              path="crear-comunicado"
+              element={<CrearComunicadoDirector />}
+            />
           </Route>
         </Route>
 
@@ -199,7 +216,7 @@ export const Router = () => {
             </Route>
           </Route>
           <Route path="comunicados">
-            <Route path="" element={<EducadorComunicados />} />
+            <Route path="" element={<EducadorComunicadosHome />} />
             <Route path="home" element={<EducadorComunicadosHome />} />
             <Route
               path="listado-comunicados"

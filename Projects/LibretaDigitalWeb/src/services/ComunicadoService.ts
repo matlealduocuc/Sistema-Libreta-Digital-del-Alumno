@@ -80,6 +80,15 @@ export class ComunicadoService {
       ifAxiosError(error);
     }
   }
+
+  async getAllNiveles() {
+    try {
+      const response = await api.get(`${path}/getAllNiveles`);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
 }
 
 const ifAxiosError = (error: unknown): error is AxiosError => {

@@ -140,4 +140,18 @@ export class ComunicadoController {
   ) {
     return await this.comunicadoService.subirComunicado(body, user.idPersona);
   }
+
+  @Get('getAllNiveles')
+  @Auth(Rol.DIRECTOR)
+  async getAllNiveles() {
+    const niveles = await this.comunicadoService.getAllNiveles();
+    const nivelesDto = niveles.map((nivel) => {
+      return {
+        key: nivel.iden_nivel,
+        text: nivel.desc_nombre,
+      };
+    });
+
+    return nivelesDto;
+  }
 }
