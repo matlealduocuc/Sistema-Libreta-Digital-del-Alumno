@@ -22,8 +22,8 @@ import EducadorAvisosHome from "./views/Libreta/Educador/Avisos/Home";
 import ListadoNivelesAutorizadosVacuna from "./views/Libreta/Educador/Avisos/Vacunas/ListadoNivelesAutorizadosVacuna";
 import ListadoMenoresAutorizadosVacunas from "./views/Libreta/Educador/Avisos/Vacunas/ListadoMenoresAutorizadosVacunas";
 import RevisarVacunaMenor from "./views/Libreta/Educador/Avisos/Vacunas/RevisarVacunaMenor";
-// import ListadoAvisarNivelesEducador from "./views/Libreta/Educador/Avisos/Vacunas/ListadoAvisarNiveles";
-import SolicitarVacunas from "./views/Libreta/Educador/Avisos/Vacunas/SolicitarVacunas";
+import ListadoAvisarNivelesEducador from "./views/Libreta/Educador/Avisos/Vacunas/ListadoAvisarNiveles";
+import SolicitarVacunas from "./views/Libreta/Educador/Avisos/Vacunas/SolicitarVacunasNivel";
 import UnderConstruction from "./views/home/UnderConstruction";
 import LibretaDirectorHome from "./views/Libreta/Director/LibretaDirectorHome";
 import ListadoPaseosRevisar from "./views/Libreta/Educador/Avisos/PaseosVisitas/ListadoPaseosRevisar";
@@ -42,6 +42,7 @@ import ListadoNivelesConfirmadosItinerario from "./views/Libreta/Educador/Avisos
 import RevisarItinerarioMenor from "./views/Libreta/Educador/Avisos/ItinerarioJornada/RevisarItinerarioMenor";
 import ListadoMenoresConfirmadosItinerario from "./views/Libreta/Educador/Avisos/ItinerarioJornada/ListadoMenoresConfirmadosItinerario";
 import EducadorComunicadosHome from "./views/Libreta/Educador/Comunicados/ComunicadosHome";
+import SolicitarVacunasNivel from "./views/Libreta/Educador/Avisos/Vacunas/SolicitarVacunasNivel";
 
 export const Router = () => {
   return (
@@ -133,13 +134,13 @@ export const Router = () => {
                 path="revisar-menor/:idNivel/:idMenor"
                 element={<RevisarVacunaMenor />}
               />
-              {/* <Route
+              <Route
                 path="avisar-niveles-menores"
                 element={<ListadoAvisarNivelesEducador />}
-              /> */}
+              />
               <Route
-                path="solicitar-vacunas/:id"
-                element={<SolicitarVacunas />}
+                path="solicitar-vacunas/:idNivel"
+                element={<SolicitarVacunasNivel />}
               />
             </Route>
             <Route path="paseos-visitas">
