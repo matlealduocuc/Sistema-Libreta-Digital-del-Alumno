@@ -265,51 +265,140 @@ export class VacunaService {
     });
   }
 
-  // async solicitarVacunaNivel(
-  //   nombVacuna: number,
-  //   fechVacuna: Date,
-  //   idNivel: number,
-  //   idEducador: number,
-  // ) {
-  //   const isNivel = await this.prisma.lda_nivel.findFirst({
-  //     where: {
-  //       iden_nivel: idNivel,
-  //       flag_activo: true,
-  //       flag_eliminado: false,
-  //       lda_nivel_educador: {
-  //         some: {
-  //           iden_persona: idEducador,
-  //           flag_activo: true,
-  //           flag_eliminado: false,
-  //           per_persona: {
-  //             id: idEducador,
-  //             flag_activo: true,
-  //             flag_eliminado: false,
-  //           },
-  //         },
-  //       },
-  //     },
-  //   });
-  //   if (!isNivel) {
-  //     return false;
-  //   }
-  //   const getIden = await this.prisma.lda_comunicado_menor.findFirst({
-  //     where: {
-  //       iden_menor: idMenor,
-  //       iden_comunicado: idComunicado,
-  //     },
-  //     select: {
-  //       iden_comunicado_menor: true,
-  //     },
-  //   });
-  //   const updated = await this.prisma.lda_comunicado_menor.update({
-  //     data: {
-  //       flag_confirmado: true,
-  //     },
-  //     where: {
-  //       iden_comunicado_menor: getIden.iden_comunicado_menor,
-  //     },
-  //   });
-  //   return updated;
-  // }
+  async solicitarVacunaNivel(
+    nombVacuna: string,
+    fechVacuna: Date,
+    idNivel: number,
+    idEducador: number,
+  ) {
+    fechVacuna = new Date(fechVacuna);
+    const educador = await this.prisma.usuario.findFirst({
+      where: {
+        activo: true,
+        eliminado: false,
+        persona: {
+          id: idEducador,
+          flag_activo: true,
+          flag_eliminado: false,
+          lda_nivel_educador: {
+            some: {
+              flag_activo: true,
+              flag_eliminado: false,
+              iden_nivel: idNivel,
+            },
+          },
+        },
+      },
+      select: {
+        id: true,
+      },
+    });
+    if (!educador) {
+      return false;
+    }
+
+    const vacunaData: any = {
+      desc_nombre: nombVacuna,
+      fech_vacunacion: fechVacuna,
+      nmro_agno: fechVacuna.getFullYear(),
+    };
+
+    const vacunaCreated = await this.prisma.lda_vacuna.create({
+      data: vacunaData,
+    });
+
+    const menores = await this.prisma.lda_nivel_menor.findMany({
+      where: {
+        iden_nivel: idNivel,
+        flag_activo: true,
+        flag_eliminado: false,
+        lda_menor: {
+          flag_activo: true,
+          flag_eliminado: false,
+        },
+      },
+      select: {
+        iden_menor: true,
+      },
+    });
+
+    for (const menor of menores) {
+      await this.prisma.lda_vacuna_menor.create({
+        data: {
+          iden_vacuna: vacunaCreated.iden_vacuna,
+          iden_menor: menor.iden_menor,
+          flag_autorizado: false,
+        },
+      });
+    }
+
+    return vacunaCreated;
+  }
+
+  async solicitarVacunaMenoresNivel(
+    idNivel: number,
+    idVacuna: number,
+    idEducador: number,
+  ) {
+    const educador = await this.prisma.usuario.findFirst({
+      where: {
+        activo: true,
+        eliminado: false,
+        persona: {
+          id: idEducador,
+          flag_activo: true,
+          flag_eliminado: false,
+          lda_nivel_educador: {
+            some: {
+              flag_activo: true,
+              flag_eliminado: false,
+              iden_nivel: idNivel,
+            },
+          },
+        },
+      },
+      select: {
+        id: true,
+      },
+    });
+    if (!educador) {
+      return false;
+    }
+
+    const menores = await this.prisma.lda_nivel_menor.findMany({
+      where: {
+        iden_nivel: idNivel,
+        flag_activo: true,
+        flag_eliminado: false,
+        lda_menor: {
+          flag_activo: true,
+          flag_eliminado: false,
+        },
+        AND: {
+          lda_menor: {
+            lda_vacuna_menor: {
+              none: {
+                iden_vacuna: idVacuna,
+              },
+            },
+          },
+        },
+      },
+      select: {
+        iden_menor: true,
+      },
+    });
+
+    for (const menor of menores) {
+      await this.prisma.lda_vacuna_menor.create({
+        data: {
+          iden_vacuna: idVacuna,
+          iden_menor: menor.iden_menor,
+          flag_autorizado: false,
+        },
+      });
+    }
+
+    return true;
+  }
 }
