@@ -40,7 +40,7 @@ const EducadorAvisosHome = () => {
       <br />
       o en <strong>"Revisar"</strong> para ver el <strong>Estado de las Solicitudes</strong>.`,
       buttonText: "Solicitar",
-      href: initPathName + "/avisos/paseos-visitas/listado-menores",
+      href: initPathName + "/avisos/paseos-visitas/solicitar-paseo",
       isSecondButton: true,
       secondButtonText: "Revisar",
       secondButtonHref:

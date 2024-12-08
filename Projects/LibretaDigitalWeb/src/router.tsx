@@ -47,6 +47,7 @@ import DirectorComunicadosHome from "./views/Libreta/Director/Comunicados/Direct
 import DirectorComunicados from "./views/Libreta/Director/Comunicados/DirectorComunicados";
 import CrearComunicadoDirector from "./views/Libreta/Director/Comunicados/CrearComunicadoDirector";
 import DirectorAvisosHome from "./views/Libreta/Director/Avisos/Home";
+import SolicitarPaseoEducador from "./views/Libreta/Educador/Avisos/PaseosVisitas/SolicitarPaseoEducador";
 
 export const Router = () => {
   return (
@@ -177,6 +178,7 @@ export const Router = () => {
                 path="revisar-menor/:idPaseo/:idNivel/:idMenor"
                 element={<RevisarPaseoMenor />}
               />
+              <Route path="solicitar-paseo" element={<SolicitarPaseoEducador />} />
             </Route>
             <Route path="reuniones-apoderados">
               <Route
