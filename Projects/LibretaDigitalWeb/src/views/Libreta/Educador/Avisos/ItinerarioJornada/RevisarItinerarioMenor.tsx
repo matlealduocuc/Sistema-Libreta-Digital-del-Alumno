@@ -24,6 +24,9 @@ const RevisarItinerarioMenor = () => {
     confirmado: boolean | null;
   }>();
   const [loading, setLoading] = useState<boolean>(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
+  const [secondModalMessage, setSecondModalMessage] = useState("");
   const itinerarioController = new ItinerarioController();
   const navigate = useNavigate();
 
@@ -52,6 +55,45 @@ const RevisarItinerarioMenor = () => {
     fetchMenor();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading, idItinerario, idNivel, idMenor]);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleAccept = async () => {
+    try {
+      // Simula una llamada a una API
+      if (idItinerario) {
+        setLoading(true);
+        const response = await itinerarioController.confirmarRealizaActividad(
+          +idItinerario
+        );
+        if (response) {
+          setSecondModalMessage("Actividad realizada");
+        } else {
+          setSecondModalMessage("Ha ocurrido un error");
+        }
+      } else {
+        setSecondModalMessage("Ha ocurrido un error");
+      }
+    } catch (error) {
+      setSecondModalMessage("Ha ocurrido un error");
+      console.error("Error accepting activity:", error);
+    } finally {
+      setLoading(false);
+      setIsModalOpen(false);
+      setIsSecondModalOpen(true);
+    }
+  };
+
+  const handleSecondModalAccept = () => {
+    setIsSecondModalOpen(false);
+    window.location.reload();
+  };
 
   return (
     <Spin spinning={loading}>
@@ -128,6 +170,59 @@ const RevisarItinerarioMenor = () => {
             >
               Volver
             </button>
+            {!menor?.realizado ? (
+              <button
+                onClick={handleOpenModal}
+                className="w-full outline outline-1 outline-figma-blue-button text-figma-blue-button bg-white transition-colors py-2 mt-4 font-semibold rounded-lg hover:outline-none hover:bg-figma-blue-button hover:text-white"
+              >
+                ¿Actividad Realizada?
+              </button>
+            ) : (
+              ""
+            )}
+            {isModalOpen && (
+              <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="bg-white p-4 rounded-lg">
+                  <p className="font-semibold">
+                    ¿Quieres dar por conocido que la actividad ha sido
+                    realizada?
+                  </p>
+                  <hr className="my-2" />
+                  <p>
+                    La actividad en general pasará a ser marcada como realizada.
+                  </p>
+                  <div className="flex justify-between mt-4">
+                    <button
+                      onClick={handleCloseModal}
+                      className="px-4 py-2 bg-gray-500 text-white rounded-lg"
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      onClick={handleAccept}
+                      className="mr-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
+                    >
+                      Aceptar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+            {isSecondModalOpen && (
+              <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="bg-white p-4 rounded-lg">
+                  <p>{secondModalMessage}</p>
+                  <div className="flex justify-end mt-4">
+                    <button
+                      onClick={handleSecondModalAccept}
+                      className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+                    >
+                      Aceptar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </main>
       </div>

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
+import { ReunionApoderadoData } from './entities/reunion-apoderado.entity';
 
 @Injectable()
 export class ReunionApoderadoService {
@@ -268,5 +269,149 @@ export class ReunionApoderadoService {
         },
       },
     });
+  }
+
+  async crearReunion(reunion: ReunionApoderadoData, idEducador: number) {
+    const educador = await this.prisma.usuario.findFirst({
+      where: {
+        activo: true,
+        eliminado: false,
+        persona: {
+          id: idEducador,
+          flag_activo: true,
+          flag_eliminado: false,
+          lda_nivel_educador: {
+            some: {
+              flag_activo: true,
+              flag_eliminado: false,
+            },
+          },
+        },
+      },
+      select: {
+        id: true,
+      },
+    });
+    if (!educador) {
+      return false;
+    }
+    const dateReal = new Date().setMinutes(
+      new Date().getMinutes() - new Date().getTimezoneOffset(),
+    );
+    const reunionData: any = {
+      desc_titulo: reunion.titulo,
+      fech_reunion: new Date(reunion.fechaReunion),
+      lda_sala: {
+        connect: {
+          iden_sala: reunion.salaReunion,
+        },
+      },
+      usr_usuario: {
+        connect: {
+          id: educador.id,
+        },
+      },
+      fech_creacion: new Date(dateReal),
+    };
+
+    const reunionCreated = await this.prisma.lda_reunion.create({
+      data: reunionData,
+    });
+
+    await this.prisma.lda_reunion_tema.createMany({
+      data: reunion.temas.map((tema: string) => ({
+        desc_tema: tema,
+        iden_reunion: reunionCreated.iden_reunion,
+      })),
+    });
+
+    if (reunion.enviarATodosNiveles) {
+      const niveles = await this.prisma.lda_nivel.findMany({
+        where: {
+          flag_activo: true,
+          flag_eliminado: false,
+          lda_nivel_educador: {
+            some: {
+              flag_activo: true,
+              flag_eliminado: false,
+              iden_persona: {
+                equals: idEducador,
+              },
+            },
+          },
+        },
+        select: {
+          iden_nivel: true,
+        },
+      });
+      for (const nivel of niveles) {
+        const menores = await this.prisma.lda_nivel_menor.findMany({
+          where: {
+            iden_nivel: nivel.iden_nivel,
+            flag_activo: true,
+            flag_eliminado: false,
+            lda_menor: {
+              flag_activo: true,
+              flag_eliminado: false,
+            },
+          },
+          select: {
+            iden_menor: true,
+          },
+        });
+
+        for (const menor of menores) {
+          await this.prisma.lda_reunion_menor.create({
+            data: {
+              iden_reunion: reunionCreated.iden_reunion,
+              iden_menor: menor.iden_menor,
+              iden_nivel: nivel.iden_nivel,
+              flag_confirmado: false,
+            },
+          });
+        }
+      }
+    } else {
+      for (const nivelId of reunion.nivelesSeleccionados) {
+        const nivel = await this.prisma.lda_nivel.findFirst({
+          where: {
+            iden_nivel: nivelId,
+            flag_activo: true,
+            flag_eliminado: false,
+          },
+          select: {
+            iden_nivel: true,
+          },
+        });
+
+        if (nivel) {
+          const menores = await this.prisma.lda_nivel_menor.findMany({
+            where: {
+              iden_nivel: nivel.iden_nivel,
+              flag_activo: true,
+              flag_eliminado: false,
+              lda_menor: {
+                flag_activo: true,
+                flag_eliminado: false,
+              },
+            },
+            select: {
+              iden_menor: true,
+            },
+          });
+          for (const menor of menores) {
+            await this.prisma.lda_reunion_menor.create({
+              data: {
+                iden_reunion: reunionCreated.iden_reunion,
+                iden_menor: menor.iden_menor,
+                iden_nivel: nivel.iden_nivel,
+                flag_confirmado: false,
+              },
+            });
+          }
+        }
+      }
+    }
+    return reunionCreated;
   }
 }

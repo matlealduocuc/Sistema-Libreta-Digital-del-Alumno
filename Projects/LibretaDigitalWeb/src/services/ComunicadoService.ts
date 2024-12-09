@@ -1,4 +1,7 @@
-import { ComunicadoData } from "@/dtos/Comunicado/ComunicadoData";
+import {
+  ComunicadoData,
+  ComunicadoDataEducador,
+} from "@/dtos/Comunicado/ComunicadoData";
 import api from "@/lib/axios";
 import { AxiosError, isAxiosError } from "axios";
 
@@ -63,15 +66,6 @@ export class ComunicadoService {
     }
   }
 
-  async getNivelesByEducador() {
-    try {
-      const response = await api.get(`${path}/getNivelesByEducador`);
-      return response.data;
-    } catch (error) {
-      ifAxiosError(error);
-    }
-  }
-
   async subirComunicado(data: ComunicadoData) {
     try {
       const response = await api.post(`${path}/subirComunicado`, data);
@@ -81,9 +75,9 @@ export class ComunicadoService {
     }
   }
 
-  async getAllNiveles() {
+  async subirComunicadoDirector(data: ComunicadoDataEducador) {
     try {
-      const response = await api.get(`${path}/getAllNiveles`);
+      const response = await api.post(`${path}/subirComunicadoDirector`, data);
       return response.data;
     } catch (error) {
       ifAxiosError(error);

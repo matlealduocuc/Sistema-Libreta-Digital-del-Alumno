@@ -82,6 +82,8 @@ model Usuario {
   iden_rol       Int?
   lda_comunicado lda_comunicado[]
   lda_itinerario lda_itinerario[]
+  lda_paseo      lda_paseo[]
+  lda_reunion    lda_reunion[]
   persona        Persona          @relation(fields: [idPersona], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "usr_usuario_per_persona_fk")
   usr_rol        usr_rol?         @relation(fields: [iden_rol], references: [iden_rol], onDelete: NoAction, onUpdate: NoAction, map: "usr_usuario_usr_rol_fk")
 
@@ -209,7 +211,10 @@ model lda_reunion {
   iden_sala         Int
   flag_activo       Boolean             @default(true)
   flag_eliminado    Boolean             @default(false)
+  iden_usr_creador  Int
+  fech_creacion     DateTime            @db.Timestamp(6)
   lda_sala          lda_sala            @relation(fields: [iden_sala], references: [iden_sala], onDelete: NoAction, onUpdate: NoAction, map: "lda_reunion_lda_sala_fk")
+  usr_usuario       Usuario             @relation(fields: [iden_usr_creador], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lda_reunion_usr_usuario_fk")
   lda_reunion_menor lda_reunion_menor[]
   lda_reunion_tema  lda_reunion_tema[]
 
@@ -258,7 +263,10 @@ model lda_paseo {
   flag_eliminado   Boolean           @default(false)
   fech_inicio      DateTime?         @db.Timestamp(6)
   fech_fin         DateTime?         @db.Timestamp(6)
+  fech_creacion    DateTime          @db.Timestamp(6)
+  iden_usr_creador Int
   lda_tipo_paseo   lda_tipo_paseo    @relation(fields: [iden_tipo_paseo], references: [iden_tipo_paseo], onDelete: NoAction, onUpdate: NoAction, map: "lda_paseo_lda_tipo_paseo_fk")
+  usr_usuario      Usuario           @relation(fields: [iden_usr_creador], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lda_paseo_usr_usuario_fk")
   lda_paseo_menor  lda_paseo_menor[]
 
   @@schema("ADMLDA")

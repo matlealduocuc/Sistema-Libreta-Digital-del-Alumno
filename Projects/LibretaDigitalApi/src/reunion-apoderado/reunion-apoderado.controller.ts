@@ -1,9 +1,10 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ReunionApoderadoService } from './reunion-apoderado.service';
 import { ActiveUser } from 'src/common/decorators/active-user.decorator';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 import { Rol } from 'src/common/enums/rol.enum';
 import formatFecha2 from 'src/common/functions/formatFecha2';
+import { ReunionApoderadoData } from './entities/reunion-apoderado.entity';
 
 @Controller('reunion-apoderado')
 export class ReunionApoderadoController {
@@ -143,5 +144,18 @@ export class ReunionApoderadoController {
       confirmado: reunion.lda_reunion_menor[0]?.flag_confirmado ?? null,
     };
     return reunionDto;
+  }
+
+  @Post('crearReunion')
+  @Auth(Rol.EDUCADOR)
+  async crearReunion(
+    @ActiveUser() user,
+    @Body()
+    body: ReunionApoderadoData | any,
+  ) {
+    return await this.reunionApoderadoService.crearReunion(
+      body,
+      user.idPersona,
+    );
   }
 }

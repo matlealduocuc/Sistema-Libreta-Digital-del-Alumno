@@ -1,3 +1,4 @@
+import { ItinerarioData } from "@/dtos/Itinerario/ItinerarioData";
 import api from "@/lib/axios";
 import { AxiosError, isAxiosError } from "axios";
 
@@ -44,6 +45,26 @@ export class ItinerarioService {
       const response = await api.get(
         `${path}/getMenorByItinerarioNivelMenor/${idItinerario}/${idNivel}/${idMenor}`
       );
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async confirmarRealizaActividad(idItinerario: number) {
+    try {
+      const response = await api.post(
+        `${path}/confirmarRealizaActividad/${idItinerario}`
+      );
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async crearItinerario(data: ItinerarioData) {
+    try {
+      const response = await api.post(`${path}/crearItinerario`, data);
       return response.data;
     } catch (error) {
       ifAxiosError(error);

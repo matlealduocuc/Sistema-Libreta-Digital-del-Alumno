@@ -1,10 +1,11 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ItinerarioService } from './itinerario.service';
 import formatFecha2 from 'src/common/functions/formatFecha2';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 import { Rol } from 'src/common/enums/rol.enum';
 import { ActiveUser } from 'src/common/decorators/active-user.decorator';
 import formatFecha1 from 'src/common/functions/formatFecha1';
+import { ItinerarioData } from './entities/itinerario.entity';
 
 @Controller('itinerario')
 export class ItinerarioController {
@@ -143,5 +144,23 @@ export class ItinerarioController {
         null,
     };
     return itinerarioDto;
+  }
+
+  @Post('crearItinerario')
+  @Auth(Rol.EDUCADOR)
+  async crearItinerario(
+    @ActiveUser() user,
+    @Body()
+    body: ItinerarioData | any,
+  ) {
+    return await this.itinerarioService.crearItinerario(body, user.idPersona);
+  }
+
+  @Post('confirmarRealizaActividad/:idItinerario')
+  @Auth([Rol.EDUCADOR, Rol.DIRECTOR])
+  async confirmarRealizaActividad(@Param('idItinerario') idItinerario: string) {
+    return await this.itinerarioService.confirmarRealizaActividad(
+      +idItinerario,
+    );
   }
 }

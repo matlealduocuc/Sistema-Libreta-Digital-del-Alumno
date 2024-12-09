@@ -1,3 +1,4 @@
+import { PaseoData } from "@/dtos/Paseo/PaseoData";
 import { PaseoService } from "@/services/PaseoService";
 
 export class PaseoController {
@@ -28,5 +29,13 @@ export class PaseoController {
       idNivel,
       idMenor
     );
+  }
+
+  async getTiposPaseo() {
+    return await this._paseoService.getTiposPaseo();
+  }
+
+  async crearPaseo(paseo: PaseoData) {
+    return await this._paseoService.crearPaseo(paseo);
   }
 }

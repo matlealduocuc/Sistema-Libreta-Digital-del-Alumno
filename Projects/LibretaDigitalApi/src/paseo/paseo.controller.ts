@@ -1,9 +1,10 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { PaseoService } from './paseo.service';
 import { ActiveUser } from 'src/common/decorators/active-user.decorator';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 import { Rol } from 'src/common/enums/rol.enum';
 import formatFecha2 from 'src/common/functions/formatFecha2';
+import { PaseoData } from './entities/paseo.entity';
 
 @Controller('paseo')
 export class PaseoController {
@@ -127,5 +128,29 @@ export class PaseoController {
     };
 
     return menoresDto;
+  }
+
+  @Get('getTiposPaseo')
+  @Auth([Rol.EDUCADOR, Rol.DIRECTOR])
+  async getTiposPaseo() {
+    const tiposPaseo = await this.paseoService.getTiposPaseo();
+    const tiposPaseoDto = tiposPaseo.map((tipo) => {
+      return {
+        key: tipo.iden_tipo_paseo,
+        text: tipo.desc_tipo_paseo,
+      };
+    });
+
+    return tiposPaseoDto;
+  }
+
+  @Post('crearPaseo')
+  @Auth(Rol.EDUCADOR)
+  async crearPaseo(
+    @ActiveUser() user,
+    @Body()
+    body: PaseoData | any,
+  ) {
+    return await this.paseoService.crearPaseo(body, user.idPersona);
   }
 }

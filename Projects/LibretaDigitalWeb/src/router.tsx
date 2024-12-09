@@ -6,7 +6,7 @@ import LibretaLayout from "./layouts/LibretaLayout";
 import LibretaEducadorHome from "./views/Libreta/Educador/LibretaEducadorHome";
 import PerfilUsuario from "./views/Libreta/Perfil/PerfilUsuario";
 import EducadorComunicados from "./views/Libreta/Educador/Comunicados/EducadorComunicados";
-import CrearComunicado from "./views/Libreta/Educador/Comunicados/CrearComunicado";
+import CrearComunicadoEducador from "./views/Libreta/Educador/Comunicados/CrearComunicadoEducador";
 import LibretaRedirect from "./views/home/LibretaRedirect";
 import LibretaApoderadoHome from "./views/Libreta/Apoderado/LibretaApoderadoHome";
 import ApoderadoAvisosHome from "./views/Libreta/Apoderado/Avisos/Home";
@@ -47,7 +47,9 @@ import DirectorComunicadosHome from "./views/Libreta/Director/Comunicados/Direct
 import DirectorComunicados from "./views/Libreta/Director/Comunicados/DirectorComunicados";
 import CrearComunicadoDirector from "./views/Libreta/Director/Comunicados/CrearComunicadoDirector";
 import DirectorAvisosHome from "./views/Libreta/Director/Avisos/Home";
-import SolicitarPaseoEducador from "./views/Libreta/Educador/Avisos/PaseosVisitas/SolicitarPaseoEducador";
+import CrearPaseoEducador from "./views/Libreta/Educador/Avisos/PaseosVisitas/CrearPaseoEducador";
+import CrearReunionApoderadosEducador from "./views/Libreta/Educador/Avisos/ReunionesApoderados/CrearReunionApoderadosEducador";
+import CrearItinerarioEducador from "./views/Libreta/Educador/Avisos/ItinerarioJornada/CrearItinerarioEducador";
 
 export const Router = () => {
   return (
@@ -63,7 +65,10 @@ export const Router = () => {
           <Route path="home" element={<LibretaDirectorHome />} />
           <Route path="perfil" element={<PerfilUsuario />} />
           <Route path="comunicados" element={<EducadorComunicados />} />
-          <Route path="crear-comunicado" element={<CrearComunicado />} />
+          <Route
+            path="crear-comunicado"
+            element={<CrearComunicadoEducador />}
+          />
           <Route path="avisos">
             <Route path="home" element={<DirectorAvisosHome />} />
             <Route path="home/:slide" element={<DirectorAvisosHome />} />
@@ -80,10 +85,6 @@ export const Router = () => {
                 path="revisar-menor/:idNivel/:idMenor"
                 element={<RevisarVacunaMenor />}
               />
-              {/* <Route
-                path="avisar-niveles-menores"
-                element={<ListadoAvisarNivelesEducador />}
-              /> */}
               <Route
                 path="solicitar-vacunas/:id"
                 element={<SolicitarVacunas />}
@@ -178,7 +179,7 @@ export const Router = () => {
                 path="revisar-menor/:idPaseo/:idNivel/:idMenor"
                 element={<RevisarPaseoMenor />}
               />
-              <Route path="solicitar-paseo" element={<SolicitarPaseoEducador />} />
+              <Route path="crear-paseo" element={<CrearPaseoEducador />} />
             </Route>
             <Route path="reuniones-apoderados">
               <Route
@@ -196,6 +197,10 @@ export const Router = () => {
               <Route
                 path="revisar-menor/:idReunion/:idNivel/:idMenor"
                 element={<RevisarReunionMenor />}
+              />
+              <Route
+                path="crear-reunion"
+                element={<CrearReunionApoderadosEducador />}
               />
             </Route>
             <Route path="itinerario-jornada">
@@ -215,6 +220,10 @@ export const Router = () => {
                 path="revisar-menor/:idItinerario/:idNivel/:idMenor"
                 element={<RevisarItinerarioMenor />}
               />
+              <Route
+                path="crear-itinerario"
+                element={<CrearItinerarioEducador />}
+              />
             </Route>
           </Route>
           <Route path="comunicados">
@@ -224,7 +233,10 @@ export const Router = () => {
               path="listado-comunicados"
               element={<EducadorComunicados />}
             />
-            <Route path="crear-comunicado" element={<CrearComunicado />} />
+            <Route
+              path="crear-comunicado"
+              element={<CrearComunicadoEducador />}
+            />
           </Route>
         </Route>
 

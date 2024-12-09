@@ -1,4 +1,4 @@
-import { ComunicadoData } from "@/dtos/Comunicado/ComunicadoData";
+import { ComunicadoData, ComunicadoDataEducador } from "@/dtos/Comunicado/ComunicadoData";
 import { ComunicadoService } from "@/services/ComunicadoService";
 
 export class ComunicadoController {
@@ -37,15 +37,11 @@ export class ComunicadoController {
     );
   }
 
-  async getNivelesByEducador() {
-    return await this._comunicadoService.getNivelesByEducador();
-  }
-
   async enviarComunicado(comunicado: ComunicadoData) {
     return await this._comunicadoService.subirComunicado(comunicado);
   }
 
-  async getAllNiveles() {
-    return await this._comunicadoService.getAllNiveles();
+  async enviarComunicadoDirector(comunicado: ComunicadoDataEducador) {
+    return await this._comunicadoService.subirComunicadoDirector(comunicado);
   }
 }

@@ -1,10 +1,58 @@
-import { PaseoController } from "@/controllers/PaseoController";
+import { ComunicadoController } from "@/controllers/ComunicadoController";
+import { MenorController } from "@/controllers/MenorController";
 import { useAuth } from "@/hooks/useAuth";
 import { Spin } from "antd";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
-const SolicitarPaseoEducador = () => {
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import {
+  ClassicEditor,
+  Bold,
+  Essentials,
+  Indent,
+  IndentBlock,
+  Italic,
+  Highlight,
+  Paragraph,
+  Table,
+  Undo,
+  AccessibilityHelp,
+  Alignment,
+  Autoformat,
+  Autosave,
+  BalloonToolbar,
+  BlockQuote,
+  Code,
+  FontBackgroundColor,
+  FontColor,
+  FontFamily,
+  FontSize,
+  GeneralHtmlSupport,
+  HorizontalLine,
+  RemoveFormat,
+  SelectAll,
+  Strikethrough,
+  Subscript,
+  Superscript,
+  TableCaption,
+  TableCellProperties,
+  TableColumnResize,
+  TableProperties,
+  TableToolbar,
+  TextTransformation,
+  Underline,
+  List,
+} from "ckeditor5";
+
+import translations from "ckeditor5/translations/es.js";
+
+import "ckeditor5/ckeditor5.css";
+import { FileController } from "@/controllers/FileController";
+import { ComunicadoData } from "@/dtos/Comunicado/ComunicadoData";
+import { useNavigate } from "react-router-dom";
+import { NivelController } from "@/controllers/NivelController";
+
+const CrearComunicadoEducador = () => {
   const { isLoading } = useAuth();
   const [loadingFull, setLoadingFull] = React.useState<boolean>(true);
   const [tipoComunicado, setTipoComunicado] = useState("");
@@ -25,18 +73,22 @@ const SolicitarPaseoEducador = () => {
   const [mostrarSeleccionMenores, setMostrarSeleccionMenores] = useState(false);
   const [enviarPorCorreo, setEnviarPorCorreo] = useState(false);
   const [asunto, setAsunto] = useState("");
+  const [textoComunicado, setTextoComunicado] = useState("");
   const [archivoPDF, setArchivoPDF] = useState<File | null>(null);
   const [step, setStep] = useState(1);
   const [isErrorConfirmar, setIsErrorConfirmar] = useState<boolean>(true);
   const navigate = useNavigate();
-  const paseoController = new PaseoController();
+  const comunicadoController = new ComunicadoController();
+  const nivelController = new NivelController();
+  const menorController = new MenorController();
+  const fileController = new FileController();
 
   useEffect(() => {
     setLoadingFull(true);
     const fetchTiposComunicados = async () => {
       if (!isLoading) {
         try {
-          const niveles = await comunicadoController.getNivelesByEducador();
+          const niveles = await nivelController.getNivelesByEducador();
           if (niveles) {
             setNivelesSelect(
               niveles.map((nivel: { key: number; text: string }) => ({
@@ -129,7 +181,21 @@ const SolicitarPaseoEducador = () => {
   const handleEnviarComunicado = async () => {
     try {
       setLoadingFull(true);
-      const requestData = null;
+      let idArchivo: number | null = null;
+      if (archivoPDF) {
+        if (archivoPDF) {
+          idArchivo = await fileController.uploadFile(archivoPDF);
+        }
+      }
+      const requestData = new ComunicadoData(
+        Number(tipoComunicado),
+        Number(nivel),
+        asunto,
+        textoComunicado,
+        enviarATodosMenores,
+        menoresSeleccionados,
+        idArchivo
+      );
       const enviado = await comunicadoController.enviarComunicado(requestData);
       setIsErrorConfirmar(!enviado);
     } catch (error) {
@@ -307,6 +373,116 @@ const SolicitarPaseoEducador = () => {
             {/* Texto del comunicado */}
             <div className="mb-2">
               <label className="block font-semibold mb-1">Mensaje</label>
+              <CKEditor
+                editor={ClassicEditor}
+                config={{
+                  toolbar: {
+                    items: [
+                      "undo",
+                      "redo",
+                      "|",
+                      "bold",
+                      "italic",
+                      "underline",
+                      "strikethrough",
+                      "subscript",
+                      "superscript",
+                      "code",
+                      "removeFormat",
+                      "|",
+                      "fontSize",
+                      "fontFamily",
+                      "fontColor",
+                      "fontBackgroundColor",
+                      "|",
+                      "horizontalLine",
+                      "insertTable",
+                      "highlight",
+                      "blockQuote",
+                      "|",
+                      "alignment",
+                      "|",
+                      "bulletedList",
+                      "|",
+                      "numberedList",
+                      "|",
+                      "outdent",
+                      "indent",
+                    ],
+                  },
+                  plugins: [
+                    AccessibilityHelp,
+                    Alignment,
+                    Autoformat,
+                    Autosave,
+                    BalloonToolbar,
+                    BlockQuote,
+                    Bold,
+                    Code,
+                    Essentials,
+                    FontBackgroundColor,
+                    FontColor,
+                    FontFamily,
+                    FontSize,
+                    GeneralHtmlSupport,
+                    Highlight,
+                    HorizontalLine,
+                    Indent,
+                    IndentBlock,
+                    Italic,
+                    Paragraph,
+                    RemoveFormat,
+                    SelectAll,
+                    Strikethrough,
+                    Subscript,
+                    Superscript,
+                    Table,
+                    TableCaption,
+                    TableCellProperties,
+                    TableColumnResize,
+                    TableProperties,
+                    TableToolbar,
+                    TextTransformation,
+                    Underline,
+                    Undo,
+                    List,
+                  ],
+                  balloonToolbar: ["bold", "italic"],
+                  fontFamily: {
+                    supportAllValues: true,
+                  },
+                  fontSize: {
+                    options: [10, 12, 14, "default", 18, 20, 22],
+                    supportAllValues: true,
+                  },
+                  language: "es",
+                  placeholder: "Escribe el contenido del comunicado aqui!",
+                  htmlSupport: {
+                    allow: [
+                      {
+                        name: /^.*$/,
+                        attributes: true,
+                        classes: true,
+                      },
+                    ],
+                  },
+                  table: {
+                    contentToolbar: [
+                      "tableColumn",
+                      "tableRow",
+                      "mergeTableCells",
+                      "tableProperties",
+                      "tableCellProperties",
+                    ],
+                  },
+                  translations: [translations],
+                }}
+                data={textoComunicado}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                onChange={(_event: any, editor: any) => {
+                  setTextoComunicado(editor.getData());
+                }}
+              />
             </div>
 
             <div className="mb-2">
@@ -339,7 +515,8 @@ const SolicitarPaseoEducador = () => {
                 tipoComunicado == "" ||
                 nivel == "" ||
                 (!enviarATodosMenores && menoresSeleccionados.length < 1) ||
-                asunto.trim() == ""
+                asunto.trim() == "" ||
+                textoComunicado.trim() == ""
               }
             >
               Aceptar
@@ -451,4 +628,4 @@ const SolicitarPaseoEducador = () => {
   );
 };
 
-export default SolicitarPaseoEducador;
+export default CrearComunicadoEducador;

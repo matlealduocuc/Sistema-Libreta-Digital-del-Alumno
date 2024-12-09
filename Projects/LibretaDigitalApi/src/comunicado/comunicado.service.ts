@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { ComunicadoData } from './entities/comunicado.entity';
+import {
+  ComunicadoData,
+  ComunicadoDataEducador,
+} from './entities/comunicado.entity';
 
 @Injectable()
 export class ComunicadoService {
@@ -220,26 +223,6 @@ export class ComunicadoService {
     return updated;
   }
 
-  async getNivelesByEducador(idEducador: number) {
-    return await this.prisma.lda_nivel.findMany({
-      where: {
-        flag_activo: true,
-        flag_eliminado: false,
-        lda_nivel_educador: {
-          some: {
-            iden_persona: idEducador,
-            flag_activo: true,
-            flag_eliminado: false,
-          },
-        },
-      },
-      select: {
-        iden_nivel: true,
-        desc_nombre: true,
-      },
-    });
-  }
-
   async subirComunicado(comunicado: ComunicadoData, idEducador: number) {
     const educador = await this.prisma.usuario.findFirst({
       where: {
@@ -347,16 +330,137 @@ export class ComunicadoService {
     return comunicadoCreated;
   }
 
-  async getAllNiveles() {
-    return await this.prisma.lda_nivel.findMany({
+  async subirComunicadoDirector(comunicado: ComunicadoDataEducador) {
+    const educador = await this.prisma.usuario.findFirst({
       where: {
-        flag_activo: true,
-        flag_eliminado: false,
+        activo: true,
+        eliminado: false,
       },
       select: {
-        iden_nivel: true,
-        desc_nombre: true,
+        id: true,
       },
     });
+    if (!educador) {
+      return false;
+    }
+    const dateReal = new Date().setMinutes(
+      new Date().getMinutes() - new Date().getTimezoneOffset(),
+    );
+    const comunicadoData: any = {
+      desc_titulo: comunicado.asunto,
+      desc_texto: comunicado.texto,
+      fech_creacion: new Date(dateReal),
+      usr_usuario: {
+        connect: {
+          id: educador.id,
+        },
+      },
+      lda_tipo_comunicado: {
+        connect: {
+          iden_tipo_comunicado: comunicado.tipoComunicado,
+        },
+      },
+    };
+
+    if (comunicado.idArchivo) {
+      comunicadoData.lda_archivo = {
+        connect: {
+          iden_archivo: comunicado.idArchivo,
+        },
+      };
+    }
+
+    const comunicadoCreated = await this.prisma.lda_comunicado.create({
+      data: comunicadoData,
+    });
+
+    if (comunicado.enviarATodosNiveles) {
+      const niveles = await this.prisma.lda_nivel.findMany({
+        where: {
+          flag_activo: true,
+          flag_eliminado: false,
+        },
+        select: {
+          iden_nivel: true,
+        },
+      });
+      for (const nivel of niveles) {
+        const menores = await this.prisma.lda_nivel_menor.findMany({
+          where: {
+            iden_nivel: nivel.iden_nivel,
+            flag_activo: true,
+            flag_eliminado: false,
+            lda_menor: {
+              flag_activo: true,
+              flag_eliminado: false,
+            },
+          },
+          select: {
+            iden_menor: true,
+          },
+        });
+
+        for (const menor of menores) {
+          await this.prisma.lda_comunicado_menor.create({
+            data: {
+              iden_comunicado: comunicadoCreated.iden_comunicado,
+              iden_menor: menor.iden_menor,
+              iden_nivel: nivel.iden_nivel,
+              flag_confirmado: false,
+            },
+          });
+        }
+      }
+    } else {
+      if (comunicado.enviarATodosMenores) {
+        const menores = await this.prisma.lda_nivel_menor.findMany({
+          where: {
+            iden_nivel: comunicado.nivel,
+            flag_activo: true,
+            flag_eliminado: false,
+            lda_menor: {
+              flag_activo: true,
+              flag_eliminado: false,
+            },
+          },
+          select: {
+            iden_menor: true,
+          },
+        });
+
+        for (const menor of menores) {
+          await this.prisma.lda_comunicado_menor.create({
+            data: {
+              iden_comunicado: comunicadoCreated.iden_comunicado,
+              iden_menor: menor.iden_menor,
+              iden_nivel: comunicado.nivel,
+              flag_confirmado: false,
+            },
+          });
+        }
+      } else {
+        for (const menorId of comunicado.menoresSeleccionados) {
+          const menor = await this.prisma.menor.findFirst({
+            where: {
+              id: menorId,
+              flag_activo: true,
+              flag_eliminado: false,
+            },
+          });
+
+          if (menor) {
+            await this.prisma.lda_comunicado_menor.create({
+              data: {
+                iden_comunicado: comunicadoCreated.iden_comunicado,
+                iden_menor: menor.id,
+                iden_nivel: comunicado.nivel,
+                flag_confirmado: false,
+              },
+            });
+          }
+        }
+      }
+    }
+    return comunicadoCreated;
   }
 }
