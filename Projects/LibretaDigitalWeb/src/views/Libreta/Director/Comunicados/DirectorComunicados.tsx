@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import { ComunicadoController } from "@/controllers/ComunicadoController";
 import { ObtenerInitPathName } from "@/common/FuncionesComunesUsuario";
+import { NivelController } from "@/controllers/NivelController";
 
 const DirectorComunicados = () => {
   const { isLoading } = useAuth();
@@ -24,6 +25,7 @@ const DirectorComunicados = () => {
     texto: string;
     estado: boolean;
   } | null>(null);
+  const nivelController = new NivelController();
   const comunicadoController = new ComunicadoController();
   const navigate = useNavigate();
 
@@ -32,7 +34,7 @@ const DirectorComunicados = () => {
     const fetchNiveles = async () => {
       if (!isLoading) {
         try {
-          const niveles = await comunicadoController.getAllNiveles();
+          const niveles = await nivelController.getAllNiveles();
           if (niveles) {
             setNivelesSelect(
               niveles.map((nivel: { key: number; text: string }) => ({
