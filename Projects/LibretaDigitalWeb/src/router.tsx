@@ -50,6 +50,8 @@ import DirectorAvisosHome from "./views/Libreta/Director/Avisos/Home";
 import CrearPaseoEducador from "./views/Libreta/Educador/Avisos/PaseosVisitas/CrearPaseoEducador";
 import CrearReunionApoderadosEducador from "./views/Libreta/Educador/Avisos/ReunionesApoderados/CrearReunionApoderadosEducador";
 import CrearItinerarioEducador from "./views/Libreta/Educador/Avisos/ItinerarioJornada/CrearItinerarioEducador";
+import ApoderadoAsistenciaHome from "./views/Libreta/Apoderado/Asistencia/ApoderadoAsistenciaHome";
+import EducadorAsistenciaHome from "./views/Libreta/Educador/Asistencia/DirectorAsistenciaHome";
 
 export const Router = () => {
   return (
@@ -238,6 +240,9 @@ export const Router = () => {
               element={<CrearComunicadoEducador />}
             />
           </Route>
+          <Route path="asistencia">
+            <Route path="home" element={<EducadorAsistenciaHome />} />
+          </Route>
         </Route>
 
         <Route path="/apoderado" element={<LibretaLayout />}>
@@ -301,6 +306,9 @@ export const Router = () => {
               path="comunicado/:idMenor/:idComunicado"
               element={<LeerComunicado />}
             />
+          </Route>
+          <Route path="asistencia">
+            <Route path="home" element={<ApoderadoAsistenciaHome />} />
           </Route>
         </Route>
 

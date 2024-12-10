@@ -83,6 +83,37 @@ export class ComunicadoService {
       ifAxiosError(error);
     }
   }
+
+  async getComunicadosByNivel(nivel: number) {
+    try {
+      const response = await api.get(`${path}/getComunicadosByNivel/${nivel}`);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async setActivacionComunicado(idComunicado: number, estado: boolean) {
+    try {
+      const response = await api.post(
+        `${path}/setActivacionComunicado/${idComunicado}/${estado}`
+      );
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async deleteComunicado(idComunicado: number) {
+    try {
+      const response = await api.post(
+        `${path}/deleteComunicado/${idComunicado}`
+      );
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
 }
 
 const ifAxiosError = (error: unknown): error is AxiosError => {

@@ -136,4 +136,49 @@ export class ComunicadoController {
   ) {
     return await this.comunicadoService.subirComunicadoDirector(body);
   }
+
+  @Get('getComunicadosByNivel/:idNivel')
+  @Auth([Rol.EDUCADOR, Rol.DIRECTOR])
+  async getComunicadosByNivel(@ActiveUser() user, @Param('idNivel') idNivel) {
+    const comunicados = await this.comunicadoService.getComunicadosByNivel(
+      +idNivel,
+      +user.idPersona,
+    );
+    const comunicadosDto = comunicados.map((comunicado) => {
+      return {
+        id: comunicado.iden_comunicado,
+        titulo: comunicado.desc_titulo,
+        texto: comunicado.desc_texto,
+        estado: comunicado.flag_activo,
+        fecha: formatFecha2(comunicado.fech_creacion.toISOString()),
+      };
+    });
+
+    comunicadosDto.sort((a, b) => {
+      if (a.estado === true) return -1;
+      if (b.estado === true) return 1;
+      if (a.estado === false) return -1;
+      if (b.estado === false) return 1;
+      return 0;
+    });
+    return comunicadosDto;
+  }
+
+  @Post('setActivacionComunicado/:idComunicado/:estado')
+  @Auth([Rol.EDUCADOR, Rol.DIRECTOR])
+  async setActivacionComunicado(
+    @Param('idComunicado') idComunicado: number,
+    @Param('estado') estado: string,
+  ) {
+    return await this.comunicadoService.setActivacionComunicado(
+      +idComunicado,
+      estado == 'true' ? true : false,
+    );
+  }
+
+  @Post('deleteComunicado/:idComunicado')
+  @Auth([Rol.EDUCADOR, Rol.DIRECTOR])
+  async deleteComunicado(@Param('idComunicado') idComunicado: number) {
+    return await this.comunicadoService.deleteComunicado(+idComunicado);
+  }
 }

@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import MensajesPNG from "@/assets/mensajes.png";
+import AsistenciaHomePNG from "@/assets/asistencia-home.png";
 import { ObtenerInitPathName } from "@/common/FuncionesComunesUsuario";
 
-const ApoderadoComunicadosHome = () => {
+const ApoderadoAsistenciaHome = () => {
   const initPathName: string = ObtenerInitPathName();
   const navigate = useNavigate();
 
@@ -12,20 +12,21 @@ const ApoderadoComunicadosHome = () => {
         <div className="flex">
           <div className="flex-shrink-0 w-full flex flex-col items-center justify-center px-6 text-center">
             <h2 className="text-xl font-bold text-blue-600 mb-4">
-              ¡Revisa tus Mensajes!
+              ¡Revisa las Asistencias!
             </h2>
             <p className="text-gray-700">
-              Aquí puedes ver los <strong>Comunicados Recibidos</strong>.<br />
+              Aquí puedes ver las <strong>Asistencias Confirmadas</strong>.
+              <br />
               <br />
               Haz click en <strong>"Revisar"</strong> para
               <br />
-              filtrar tus mensajes según menor.
+              filtrar las asistencias según menor.
             </p>
 
             <div className="my-4 w-auto max-w-xs">
               <img
                 style={{ objectFit: "contain" }}
-                src={MensajesPNG}
+                src={AsistenciaHomePNG}
                 alt={"Imagen referencial de Mensajes"}
                 className="w-full h-56 rounded-md"
               />
@@ -48,4 +49,4 @@ const ApoderadoComunicadosHome = () => {
   );
 };
 
-export default ApoderadoComunicadosHome;
+export default ApoderadoAsistenciaHome;

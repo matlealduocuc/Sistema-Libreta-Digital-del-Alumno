@@ -463,4 +463,108 @@ export class ComunicadoService {
     }
     return comunicadoCreated;
   }
+
+  async getComunicadosByNivel(idNivel: number, idPersona: number) {
+    const rol = await this.prisma.usuario.findFirst({
+      where: {
+        idPersona: idPersona,
+        activo: true,
+        eliminado: false,
+      },
+      select: {
+        usr_rol: {
+          select: {
+            desc_rol: true,
+          },
+        },
+      },
+    });
+    if (rol.usr_rol.desc_rol.trim().toUpperCase() === 'EDUCADOR') {
+      return await this.prisma.lda_comunicado.findMany({
+        where: {
+          flag_eliminado: false,
+          usr_usuario: {
+            id: idPersona,
+            activo: true,
+            eliminado: false,
+          },
+          lda_comunicado_menor: {
+            some: {
+              flag_activo: true,
+              iden_nivel: {
+                equals: idNivel,
+              },
+              lda_nivel: {
+                iden_nivel: idNivel,
+                flag_activo: true,
+                flag_eliminado: false,
+              },
+            },
+          },
+        },
+        select: {
+          iden_comunicado: true,
+          desc_titulo: true,
+          desc_texto: true,
+          flag_activo: true,
+          fech_creacion: true,
+        },
+        orderBy: {
+          fech_creacion: 'asc',
+        },
+      });
+    } else {
+      return await this.prisma.lda_comunicado.findMany({
+        where: {
+          flag_eliminado: false,
+          lda_comunicado_menor: {
+            some: {
+              flag_activo: true,
+              iden_nivel: {
+                equals: idNivel,
+              },
+              lda_nivel: {
+                iden_nivel: idNivel,
+                flag_activo: true,
+                flag_eliminado: false,
+              },
+            },
+          },
+        },
+        select: {
+          iden_comunicado: true,
+          desc_titulo: true,
+          desc_texto: true,
+          flag_activo: true,
+          fech_creacion: true,
+        },
+        orderBy: {
+          fech_creacion: 'asc',
+        },
+      });
+    }
+  }
+
+  async setActivacionComunicado(idComunicado: number, estado: boolean) {
+    return await this.prisma.lda_comunicado.update({
+      data: {
+        flag_activo: estado,
+      },
+      where: {
+        iden_comunicado: idComunicado,
+      },
+    });
+  }
+
+  async deleteComunicado(idComunicado: number) {
+    return await this.prisma.lda_comunicado.update({
+      data: {
+        flag_activo: false,
+        flag_eliminado: true,
+      },
+      where: {
+        iden_comunicado: idComunicado,
+      },
+    });
+  }
 }

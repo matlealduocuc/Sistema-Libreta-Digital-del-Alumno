@@ -13,7 +13,13 @@ const DirectorComunicados = () => {
   const [nivel, setNivel] = useState("");
   const [loadingFull, setLoadingFull] = React.useState<boolean>(true);
   const [comunicados, setComunicados] = useState<
-    { id: number; titulo: string; texto: string; estado: boolean }[]
+    {
+      id: number;
+      titulo: string;
+      texto: string;
+      estado: boolean;
+      fecha: string;
+    }[]
   >([]);
   const [nivelesSelect, setNivelesSelect] = useState<
     { key: number; text: string }[]
@@ -55,30 +61,21 @@ const DirectorComunicados = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
-  // Ejemplo de datos de comunicados
-  const comunicadosEjemplo = [
-    {
-      id: 1,
-      titulo: "Reunión de Padres",
-      texto: "Recordatorio de la reunión",
-      estado: true,
-    },
-    {
-      id: 2,
-      titulo: "Vacunas",
-      texto: "Actualización sobre vacunación",
-      estado: false,
-    },
-    {
-      id: 3,
-      titulo: "Paseo Escolar",
-      texto: "Información sobre el paseo",
-      estado: true,
-    },
-  ];
-
-  const handleBuscarComunicados = () => {
-    setComunicados(comunicadosEjemplo);
+  const handleBuscarComunicados = async () => {
+    try {
+      setLoadingFull(true);
+      if (nivel) {
+        const comunicadosFetch =
+          await comunicadoController.getComunicadosByNivel(+nivel);
+        if (comunicadosFetch) {
+          setComunicados(comunicadosFetch);
+        }
+      }
+      setLoadingFull(false);
+    } catch (error) {
+      setLoadingFull(false);
+      console.error("Error fetching niveles:", error);
+    }
   };
 
   useEffect(() => {
@@ -96,29 +93,53 @@ const DirectorComunicados = () => {
     setMostrarModal(true);
   };
 
-  // Manejar activación/desactivación del estado del comunicado
-  const handleToggleEstado = () => {
-    if (comunicadoSeleccionado) {
-      setComunicados((prev) =>
-        prev.map((com) =>
-          com.id === comunicadoSeleccionado.id
-            ? { ...com, estado: !com.estado }
-            : com
-        )
-      );
-      setComunicadoSeleccionado((prev) =>
-        prev ? { ...prev, estado: !prev.estado } : null
-      );
+  const handleToggleEstado = async () => {
+    try {
+      if (comunicadoSeleccionado) {
+        setLoadingFull(true);
+        const desactivado = await comunicadoController.setActivacionComunicado(
+          comunicadoSeleccionado.id,
+          !comunicadoSeleccionado.estado
+        );
+        if (desactivado) {
+          setComunicados((prev) =>
+            prev.map((com) =>
+              com.id === comunicadoSeleccionado.id
+                ? { ...com, estado: !com.estado }
+                : com
+            )
+          );
+        }
+        setComunicadoSeleccionado(null);
+        setMostrarModal(false);
+      }
+    } catch (error) {
+      console.error("Error toggling estado:", error);
+    } finally {
+      setLoadingFull(false);
     }
   };
 
   // Manejar la eliminación del comunicado
-  const handleEliminarComunicado = () => {
-    if (comunicadoSeleccionado) {
-      setComunicados((prev) =>
-        prev.filter((com) => com.id !== comunicadoSeleccionado.id)
-      );
-      setMostrarModal(false);
+  const handleEliminarComunicado = async () => {
+    try {
+      if (comunicadoSeleccionado) {
+        setLoadingFull(true);
+        const eliminado = await comunicadoController.deleteComunicado(
+          comunicadoSeleccionado.id
+        );
+        if (eliminado) {
+          setComunicados((prev) =>
+            prev.filter((com) => com.id !== comunicadoSeleccionado.id)
+          );
+        }
+        setComunicadoSeleccionado(null);
+        setMostrarModal(false);
+      }
+    } catch (error) {
+      console.error("Error toggling estado:", error);
+    } finally {
+      setLoadingFull(false);
     }
   };
 
@@ -179,15 +200,16 @@ const DirectorComunicados = () => {
               onClick={() => handleCardClick(comunicado)}
             >
               <h2 className="font-semibold">{comunicado.titulo}</h2>
-              <p>{comunicado.texto.substring(0, 50)}...</p>
+              <p>Fecha: {comunicado.fecha.replace(".", "-")}</p>
+              <p>Estado: {comunicado.estado ? "Activado" : "Desactivado"}</p>
             </div>
           ))}
         </div>
 
         {/* Modal de información del comunicado */}
         {mostrarModal && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-80 relative">
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 overflow-y-auto pt-24 pb-24">
+            <div className="bg-white p-4 rounded-lg shadow-lg w-80 max-h-full overflow-y-auto relative">
               <button
                 onClick={() => setMostrarModal(false)}
                 className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
@@ -199,7 +221,12 @@ const DirectorComunicados = () => {
                   <h2 className="text-lg font-bold mb-2">
                     {comunicadoSeleccionado.titulo}
                   </h2>
-                  <p className="mb-4">{comunicadoSeleccionado.texto}</p>
+                  <p
+                    className="mb-4"
+                    dangerouslySetInnerHTML={{
+                      __html: comunicadoSeleccionado.texto,
+                    }}
+                  ></p>
                   <p className="mb-4">
                     <strong>Estado:</strong>{" "}
                     {comunicadoSeleccionado.estado ? "Activado" : "Desactivado"}
