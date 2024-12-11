@@ -142,7 +142,7 @@ const ListadoAvisarNivelesEducador = () => {
                 </p>
                 <p>
                   <span className="font-semibold">Fecha de vacunación:</span>{" "}
-                  {nivel.fechaVacuna ?? "No solicitada"}
+                  {nivel.fechaVacuna?.split(" ")[0] ?? "No solicitada"}
                 </p>
                 {nivel.solicitado ? (
                   <p className="text-green-700 font-bold">VACUNA SOLICITADA</p>
