@@ -4,14 +4,17 @@ import { Auth } from 'src/auth/decorators/auth.decorator';
 import { Rol } from 'src/common/enums/rol.enum';
 import { ActiveUser } from 'src/common/decorators/active-user.decorator';
 import formatFecha2 from 'src/common/functions/formatFecha2';
-import { ComunicadoData } from './entities/comunicado.entity';
+import {
+  ComunicadoData,
+  ComunicadoDataEducador,
+} from './entities/comunicado.entity';
 
 @Controller('comunicado')
 export class ComunicadoController {
   constructor(private readonly comunicadoService: ComunicadoService) {}
 
   @Get('getTiposComunicado')
-  @Auth(Rol.EDUCADOR)
+  @Auth([Rol.EDUCADOR, Rol.DIRECTOR])
   async getTiposComunicado() {
     const tipos = await this.comunicadoService.getTiposComunicado();
     const tiposDto = tipos.map((tipo) => {
@@ -115,22 +118,6 @@ export class ComunicadoController {
     );
   }
 
-  @Get('getNivelesByEducador')
-  @Auth(Rol.EDUCADOR)
-  async getMenoresByApoderado(@ActiveUser() user) {
-    const niveles = await this.comunicadoService.getNivelesByEducador(
-      +user.idPersona,
-    );
-    const nivelesDto = niveles.map((nivel) => {
-      return {
-        key: nivel.iden_nivel,
-        text: nivel.desc_nombre,
-      };
-    });
-
-    return nivelesDto;
-  }
-
   @Post('subirComunicado')
   @Auth(Rol.EDUCADOR)
   async subirComunicado(
@@ -139,5 +126,59 @@ export class ComunicadoController {
     body: ComunicadoData | any,
   ) {
     return await this.comunicadoService.subirComunicado(body, user.idPersona);
+  }
+
+  @Post('subirComunicadoDirector')
+  @Auth(Rol.DIRECTOR)
+  async subirComunicadoDirector(
+    @Body()
+    body: ComunicadoDataEducador | any,
+  ) {
+    return await this.comunicadoService.subirComunicadoDirector(body);
+  }
+
+  @Get('getComunicadosByNivel/:idNivel')
+  @Auth([Rol.EDUCADOR, Rol.DIRECTOR])
+  async getComunicadosByNivel(@ActiveUser() user, @Param('idNivel') idNivel) {
+    const comunicados = await this.comunicadoService.getComunicadosByNivel(
+      +idNivel,
+      +user.idPersona,
+    );
+    const comunicadosDto = comunicados.map((comunicado) => {
+      return {
+        id: comunicado.iden_comunicado,
+        titulo: comunicado.desc_titulo,
+        texto: comunicado.desc_texto,
+        estado: comunicado.flag_activo,
+        fecha: formatFecha2(comunicado.fech_creacion.toISOString()),
+      };
+    });
+
+    comunicadosDto.sort((a, b) => {
+      if (a.estado === true) return -1;
+      if (b.estado === true) return 1;
+      if (a.estado === false) return -1;
+      if (b.estado === false) return 1;
+      return 0;
+    });
+    return comunicadosDto;
+  }
+
+  @Post('setActivacionComunicado/:idComunicado/:estado')
+  @Auth([Rol.EDUCADOR, Rol.DIRECTOR])
+  async setActivacionComunicado(
+    @Param('idComunicado') idComunicado: number,
+    @Param('estado') estado: string,
+  ) {
+    return await this.comunicadoService.setActivacionComunicado(
+      +idComunicado,
+      estado == 'true' ? true : false,
+    );
+  }
+
+  @Post('deleteComunicado/:idComunicado')
+  @Auth([Rol.EDUCADOR, Rol.DIRECTOR])
+  async deleteComunicado(@Param('idComunicado') idComunicado: number) {
+    return await this.comunicadoService.deleteComunicado(+idComunicado);
   }
 }

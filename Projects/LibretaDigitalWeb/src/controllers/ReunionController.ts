@@ -1,3 +1,4 @@
+import { ReunionData } from "@/dtos/Reunion/ReunionData";
 import { ReunionService } from "@/services/ReunionService";
 
 export class ReunionController {
@@ -31,5 +32,9 @@ export class ReunionController {
       idNivel,
       idMenor
     );
+  }
+
+  async crearReunion(reunion: ReunionData) {
+    return await this._reunionService.crearReunion(reunion);
   }
 }

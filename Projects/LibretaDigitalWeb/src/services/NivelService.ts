@@ -21,6 +21,24 @@ export class NivelService {
       ifAxiosError(error);
     }
   }
+
+  async getNivelesByEducador() {
+    try {
+      const response = await api.get(`${path}/getNivelesByEducador`);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async getAllNiveles() {
+    try {
+      const response = await api.get(`${path}/getAllNiveles`);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
 }
 
 const ifAxiosError = (error: unknown): error is AxiosError => {

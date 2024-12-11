@@ -13,4 +13,12 @@ export class NivelController {
   async getMenoresByNivel(idNivel: number) {
     return await this._nivelService.getMenoresByNivel(idNivel);
   }
+
+  async getNivelesByEducador() {
+    return await this._nivelService.getNivelesByEducador();
+  }
+
+  async getAllNiveles() {
+    return await this._nivelService.getAllNiveles();
+  }
 }

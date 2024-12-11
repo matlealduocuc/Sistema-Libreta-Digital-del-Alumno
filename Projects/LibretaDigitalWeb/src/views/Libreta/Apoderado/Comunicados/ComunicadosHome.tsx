@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import MensajesPNG from "@/assets/mensajes.png";
+import { ObtenerInitPathName } from "@/common/FuncionesComunesUsuario";
 
 const ApoderadoComunicadosHome = () => {
-  const initPathName: string = "/apoderado";
+  const initPathName: string = ObtenerInitPathName();
   const navigate = useNavigate();
 
   return (

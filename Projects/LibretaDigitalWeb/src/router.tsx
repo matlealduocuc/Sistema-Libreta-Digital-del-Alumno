@@ -6,7 +6,7 @@ import LibretaLayout from "./layouts/LibretaLayout";
 import LibretaEducadorHome from "./views/Libreta/Educador/LibretaEducadorHome";
 import PerfilUsuario from "./views/Libreta/Perfil/PerfilUsuario";
 import EducadorComunicados from "./views/Libreta/Educador/Comunicados/EducadorComunicados";
-import CrearComunicado from "./views/Libreta/Educador/Comunicados/CrearComunicado";
+import CrearComunicadoEducador from "./views/Libreta/Educador/Comunicados/CrearComunicadoEducador";
 import LibretaRedirect from "./views/home/LibretaRedirect";
 import LibretaApoderadoHome from "./views/Libreta/Apoderado/LibretaApoderadoHome";
 import ApoderadoAvisosHome from "./views/Libreta/Apoderado/Avisos/Home";
@@ -22,8 +22,8 @@ import EducadorAvisosHome from "./views/Libreta/Educador/Avisos/Home";
 import ListadoNivelesAutorizadosVacuna from "./views/Libreta/Educador/Avisos/Vacunas/ListadoNivelesAutorizadosVacuna";
 import ListadoMenoresAutorizadosVacunas from "./views/Libreta/Educador/Avisos/Vacunas/ListadoMenoresAutorizadosVacunas";
 import RevisarVacunaMenor from "./views/Libreta/Educador/Avisos/Vacunas/RevisarVacunaMenor";
-// import ListadoAvisarNivelesEducador from "./views/Libreta/Educador/Avisos/Vacunas/ListadoAvisarNiveles";
-import SolicitarVacunas from "./views/Libreta/Educador/Avisos/Vacunas/SolicitarVacunas";
+import ListadoAvisarNivelesEducador from "./views/Libreta/Educador/Avisos/Vacunas/ListadoAvisarNiveles";
+import SolicitarVacunas from "./views/Libreta/Educador/Avisos/Vacunas/SolicitarVacunasNivel";
 import UnderConstruction from "./views/home/UnderConstruction";
 import LibretaDirectorHome from "./views/Libreta/Director/LibretaDirectorHome";
 import ListadoPaseosRevisar from "./views/Libreta/Educador/Avisos/PaseosVisitas/ListadoPaseosRevisar";
@@ -42,6 +42,17 @@ import ListadoNivelesConfirmadosItinerario from "./views/Libreta/Educador/Avisos
 import RevisarItinerarioMenor from "./views/Libreta/Educador/Avisos/ItinerarioJornada/RevisarItinerarioMenor";
 import ListadoMenoresConfirmadosItinerario from "./views/Libreta/Educador/Avisos/ItinerarioJornada/ListadoMenoresConfirmadosItinerario";
 import EducadorComunicadosHome from "./views/Libreta/Educador/Comunicados/ComunicadosHome";
+import SolicitarVacunasNivel from "./views/Libreta/Educador/Avisos/Vacunas/SolicitarVacunasNivel";
+import DirectorComunicadosHome from "./views/Libreta/Director/Comunicados/DirectorComunicadosHome";
+import DirectorComunicados from "./views/Libreta/Director/Comunicados/DirectorComunicados";
+import CrearComunicadoDirector from "./views/Libreta/Director/Comunicados/CrearComunicadoDirector";
+import DirectorAvisosHome from "./views/Libreta/Director/Avisos/Home";
+import CrearPaseoEducador from "./views/Libreta/Educador/Avisos/PaseosVisitas/CrearPaseoEducador";
+import CrearReunionApoderadosEducador from "./views/Libreta/Educador/Avisos/ReunionesApoderados/CrearReunionApoderadosEducador";
+import CrearItinerarioEducador from "./views/Libreta/Educador/Avisos/ItinerarioJornada/CrearItinerarioEducador";
+import ApoderadoAsistenciaHome from "./views/Libreta/Apoderado/Asistencia/ApoderadoAsistenciaHome";
+import EducadorAsistenciaHome from "./views/Libreta/Educador/Asistencia/EducadorAsistenciaHome";
+import AsistenciaListadoMenores from "./views/Libreta/Apoderado/Asistencia/AsistenciaListadoMenores";
 
 export const Router = () => {
   return (
@@ -57,9 +68,13 @@ export const Router = () => {
           <Route path="home" element={<LibretaDirectorHome />} />
           <Route path="perfil" element={<PerfilUsuario />} />
           <Route path="comunicados" element={<EducadorComunicados />} />
-          <Route path="crear-comunicado" element={<CrearComunicado />} />
+          <Route
+            path="crear-comunicado"
+            element={<CrearComunicadoEducador />}
+          />
           <Route path="avisos">
-            <Route path="home" element={<EducadorAvisosHome />} />
+            <Route path="home" element={<DirectorAvisosHome />} />
+            <Route path="home/:slide" element={<DirectorAvisosHome />} />
             <Route path="vacunas">
               <Route
                 path="revisar-niveles-menores"
@@ -73,10 +88,6 @@ export const Router = () => {
                 path="revisar-menor/:idNivel/:idMenor"
                 element={<RevisarVacunaMenor />}
               />
-              {/* <Route
-                path="avisar-niveles-menores"
-                element={<ListadoAvisarNivelesEducador />}
-              /> */}
               <Route
                 path="solicitar-vacunas/:id"
                 element={<SolicitarVacunas />}
@@ -110,6 +121,18 @@ export const Router = () => {
               />
             </Route>
           </Route>
+          <Route path="comunicados">
+            <Route path="" element={<DirectorComunicadosHome />} />
+            <Route path="home" element={<DirectorComunicadosHome />} />
+            <Route
+              path="listado-comunicados"
+              element={<DirectorComunicados />}
+            />
+            <Route
+              path="crear-comunicado"
+              element={<CrearComunicadoDirector />}
+            />
+          </Route>
         </Route>
 
         <Route path="/educador" element={<LibretaLayout />}>
@@ -133,13 +156,13 @@ export const Router = () => {
                 path="revisar-menor/:idNivel/:idMenor"
                 element={<RevisarVacunaMenor />}
               />
-              {/* <Route
+              <Route
                 path="avisar-niveles-menores"
                 element={<ListadoAvisarNivelesEducador />}
-              /> */}
+              />
               <Route
-                path="solicitar-vacunas/:id"
-                element={<SolicitarVacunas />}
+                path="solicitar-vacunas/:idNivel"
+                element={<SolicitarVacunasNivel />}
               />
             </Route>
             <Route path="paseos-visitas">
@@ -159,6 +182,7 @@ export const Router = () => {
                 path="revisar-menor/:idPaseo/:idNivel/:idMenor"
                 element={<RevisarPaseoMenor />}
               />
+              <Route path="crear-paseo" element={<CrearPaseoEducador />} />
             </Route>
             <Route path="reuniones-apoderados">
               <Route
@@ -176,6 +200,10 @@ export const Router = () => {
               <Route
                 path="revisar-menor/:idReunion/:idNivel/:idMenor"
                 element={<RevisarReunionMenor />}
+              />
+              <Route
+                path="crear-reunion"
+                element={<CrearReunionApoderadosEducador />}
               />
             </Route>
             <Route path="itinerario-jornada">
@@ -195,16 +223,26 @@ export const Router = () => {
                 path="revisar-menor/:idItinerario/:idNivel/:idMenor"
                 element={<RevisarItinerarioMenor />}
               />
+              <Route
+                path="crear-itinerario"
+                element={<CrearItinerarioEducador />}
+              />
             </Route>
           </Route>
           <Route path="comunicados">
-            <Route path="" element={<EducadorComunicados />} />
+            <Route path="" element={<EducadorComunicadosHome />} />
             <Route path="home" element={<EducadorComunicadosHome />} />
             <Route
               path="listado-comunicados"
               element={<EducadorComunicados />}
             />
-            <Route path="crear-comunicado" element={<CrearComunicado />} />
+            <Route
+              path="crear-comunicado"
+              element={<CrearComunicadoEducador />}
+            />
+          </Route>
+          <Route path="asistencia">
+            <Route path="home" element={<EducadorAsistenciaHome />} />
           </Route>
         </Route>
 
@@ -268,6 +306,14 @@ export const Router = () => {
             <Route
               path="comunicado/:idMenor/:idComunicado"
               element={<LeerComunicado />}
+            />
+          </Route>
+          <Route path="asistencia">
+            <Route path="" element={<ApoderadoAsistenciaHome />} />
+            <Route path="home" element={<ApoderadoAsistenciaHome />} />
+            <Route
+              path="listado-menores"
+              element={<AsistenciaListadoMenores />}
             />
           </Route>
         </Route>

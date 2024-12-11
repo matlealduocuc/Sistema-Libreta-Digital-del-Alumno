@@ -121,4 +121,8 @@ export class MenorController {
       idItinerario
     );
   }
+
+  async getMenoresDataByApoderado() {
+    return await this._menorService.getMenoresDataByApoderado();
+  }
 }

@@ -437,4 +437,31 @@ export class MenorController {
 
     return menoresDto;
   }
+
+  @Get('getMenoresDataByApoderado')
+  @Auth(Rol.APODERADO)
+  async getMenoresDataByApoderado(@ActiveUser() user) {
+    const menores = await this.menorService.getMenoresDataByApoderado(
+      +user.idPersona,
+    );
+    const menoresDto = menores.map((menor) => {
+      return {
+        idMenor: menor.id,
+        nombre:
+          menor.per_persona.apellidoM != null
+            ? menor.per_persona.primerNombre +
+              ' ' +
+              menor.per_persona.apellidoP +
+              ' ' +
+              menor.per_persona.apellidoM
+            : menor.per_persona.primerNombre +
+              ' ' +
+              menor.per_persona.apellidoP,
+        nivel: menor.lda_nivel_menor[0]?.lda_nivel?.desc_nombre,
+        jornada: menor.lda_jornada.desc_nombre,
+      };
+    });
+
+    return menoresDto;
+  }
 }

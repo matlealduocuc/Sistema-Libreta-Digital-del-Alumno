@@ -48,16 +48,20 @@ import translations from "ckeditor5/translations/es.js";
 
 import "ckeditor5/ckeditor5.css";
 import { FileController } from "@/controllers/FileController";
-import { ComunicadoData } from "@/dtos/Comunicado/ComunicadoData";
+import { ComunicadoDataEducador } from "@/dtos/Comunicado/ComunicadoData";
 import { useNavigate } from "react-router-dom";
+import { ObtenerInitPathName } from "@/common/FuncionesComunesUsuario";
+import { NivelController } from "@/controllers/NivelController";
 
-const CrearComunicado = () => {
+const CrearComunicadoDirector = () => {
   const { isLoading } = useAuth();
   const [loadingFull, setLoadingFull] = React.useState<boolean>(true);
+  const initPathName: string = ObtenerInitPathName();
   const [tipoComunicado, setTipoComunicado] = useState("");
   const [tiposComunicadoSelect, setTiposComunicadoSelect] = useState<
     { key: number; text: string }[]
   >([]);
+  const [enviarATodosNiveles, setEnviarATodosNiveles] = useState(false);
   const [nivel, setNivel] = useState("");
   const [nivelesSelect, setNivelesSelect] = useState<
     { key: number; text: string }[]
@@ -78,6 +82,7 @@ const CrearComunicado = () => {
   const [isErrorConfirmar, setIsErrorConfirmar] = useState<boolean>(true);
   const navigate = useNavigate();
   const comunicadoController = new ComunicadoController();
+  const nivelController = new NivelController();
   const menorController = new MenorController();
   const fileController = new FileController();
 
@@ -86,7 +91,7 @@ const CrearComunicado = () => {
     const fetchTiposComunicados = async () => {
       if (!isLoading) {
         try {
-          const niveles = await comunicadoController.getNivelesByEducador();
+          const niveles = await nivelController.getAllNiveles();
           if (niveles) {
             setNivelesSelect(
               niveles.map((nivel: { key: number; text: string }) => ({
@@ -185,8 +190,9 @@ const CrearComunicado = () => {
           idArchivo = await fileController.uploadFile(archivoPDF);
         }
       }
-      const requestData = new ComunicadoData(
+      const requestData = new ComunicadoDataEducador(
         Number(tipoComunicado),
+        enviarATodosNiveles,
         Number(nivel),
         asunto,
         textoComunicado,
@@ -194,7 +200,9 @@ const CrearComunicado = () => {
         menoresSeleccionados,
         idArchivo
       );
-      const enviado = await comunicadoController.enviarComunicado(requestData);
+      const enviado = await comunicadoController.enviarComunicadoDirector(
+        requestData
+      );
       setIsErrorConfirmar(!enviado);
     } catch (error) {
       console.error("Error enviando comunicado:", error);
@@ -209,7 +217,7 @@ const CrearComunicado = () => {
     if (step < 3) {
       setStep(step + 1);
     } else {
-      navigate("/educador/comunicados/home");
+      navigate(`${initPathName}/comunicados/home`);
     }
   };
 
@@ -256,86 +264,108 @@ const CrearComunicado = () => {
             </div>
 
             <div className="mb-2">
-              <label className="block font-semibold mb-1">Nivel</label>
-              <select
-                value={nivel}
-                onChange={(e) => setNivel(e.target.value)}
-                className="border border-gray-300 rounded px-3 py-2 w-full"
-              >
-                <option value="">Seleccionar Nivel</option>
-                {nivelesSelect.map((nivel) => (
-                  <option key={nivel.key} value={nivel.key}>
-                    {nivel.text}
-                  </option>
-                ))}
-              </select>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  checked={enviarATodosNiveles}
+                  onChange={(e) => setEnviarATodosNiveles(e.target.checked)}
+                  className="mr-2"
+                />
+                <p>Enviar a todos los niveles</p>
+              </label>
             </div>
-
-            {/* Check de enviar a todos */}
-            {nivel != "" && (
-              <div className="mb-2">
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={enviarATodosMenores}
-                    onChange={(e) => setEnviarATodosMenores(e.target.checked)}
-                    className="mr-2"
-                  />
-                  <p className="text-xs">
-                    Enviar a todos los apoderados de menores del nivel
-                  </p>
-                </label>
-              </div>
-            )}
-
-            {/* Botón para seleccionar menores */}
-            {nivel != "" && !enviarATodosMenores && (
-              <div className="mb-2">
-                <button
-                  onClick={() =>
-                    setMostrarSeleccionMenores(!mostrarSeleccionMenores)
-                  }
-                  className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 w-full text-left"
-                >
-                  Seleccionar Menores
-                </button>
-
-                {/* Lista de checkboxes para seleccionar menores */}
-                {mostrarSeleccionMenores && (
-                  <div className="border border-gray-300 rounded p-4 mt-2 bg-white shadow-md">
-                    <h2 className="font-semibold mb-2">
-                      Selecciona los menores:
-                    </h2>
-                    {menoresSelect.map((menor) => (
-                      <label key={menor.id} className="flex items-center mb-2">
-                        <input
-                          type="checkbox"
-                          checked={menoresSeleccionados.includes(menor.id)}
-                          onChange={() => handleCheckboxChange(menor.id)}
-                          className="mr-2 text-sm"
-                        />
-                        {menor.nombreMenor} - Apoderado: {menor.nombreApoderado}
-                      </label>
+            {!enviarATodosNiveles && (
+              <div>
+                <div className="mb-2">
+                  <label className="block font-semibold mb-1">Nivel</label>
+                  <select
+                    value={nivel}
+                    onChange={(e) => setNivel(e.target.value)}
+                    className="border border-gray-300 rounded px-3 py-2 w-full"
+                  >
+                    <option value="">Seleccionar Nivel</option>
+                    {nivelesSelect.map((nivel) => (
+                      <option key={nivel.key} value={nivel.key}>
+                        {nivel.text}
+                      </option>
                     ))}
+                  </select>
+                </div>
+
+                {nivel != "" && (
+                  <div className="mb-2">
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={enviarATodosMenores}
+                        onChange={(e) =>
+                          setEnviarATodosMenores(e.target.checked)
+                        }
+                        className="mr-2"
+                      />
+                      <p className="text-xs">
+                        Enviar a todos los apoderados de menores del nivel
+                      </p>
+                    </label>
                   </div>
                 )}
 
-                {/* Mostrar lista de seleccionados */}
-                {menoresSeleccionados.length > 0 && (
-                  <div className="mt-4">
-                    <h2 className="font-semibold">Menores seleccionados:</h2>
-                    <ul className="list-disc list-inside">
-                      {menoresSelect
-                        .filter((menor) =>
-                          menoresSeleccionados.includes(menor.id)
-                        )
-                        .map((menor) => (
-                          <li key={menor.id}>
+                {/* Botón para seleccionar menores */}
+                {nivel != "" && !enviarATodosMenores && (
+                  <div className="mb-2">
+                    <button
+                      onClick={() =>
+                        setMostrarSeleccionMenores(!mostrarSeleccionMenores)
+                      }
+                      className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 w-full text-left"
+                    >
+                      Seleccionar Menores
+                    </button>
+
+                    {/* Lista de checkboxes para seleccionar menores */}
+                    {mostrarSeleccionMenores && (
+                      <div className="border border-gray-300 rounded p-4 mt-2 bg-white shadow-md">
+                        <h2 className="font-semibold mb-2">
+                          Selecciona los menores:
+                        </h2>
+                        {menoresSelect.map((menor) => (
+                          <label
+                            key={menor.id}
+                            className="flex items-center mb-2"
+                          >
+                            <input
+                              type="checkbox"
+                              checked={menoresSeleccionados.includes(menor.id)}
+                              onChange={() => handleCheckboxChange(menor.id)}
+                              className="mr-2 text-sm"
+                            />
                             {menor.nombreMenor} - Apoderado:{" "}
                             {menor.nombreApoderado}
-                          </li>
+                          </label>
                         ))}
-                    </ul>
+                      </div>
+                    )}
+
+                    {/* Mostrar lista de seleccionados */}
+                    {menoresSeleccionados.length > 0 && (
+                      <div className="mt-4">
+                        <h2 className="font-semibold">
+                          Menores seleccionados:
+                        </h2>
+                        <ul className="list-disc list-inside">
+                          {menoresSelect
+                            .filter((menor) =>
+                              menoresSeleccionados.includes(menor.id)
+                            )
+                            .map((menor) => (
+                              <li key={menor.id}>
+                                {menor.nombreMenor} - Apoderado:{" "}
+                                {menor.nombreApoderado}
+                              </li>
+                            ))}
+                        </ul>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -511,8 +541,10 @@ const CrearComunicado = () => {
               className="bg-blue-600 disabled:bg-blue-300 text-white px-4 py-2 rounded hover:bg-blue-700 w-full h-12"
               disabled={
                 tipoComunicado == "" ||
-                nivel == "" ||
-                (!enviarATodosMenores && menoresSeleccionados.length < 1) ||
+                (!enviarATodosNiveles &&
+                  (nivel == "" ||
+                    (!enviarATodosMenores &&
+                      menoresSeleccionados.length < 1))) ||
                 asunto.trim() == "" ||
                 textoComunicado.trim() == ""
               }
@@ -626,4 +658,4 @@ const CrearComunicado = () => {
   );
 };
 
-export default CrearComunicado;
+export default CrearComunicadoDirector;

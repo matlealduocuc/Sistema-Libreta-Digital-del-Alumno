@@ -11,6 +11,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { Multer } from 'multer';
+import { Auth } from 'src/auth/decorators/auth.decorator';
+import { Rol } from 'src/common/enums/rol.enum';
 
 @Controller('file')
 export class FileController {
@@ -37,6 +39,7 @@ export class FileController {
       },
     }),
   )
+  @Auth([Rol.EDUCADOR, Rol.DIRECTOR])
   async uploadFile(@UploadedFile() file: Multer.File) {
     const filePath = file.path;
     const fileName = file.originalname;
@@ -46,6 +49,7 @@ export class FileController {
   }
 
   @Get('get/:id')
+  @Auth([Rol.APODERADO, Rol.EDUCADOR, Rol.DIRECTOR])
   async getFile(@Param('id') id: number) {
     const fileData = await this.fileService.getFile(+id);
     return {

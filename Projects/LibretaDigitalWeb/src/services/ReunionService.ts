@@ -1,3 +1,4 @@
+import { ReunionData } from "@/dtos/Reunion/ReunionData";
 import api from "@/lib/axios";
 import { AxiosError, isAxiosError } from "axios";
 
@@ -44,6 +45,15 @@ export class ReunionService {
       const response = await api.get(
         `${path}/getMenorByReunionNivelMenor/${idReunion}/${idNivel}/${idMenor}`
       );
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async crearReunion(data: ReunionData) {
+    try {
+      const response = await api.post(`${path}/crearReunion`, data);
       return response.data;
     } catch (error) {
       ifAxiosError(error);

@@ -1,3 +1,4 @@
+import { ItinerarioData } from "@/dtos/Itinerario/ItinerarioData";
 import { ItinerarioService } from "@/services/ItinerarioService";
 
 export class ItinerarioController {
@@ -31,5 +32,15 @@ export class ItinerarioController {
       idNivel,
       idMenor
     );
+  }
+
+  async confirmarRealizaActividad(idItinerario: number) {
+    return await this._itinerarioService.confirmarRealizaActividad(
+      idItinerario
+    );
+  }
+
+  async crearItinerario(itinerario: ItinerarioData) {
+    return await this._itinerarioService.crearItinerario(itinerario);
   }
 }
