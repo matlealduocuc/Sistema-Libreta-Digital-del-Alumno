@@ -778,4 +778,42 @@ export class MenorService {
       },
     });
   }
+
+  async getMenoresDataByApoderado(idApoderado: number) {
+    return await this.prisma.menor.findMany({
+      where: {
+        iden_per_apoderado: {
+          equals: idApoderado,
+        },
+      },
+      select: {
+        id: true,
+        per_persona: {
+          select: {
+            primerNombre: true,
+            apellidoP: true,
+            apellidoM: true,
+          },
+        },
+        lda_nivel_menor: {
+          where: {
+            flag_activo: true,
+            flag_eliminado: false,
+          },
+          select: {
+            lda_nivel: {
+              select: {
+                desc_nombre: true,
+              },
+            },
+          },
+        },
+        lda_jornada: {
+          select: {
+            desc_nombre: true,
+          },
+        },
+      },
+    });
+  }
 }

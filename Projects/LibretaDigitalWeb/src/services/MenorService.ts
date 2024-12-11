@@ -158,6 +158,15 @@ export class MenorService {
       ifAxiosError(error);
     }
   }
+
+  async getMenoresDataByApoderado() {
+    try {
+      const response = await api.get("/menor/getMenoresDataByApoderado");
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
 }
 
 const ifAxiosError = (error: unknown): error is AxiosError => {

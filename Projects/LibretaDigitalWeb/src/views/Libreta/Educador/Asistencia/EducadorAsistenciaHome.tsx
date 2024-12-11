@@ -11,16 +11,16 @@ const EducadorAsistenciaHome = () => {
       <div className="relative w-full h-[66vh] overflow-hidden mt-4">
         <div className="flex">
           <div className="flex-shrink-0 w-full flex flex-col items-center justify-center px-6 text-center">
-            <h2 className="text-xl font-bold text-blue-600 mb-4">
+            <h2 className="text-xl font-bold text-green-700 mb-4">
               ¡Revisa las Asistencias!
             </h2>
             <p className="text-gray-700">
-              Aquí puedes ver las <strong>Asistencias Confirmadas</strong>.
+              Aquí puedes registrar la <strong>Asistencias diaria</strong><br/>de los menores.
               <br />
               <br />
-              Haz click en <strong>"Revisar"</strong> para
+              Haz click en <strong>"Continuar"</strong> para
               <br />
-              filtrar las asistencias según menor.
+              ingresar.
             </p>
 
             <div className="my-4 w-auto max-w-xs">
@@ -34,12 +34,12 @@ const EducadorAsistenciaHome = () => {
 
             <div className="w-full flex justify-center">
               <button
-                className="bg-figma-blue-button text-white w-80 text-lg font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-blue-700"
+                className="bg-figma-green text-white w-80 text-lg font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-blue-700"
                 onClick={() => {
-                  navigate(`${initPathName}/comunicados/listado-comunicados`);
+                  navigate(`${initPathName}/asistencia/listado-comunicados`);
                 }}
               >
-                Revisar
+                Continuar
               </button>
             </div>
           </div>

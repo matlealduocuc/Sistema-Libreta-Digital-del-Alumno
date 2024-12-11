@@ -51,7 +51,8 @@ import CrearPaseoEducador from "./views/Libreta/Educador/Avisos/PaseosVisitas/Cr
 import CrearReunionApoderadosEducador from "./views/Libreta/Educador/Avisos/ReunionesApoderados/CrearReunionApoderadosEducador";
 import CrearItinerarioEducador from "./views/Libreta/Educador/Avisos/ItinerarioJornada/CrearItinerarioEducador";
 import ApoderadoAsistenciaHome from "./views/Libreta/Apoderado/Asistencia/ApoderadoAsistenciaHome";
-import EducadorAsistenciaHome from "./views/Libreta/Educador/Asistencia/DirectorAsistenciaHome";
+import EducadorAsistenciaHome from "./views/Libreta/Educador/Asistencia/EducadorAsistenciaHome";
+import AsistenciaListadoMenores from "./views/Libreta/Apoderado/Asistencia/AsistenciaListadoMenores";
 
 export const Router = () => {
   return (
@@ -308,7 +309,12 @@ export const Router = () => {
             />
           </Route>
           <Route path="asistencia">
+            <Route path="" element={<ApoderadoAsistenciaHome />} />
             <Route path="home" element={<ApoderadoAsistenciaHome />} />
+            <Route
+              path="listado-menores"
+              element={<AsistenciaListadoMenores />}
+            />
           </Route>
         </Route>
 
