@@ -24,7 +24,7 @@ const LibretaApoderadoHome = () => {
     {
       icon: faCalendar,
       title: "Asistencia",
-      url: initPathName + "/asistencia",
+      url: initPathName + "/asistencia/home",
       parragraph: (
         <p className="text-sm text-center p-1">
           Revisa aquí la

@@ -1,11 +1,69 @@
 import api from "@/lib/axios";
 import { AxiosError, isAxiosError } from "axios";
 
+const path = "/vacuna";
+
 export class VacunaService {
   async getMenorByNivelMenor(idNivel: number, idMenor: number) {
     try {
       const response = await api.get(
-        `/vacuna/getMenorByNivelMenor/${idNivel}/${idMenor}`
+        `${path}/getMenorByNivelMenor/${idNivel}/${idMenor}`
+      );
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async getNivelesAvisarVacunaByEducador() {
+    try {
+      const response = await api.get(
+        `${path}/getNivelesAvisarVacunaByEducador`
+      );
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async getNivelVacunaByNivel(idNivel: number) {
+    try {
+      const response = await api.get(
+        `${path}/getNivelVacunaByNivel/${idNivel}`
+      );
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async solicitarVacunaNivel(
+    idNivel: number,
+    nombVacuna: string,
+    fechVacuna: Date
+  ) {
+    try {
+      const response = await api.post(
+        `${path}/solicitarVacunaNivel/${idNivel}`,
+        {
+          nombVacuna,
+          fechVacuna,
+        }
+      );
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async solicitarVacunaMenoresNivel(idNivel: number, idVacuna: number) {
+    try {
+      const response = await api.post(
+        `${path}/solicitarVacunaMenoresNivel/${idNivel}/${idVacuna}`
       );
       console.log(response.data);
       return response.data;

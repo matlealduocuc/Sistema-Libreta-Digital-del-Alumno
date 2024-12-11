@@ -8,7 +8,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { PersonaService } from './persona.service';
-import { CreatePersonaDto } from './dto/create-persona.dto';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { ActiveUser } from 'src/common/decorators/active-user.decorator';
 import { GetPersonaPerfil } from './dto/get-persona-perfil.dto';
@@ -16,16 +15,6 @@ import { GetPersonaPerfil } from './dto/get-persona-perfil.dto';
 @Controller('persona')
 export class PersonaController {
   constructor(private readonly personaService: PersonaService) {}
-
-  @Post()
-  create(@Body() createPersonaDto: CreatePersonaDto) {
-    return this.personaService.create(createPersonaDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.personaService.findAll();
-  }
 
   @Get('obtener/:id')
   @UseGuards(AuthGuard)

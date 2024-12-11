@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
+import { PaseoData } from './entities/paseo.entity';
 
 @Injectable()
 export class PaseoService {
@@ -268,5 +269,153 @@ export class PaseoService {
         },
       },
     });
+  }
+
+  async getTiposPaseo() {
+    return await this.prisma.lda_tipo_paseo.findMany({
+      select: {
+        iden_tipo_paseo: true,
+        desc_tipo_paseo: true,
+      },
+    });
+  }
+
+  async crearPaseo(paseo: PaseoData, idEducador: number) {
+    const educador = await this.prisma.usuario.findFirst({
+      where: {
+        activo: true,
+        eliminado: false,
+        persona: {
+          id: idEducador,
+          flag_activo: true,
+          flag_eliminado: false,
+          lda_nivel_educador: {
+            some: {
+              flag_activo: true,
+              flag_eliminado: false,
+            },
+          },
+        },
+      },
+      select: {
+        id: true,
+      },
+    });
+    if (!educador) {
+      return false;
+    }
+    const dateReal = new Date().setMinutes(
+      new Date().getMinutes() - new Date().getTimezoneOffset(),
+    );
+    const paseoData: any = {
+      desc_titulo: paseo.titulo,
+      desc_descripcion: paseo.descripcion,
+      lda_tipo_paseo: {
+        connect: {
+          iden_tipo_paseo: paseo.tipoPaseo,
+        },
+      },
+      fech_inicio: new Date(paseo.fechaInicio),
+      fech_fin: new Date(paseo.fechaTermino),
+      fech_creacion: new Date(dateReal),
+      usr_usuario: {
+        connect: {
+          id: educador.id,
+        },
+      },
+    };
+
+    const paseoCreated = await this.prisma.lda_paseo.create({
+      data: paseoData,
+    });
+
+    if (paseo.enviarATodosNiveles) {
+      const niveles = await this.prisma.lda_nivel.findMany({
+        where: {
+          flag_activo: true,
+          flag_eliminado: false,
+          lda_nivel_educador: {
+            some: {
+              flag_activo: true,
+              flag_eliminado: false,
+              iden_persona: {
+                equals: idEducador,
+              },
+            },
+          },
+        },
+        select: {
+          iden_nivel: true,
+        },
+      });
+      for (const nivel of niveles) {
+        const menores = await this.prisma.lda_nivel_menor.findMany({
+          where: {
+            iden_nivel: nivel.iden_nivel,
+            flag_activo: true,
+            flag_eliminado: false,
+            lda_menor: {
+              flag_activo: true,
+              flag_eliminado: false,
+            },
+          },
+          select: {
+            iden_menor: true,
+          },
+        });
+
+        for (const menor of menores) {
+          await this.prisma.lda_paseo_menor.create({
+            data: {
+              iden_paseo: paseoCreated.iden_paseo,
+              iden_menor: menor.iden_menor,
+              iden_nivel: nivel.iden_nivel,
+              flag_autorizado: false,
+            },
+          });
+        }
+      }
+    } else {
+      for (const nivelId of paseo.nivelesSeleccionados) {
+        const nivel = await this.prisma.lda_nivel.findFirst({
+          where: {
+            iden_nivel: nivelId,
+            flag_activo: true,
+            flag_eliminado: false,
+          },
+          select: {
+            iden_nivel: true,
+          },
+        });
+
+        if (nivel) {
+          const menores = await this.prisma.lda_nivel_menor.findMany({
+            where: {
+              iden_nivel: nivel.iden_nivel,
+              flag_activo: true,
+              flag_eliminado: false,
+              lda_menor: {
+                flag_activo: true,
+                flag_eliminado: false,
+              },
+            },
+            select: {
+              iden_menor: true,
+            },
+          });
+          for (const menor of menores) {
+            await this.prisma.lda_paseo_menor.create({
+              data: {
+                iden_paseo: paseoCreated.iden_paseo,
+                iden_menor: menor.iden_menor,
+                iden_nivel: nivel.iden_nivel,
+                flag_autorizado: false,
+              },
+            });
+          }
+        }
+      }
+    }
+    return paseoCreated;
   }
 }

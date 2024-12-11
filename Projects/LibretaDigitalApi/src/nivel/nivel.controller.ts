@@ -52,4 +52,32 @@ export class NivelController {
     });
     return menoresDto;
   }
+
+  @Get('getNivelesByEducador')
+  @Auth(Rol.EDUCADOR)
+  async getNivelesByEducador(@ActiveUser() user) {
+    const niveles = await this.nivelService.getNivelesByEducador(
+      +user.idPersona,
+    );
+    const nivelesDto = niveles.map((nivel) => {
+      return {
+        key: nivel.iden_nivel,
+        text: nivel.desc_nombre,
+      };
+    });
+    return nivelesDto;
+  }
+
+  @Get('getAllNiveles')
+  @Auth(Rol.DIRECTOR)
+  async getAllNiveles() {
+    const niveles = await this.nivelService.getAllNiveles();
+    const nivelesDto = niveles.map((nivel) => {
+      return {
+        key: nivel.iden_nivel,
+        text: nivel.desc_nombre,
+      };
+    });
+    return nivelesDto;
+  }
 }

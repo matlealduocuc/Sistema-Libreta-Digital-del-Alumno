@@ -1,4 +1,7 @@
-import { ComunicadoData } from "@/dtos/Comunicado/ComunicadoData";
+import {
+  ComunicadoData,
+  ComunicadoDataEducador,
+} from "@/dtos/Comunicado/ComunicadoData";
 import api from "@/lib/axios";
 import { AxiosError, isAxiosError } from "axios";
 
@@ -63,18 +66,49 @@ export class ComunicadoService {
     }
   }
 
-  async getNivelesByEducador() {
+  async subirComunicado(data: ComunicadoData) {
     try {
-      const response = await api.get(`${path}/getNivelesByEducador`);
+      const response = await api.post(`${path}/subirComunicado`, data);
       return response.data;
     } catch (error) {
       ifAxiosError(error);
     }
   }
 
-  async subirComunicado(data: ComunicadoData) {
+  async subirComunicadoDirector(data: ComunicadoDataEducador) {
     try {
-      const response = await api.post(`${path}/subirComunicado`, data);
+      const response = await api.post(`${path}/subirComunicadoDirector`, data);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async getComunicadosByNivel(nivel: number) {
+    try {
+      const response = await api.get(`${path}/getComunicadosByNivel/${nivel}`);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async setActivacionComunicado(idComunicado: number, estado: boolean) {
+    try {
+      const response = await api.post(
+        `${path}/setActivacionComunicado/${idComunicado}/${estado}`
+      );
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async deleteComunicado(idComunicado: number) {
+    try {
+      const response = await api.post(
+        `${path}/deleteComunicado/${idComunicado}`
+      );
       return response.data;
     } catch (error) {
       ifAxiosError(error);

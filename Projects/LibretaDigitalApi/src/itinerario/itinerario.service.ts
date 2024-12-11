@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
+import { ItinerarioData } from './entities/itinerario.entity';
 
 @Injectable()
 export class ItinerarioService {
@@ -258,6 +259,151 @@ export class ItinerarioService {
             desc_email: true,
           },
         },
+      },
+    });
+  }
+
+  async crearItinerario(actividad: ItinerarioData, idEducador: number) {
+    const educador = await this.prisma.usuario.findFirst({
+      where: {
+        activo: true,
+        eliminado: false,
+        persona: {
+          id: idEducador,
+          flag_activo: true,
+          flag_eliminado: false,
+          lda_nivel_educador: {
+            some: {
+              flag_activo: true,
+              flag_eliminado: false,
+            },
+          },
+        },
+      },
+      select: {
+        id: true,
+      },
+    });
+    if (!educador) {
+      return false;
+    }
+    const dateReal = new Date().setMinutes(
+      new Date().getMinutes() - new Date().getTimezoneOffset(),
+    );
+    const itinerarioData: any = {
+      desc_titulo: actividad.titulo,
+      desc_descripcion: actividad.descripcion,
+      fech_itinerario: new Date(actividad.fechaActividad),
+      fech_creacion: new Date(dateReal),
+      usr_usuario: {
+        connect: {
+          id: educador.id,
+        },
+      },
+      flag_realizado: actividad.actividadRealizada,
+    };
+
+    const itinerarioCreated = await this.prisma.lda_itinerario.create({
+      data: itinerarioData,
+    });
+
+    if (actividad.enviarATodosNiveles) {
+      const niveles = await this.prisma.lda_nivel.findMany({
+        where: {
+          flag_activo: true,
+          flag_eliminado: false,
+          lda_nivel_educador: {
+            some: {
+              flag_activo: true,
+              flag_eliminado: false,
+              iden_persona: {
+                equals: idEducador,
+              },
+            },
+          },
+        },
+        select: {
+          iden_nivel: true,
+        },
+      });
+      for (const nivel of niveles) {
+        const menores = await this.prisma.lda_nivel_menor.findMany({
+          where: {
+            iden_nivel: nivel.iden_nivel,
+            flag_activo: true,
+            flag_eliminado: false,
+            lda_menor: {
+              flag_activo: true,
+              flag_eliminado: false,
+            },
+          },
+          select: {
+            iden_menor: true,
+          },
+        });
+
+        for (const menor of menores) {
+          await this.prisma.lda_itinerario_menor.create({
+            data: {
+              iden_itinerario: itinerarioCreated.iden_itinerario,
+              iden_menor: menor.iden_menor,
+              iden_nivel: nivel.iden_nivel,
+              flag_confirmado: false,
+            },
+          });
+        }
+      }
+    } else {
+      for (const nivelId of actividad.nivelesSeleccionados) {
+        const nivel = await this.prisma.lda_nivel.findFirst({
+          where: {
+            iden_nivel: nivelId,
+            flag_activo: true,
+            flag_eliminado: false,
+          },
+          select: {
+            iden_nivel: true,
+          },
+        });
+
+        if (nivel) {
+          const menores = await this.prisma.lda_nivel_menor.findMany({
+            where: {
+              iden_nivel: nivel.iden_nivel,
+              flag_activo: true,
+              flag_eliminado: false,
+              lda_menor: {
+                flag_activo: true,
+                flag_eliminado: false,
+              },
+            },
+            select: {
+              iden_menor: true,
+            },
+          });
+          for (const menor of menores) {
+            await this.prisma.lda_itinerario_menor.create({
+              data: {
+                iden_itinerario: itinerarioCreated.iden_itinerario,
+                iden_menor: menor.iden_menor,
+                iden_nivel: nivel.iden_nivel,
+                flag_confirmado: false,
+              },
+            });
+          }
+        }
+      }
+    }
+    return itinerarioCreated;
+  }
+
+  async confirmarRealizaActividad(idItinerario: number) {
+    return await this.prisma.lda_itinerario.update({
+      where: {
+        iden_itinerario: idItinerario,
+      },
+      data: {
+        flag_realizado: true,
       },
     });
   }

@@ -1,10 +1,13 @@
+import { PaseoData } from "@/dtos/Paseo/PaseoData";
 import api from "@/lib/axios";
 import { AxiosError, isAxiosError } from "axios";
+
+const path = "/paseo";
 
 export class PaseoService {
   async getPaseosByEducador() {
     try {
-      const response = await api.get(`/paseo/getPaseosByEducador`);
+      const response = await api.get(`${path}/getPaseosByEducador`);
       return response.data;
     } catch (error) {
       ifAxiosError(error);
@@ -13,7 +16,7 @@ export class PaseoService {
 
   async getNivelesByPaseo(idPaseo: number) {
     try {
-      const response = await api.get(`/paseo/getNivelesByPaseo/${idPaseo}`);
+      const response = await api.get(`${path}/getNivelesByPaseo/${idPaseo}`);
       return response.data;
     } catch (error) {
       ifAxiosError(error);
@@ -23,7 +26,7 @@ export class PaseoService {
   async getMenoresByPaseoNivel(idPaseo: number, idNivel: number) {
     try {
       const response = await api.get(
-        `/paseo/getMenoresByPaseoNivel/${idPaseo}/${idNivel}`
+        `${path}/getMenoresByPaseoNivel/${idPaseo}/${idNivel}`
       );
       return response.data;
     } catch (error) {
@@ -38,8 +41,26 @@ export class PaseoService {
   ) {
     try {
       const response = await api.get(
-        `/paseo/getMenorByPaseoNivelMenor/${idPaseo}/${idNivel}/${idMenor}`
+        `${path}/getMenorByPaseoNivelMenor/${idPaseo}/${idNivel}/${idMenor}`
       );
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async getTiposPaseo() {
+    try {
+      const response = await api.get(`${path}/getTiposPaseo`);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async crearPaseo(data: PaseoData) {
+    try {
+      const response = await api.post(`${path}/crearPaseo`, data);
       return response.data;
     } catch (error) {
       ifAxiosError(error);
