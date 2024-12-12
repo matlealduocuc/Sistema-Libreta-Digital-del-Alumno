@@ -330,11 +330,15 @@ export class ComunicadoService {
     return comunicadoCreated;
   }
 
-  async subirComunicadoDirector(comunicado: ComunicadoDataEducador) {
+  async subirComunicadoDirector(
+    comunicado: ComunicadoDataEducador,
+    idUsuario: number,
+  ) {
     const educador = await this.prisma.usuario.findFirst({
       where: {
         activo: true,
         eliminado: false,
+        id: idUsuario,
       },
       select: {
         id: true,

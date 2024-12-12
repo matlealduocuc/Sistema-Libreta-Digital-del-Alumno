@@ -89,7 +89,7 @@ const LibretaFooter = () => {
             </NavLink>
 
             <NavLink
-              to={initPathName + "/asistencia/home"}
+              to={initPathName + (data?.rol?.trim().toLowerCase() == "director" ? "/ingresos/home" : "/asistencia/home")}
               className="flex flex-col items-center"
             >
               <FontAwesomeIcon

@@ -41,7 +41,7 @@ const DirectorAvisosHome = () => {
       <br />
       o en <strong>"Revisar"</strong> para ver el <strong>Estado de las Solicitudes</strong>.`,
       buttonText: "Solicitar",
-      href: initPathName + "/avisos/paseos-visitas/listado-menores",
+      href: initPathName + "/avisos/paseos-visitas/crear-paseo",
       isSecondButton: true,
       secondButtonText: "Revisar",
       secondButtonHref:
@@ -60,7 +60,7 @@ const DirectorAvisosHome = () => {
       <br />
       o en <strong>"Revisar"</strong> para ver el <strong>Estado de tus Solicitudes<strong>.`,
       buttonText: "Solicitar",
-      href: initPathName + "/avisos/reuniones-apoderados/listado-menores",
+      href: initPathName + "/avisos/reuniones-apoderados/crear-reunion",
       isSecondButton: true,
       secondButtonText: "Revisar",
       secondButtonHref:
@@ -79,7 +79,7 @@ const DirectorAvisosHome = () => {
       <br />
       o en <strong>“Revisar”</strong> para ver el <strong>Estado de tus Solicitudes.</strong>`,
       buttonText: "Solicitar",
-      href: initPathName + "/avisos/itinerario-jornada/listado-menores",
+      href: initPathName + "/avisos/itinerario-jornada/crear-itinerario",
       isSecondButton: true,
       secondButtonText: "Revisar",
       secondButtonHref:

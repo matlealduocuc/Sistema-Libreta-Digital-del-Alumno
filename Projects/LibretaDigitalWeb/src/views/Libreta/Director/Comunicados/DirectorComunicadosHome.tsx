@@ -33,7 +33,7 @@ const DirectorComunicadosHome = () => {
 
             <div className="w-full flex justify-center">
               <button
-                className="bg-figma-purple text-white w-80 text-lg font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-blue-700"
+                className="bg-figma-purple text-white w-80 text-lg font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-purple-700"
                 onClick={() => {
                   navigate(`${initPathName}/comunicados/listado-comunicados`);
                 }}

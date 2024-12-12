@@ -41,12 +41,12 @@ const ListadoMenoresConfirmadosReunion = () => {
                   idMenor: number;
                   nombre: string;
                   nombreApoderado: string;
-                  autorizado: boolean | null;
+                  confirmado: boolean | null;
                 }) => ({
                   idMenor: menor.idMenor,
                   nombre: menor.nombre,
                   nombreApoderado: menor.nombreApoderado,
-                  autorizado: menor.autorizado,
+                  confirmado: menor.confirmado,
                 })
               )
             );

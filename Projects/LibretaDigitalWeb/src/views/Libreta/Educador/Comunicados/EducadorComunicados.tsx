@@ -150,7 +150,7 @@ const EducadorComunicados = () => {
           <h1 className="text-xl font-bold">Mis Mensajes</h1>
           <button
             onClick={() => navigate("/educador/comunicados/crear-comunicado")}
-            className="bg-blue-600 text-white rounded-full p-2 hover:bg-blue-700"
+            className="bg-green-600 text-white rounded-full p-2 hover:bg-green-700"
           >
             <div className="flex justify-center">
               <PlusCircleOutlined className="text-2xl mr-2 text-white" />
@@ -183,7 +183,7 @@ const EducadorComunicados = () => {
           </select>
           <button
             onClick={handleBuscarComunicados}
-            className="bg-blue-600 disabled:bg-blue-300 text-white px-4 py-2 rounded hover:bg-blue-700"
+            className="bg-green-600 disabled:bg-green-300 text-white px-4 py-2 rounded hover:bg-green-700"
             disabled={nivel === ""}
           >
             Buscar
@@ -234,7 +234,7 @@ const EducadorComunicados = () => {
                     className={`px-4 py-2 rounded mb-2 w-full ${
                       comunicadoSeleccionado.estado
                         ? "bg-gray-500"
-                        : "bg-blue-600"
+                        : "bg-green-600"
                     } text-white`}
                   >
                     {comunicadoSeleccionado.estado ? "Desactivar" : "Activar"}

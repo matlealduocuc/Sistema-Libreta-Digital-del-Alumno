@@ -1,0 +1,61 @@
+import { useNavigate } from "react-router-dom";
+import MensajesPNG from "@/assets/mensajes.png";
+import { ObtenerInitPathName } from "@/common/FuncionesComunesUsuario";
+
+const DirectorIngresosHome = () => {
+  const initPathName: string = ObtenerInitPathName();
+  const navigate = useNavigate();
+
+  return (
+    <div className="flex flex-col items-center bg-white">
+      <div className="relative w-full h-[66vh] overflow-hidden mt-4">
+        <div className="flex">
+          <div className="flex-shrink-0 w-full flex flex-col items-center justify-center px-6 text-center">
+            <h2 className="text-xl font-bold text-figma-purple mb-4">
+              ¡Revisa los Usuarios!
+            </h2>
+            <p className="text-gray-700">
+              Aquí puedes ver los <strong>Usuarios Registrados</strong>.<br />
+              <br />
+              Haz click en <strong>"Continuar"</strong> para
+              <br />
+              buscar y crear usuarios.
+            </p>
+
+            <div className="my-4 w-auto max-w-xs">
+              <img
+                style={{ objectFit: "contain" }}
+                src={MensajesPNG}
+                alt={"Imagen referencial de Mensajes"}
+                className="w-full h-56 rounded-md"
+              />
+            </div>
+
+            <div className="w-full flex justify-center mb-2">
+              <button
+                className="bg-figma-purple text-white w-80 text-lg font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-purple-700"
+                onClick={() => {
+                  navigate(`${initPathName}/ingresos/listado-apoderados`);
+                }}
+              >
+                Buscar y Crear <strong>Apoderados</strong>
+              </button>
+            </div>
+            <div className="w-full flex justify-center mb-2">
+              <button
+                className="bg-figma-purple text-white w-80 text-lg font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-purple-700"
+                onClick={() => {
+                  navigate(`${initPathName}/ingresos/listado-educadores`);
+                }}
+              >
+                Buscar y Crear <strong>Educadores</strong>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default DirectorIngresosHome;
