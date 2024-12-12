@@ -78,9 +78,13 @@ const CrearPaseoEducador = () => {
     try {
       setLoadingFull(true);
       const fechaInicioDate = new Date(fechaInicio);
-      fechaInicioDate.setMinutes(fechaInicioDate.getMinutes() - fechaInicioDate.getTimezoneOffset());
+      fechaInicioDate.setMinutes(
+        fechaInicioDate.getMinutes() - fechaInicioDate.getTimezoneOffset()
+      );
       const fechaTerminoDate = new Date(fechaTermino);
-      fechaTerminoDate.setMinutes(fechaTerminoDate.getMinutes() - fechaTerminoDate.getTimezoneOffset());
+      fechaTerminoDate.setMinutes(
+        fechaTerminoDate.getMinutes() - fechaTerminoDate.getTimezoneOffset()
+      );
       const requestData = new PaseoData(
         titulo,
         descripcion,
@@ -244,7 +248,7 @@ const CrearPaseoEducador = () => {
             )}
             <button
               onClick={handleNextStep}
-              className="bg-blue-600 disabled:bg-blue-300 text-white px-4 py-2 rounded hover:bg-blue-700 w-full h-12"
+              className="bg-figma-green disabled:bg-green-300 text-white px-4 py-2 rounded hover:bg-green-700 w-full h-12"
               disabled={
                 tipoPaseo == "" ||
                 (!enviarATodosNiveles && nivelesSeleccionados.length < 1) ||
@@ -273,13 +277,13 @@ const CrearPaseoEducador = () => {
             </div>
             <button
               onClick={() => handleCrearPaseo()}
-              className="w-full bg-figma-blue-button text-white py-2 rounded-lg hover:bg-blue-700"
+              className="w-full bg-figma-green text-white py-2 rounded-lg hover:bg-green-700"
             >
               Aceptar
             </button>
             <button
               onClick={() => handlePrevStep()}
-              className="w-full outline outline-1 outline-figma-blue-button text-figma-blue-button bg-white transition-colors py-2 mt-4 font-semibold rounded-lg hover:outline-none hover:bg-figma-blue-button hover:text-white"
+              className="w-full outline outline-1 outline-figma-green text-figma-green bg-white transition-colors py-2 mt-4 font-semibold rounded-lg hover:outline-none hover:bg-figma-green hover:text-white"
             >
               Volver
             </button>
@@ -320,7 +324,7 @@ const CrearPaseoEducador = () => {
                 </p>
                 <button
                   onClick={() => setStep(1)}
-                  className="w-full bg-figma-blue-button text-white py-2 rounded-lg hover:bg-blue-700"
+                  className="w-full bg-figma-green text-white py-2 rounded-lg hover:bg-green-700"
                 >
                   Volver
                 </button>
@@ -350,7 +354,7 @@ const CrearPaseoEducador = () => {
                 </p>
                 <button
                   onClick={handleNextStep}
-                  className="w-full bg-figma-blue-button text-white py-2 rounded-lg hover:bg-blue-700"
+                  className="w-full bg-figma-green text-white py-2 rounded-lg hover:bg-green-700"
                 >
                   Aceptar
                 </button>

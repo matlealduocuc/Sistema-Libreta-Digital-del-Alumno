@@ -53,6 +53,8 @@ import CrearItinerarioEducador from "./views/Libreta/Educador/Avisos/ItinerarioJ
 import ApoderadoAsistenciaHome from "./views/Libreta/Apoderado/Asistencia/ApoderadoAsistenciaHome";
 import EducadorAsistenciaHome from "./views/Libreta/Educador/Asistencia/EducadorAsistenciaHome";
 import AsistenciaListadoMenores from "./views/Libreta/Apoderado/Asistencia/AsistenciaListadoMenores";
+import DirectorIngresosHome from "./views/Libreta/Director/Ingresos/DirectorIngresosHome";
+import DirectorIngresosListadoApoderados from "./views/Libreta/Director/Ingresos/DirectorIngresosListadoApoderados";
 
 export const Router = () => {
   return (
@@ -132,6 +134,12 @@ export const Router = () => {
               path="crear-comunicado"
               element={<CrearComunicadoDirector />}
             />
+          </Route>
+          <Route path="ingresos">
+            <Route path="" element={<DirectorIngresosHome />} />
+            <Route path="home" element={<DirectorIngresosHome />} />
+            <Route path="listado-apoderados" element={<DirectorIngresosListadoApoderados />} />
+            <Route path="listado-educadores" element={<DirectorIngresosHome />} />
           </Route>
         </Route>
 

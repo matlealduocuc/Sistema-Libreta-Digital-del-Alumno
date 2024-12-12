@@ -171,7 +171,7 @@ const ConfirmarReunionesApoderadosMenor = () => {
               </p>
               <div className="border border-gray-300 rounded-lg p-4 mb-4 bg-white">
                 <p className="text-center font-semibold">
-                  ¿Deseas enviar el mensaje?
+                  ¿Deseas confirmar tu asistencia?
                 </p>
               </div>
               <button

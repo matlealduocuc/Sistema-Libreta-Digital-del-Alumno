@@ -5,20 +5,6 @@ import { PrismaService } from 'src/prisma.service';
 export class UsuarioService {
   constructor(private prisma: PrismaService) {}
 
-  async findAll() {
-    const usuarios = await this.prisma.usuario.findMany({
-      // where: { activo: true },
-      select: {
-        id: true,
-        idPersona: true,
-        activo: true,
-        eliminado: true,
-        persona: true,
-      },
-    });
-    return usuarios;
-  }
-
   async findByRun(run: string) {
     const usuario = await this.prisma.usuario.findFirst({
       where: {
@@ -45,5 +31,38 @@ export class UsuarioService {
       where: { id: id, AND: { eliminado: false, activo: true } },
     });
     return usuario;
+  }
+
+  async getAllApoderados() {
+    return await this.prisma.usuario.findMany({
+      where: {
+        activo: true,
+        eliminado: false,
+        usr_rol: {
+          desc_rol: {
+            equals: 'apoderado',
+          },
+        },
+        persona: {
+          flag_activo: true,
+          flag_eliminado: false,
+        },
+      },
+      select: {
+        persona: {
+          select: {
+            _count: {
+              select: {
+                lda_menor_lda_menor_iden_per_apoderadoToper_persona: true,
+              },
+            },
+            primerNombre: true,
+            apellidoP: true,
+            apellidoM: true,
+            id: true,
+          },
+        },
+      },
+    });
   }
 }

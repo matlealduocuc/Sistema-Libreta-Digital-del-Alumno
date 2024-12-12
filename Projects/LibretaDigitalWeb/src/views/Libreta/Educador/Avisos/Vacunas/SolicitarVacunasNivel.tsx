@@ -183,7 +183,7 @@ const SolicitarVacunasNivel = () => {
                   </div>
                   <button
                     onClick={handleNextStep}
-                    className="w-full bg-figma-blue-button text-white py-2 rounded-lg hover:bg-blue-700 disabled:opacity-75"
+                    className="w-full bg-figma-green text-white py-2 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-75"
                     disabled={!nombVacuna || !fechVacuna}
                   >
                     Continuar
@@ -192,7 +192,7 @@ const SolicitarVacunasNivel = () => {
               ) : nivel!.nmroNoSolicitados > 0 ? (
                 <button
                   onClick={handleNextStep}
-                  className="w-full bg-figma-blue-button text-white py-2 rounded-lg hover:bg-blue-700 disabled:opacity-75"
+                  className="w-full bg-figma-green text-white py-2 rounded-lg hover:bg-green-700 disabled:opacity-75"
                 >
                   Continuar
                 </button>
@@ -201,7 +201,7 @@ const SolicitarVacunasNivel = () => {
               )}
               <button
                 onClick={handlePrevStep}
-                className="w-full outline outline-1 outline-figma-blue-button text-figma-blue-button bg-white transition-colors py-2 mt-4 font-semibold rounded-lg hover:outline-none hover:bg-figma-blue-button hover:text-white"
+                className="w-full outline outline-1 outline-figma-green text-figma-green bg-white transition-colors py-2 mt-4 font-semibold rounded-lg hover:outline-none hover:bg-figma-green hover:text-white"
               >
                 Volver
               </button>
@@ -223,13 +223,13 @@ const SolicitarVacunasNivel = () => {
               </div>
               <button
                 onClick={() => handleSolicitarVacuna(nivel?.idVacuna)}
-                className="w-full bg-figma-blue-button text-white py-2 font-semibold rounded-lg hover:bg-blue-700"
+                className="w-full bg-figma-green text-white py-2 font-semibold rounded-lg hover:bg-green-700"
               >
                 Aceptar
               </button>
               <button
                 onClick={() => handlePrevStep()}
-                className="w-full outline outline-1 outline-figma-blue-button text-figma-blue-button bg-white transition-colors py-2 mt-4 font-semibold rounded-lg hover:outline-none hover:bg-figma-blue-button hover:text-white"
+                className="w-full outline outline-1 outline-figma-green text-figma-green bg-white transition-colors py-2 mt-4 font-semibold rounded-lg hover:outline-none hover:bg-figma-green hover:text-white"
               >
                 Volver
               </button>
@@ -274,7 +274,7 @@ const SolicitarVacunasNivel = () => {
                   </p>
                   <button
                     onClick={() => setStep(1)}
-                    className="w-full bg-figma-blue-button text-white py-2 rounded-lg hover:bg-blue-700"
+                    className="w-full bg-figma-green text-white py-2 rounded-lg hover:bg-green-700"
                   >
                     Volver
                   </button>
@@ -304,7 +304,7 @@ const SolicitarVacunasNivel = () => {
                   </p>
                   <button
                     onClick={handleNextStep}
-                    className="w-full bg-figma-blue-button text-white py-2 rounded-lg hover:bg-blue-700"
+                    className="w-full bg-figma-green text-white py-2 rounded-lg hover:bg-green-700"
                   >
                     Aceptar
                   </button>

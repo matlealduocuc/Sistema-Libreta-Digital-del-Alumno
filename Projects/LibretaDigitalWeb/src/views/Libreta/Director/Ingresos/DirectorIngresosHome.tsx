@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import MensajesPNG from "@/assets/mensajes.png";
 import { ObtenerInitPathName } from "@/common/FuncionesComunesUsuario";
 
-const EducadorComunicadosHome = () => {
+const DirectorIngresosHome = () => {
   const initPathName: string = ObtenerInitPathName();
   const navigate = useNavigate();
 
@@ -11,15 +11,15 @@ const EducadorComunicadosHome = () => {
       <div className="relative w-full h-[66vh] overflow-hidden mt-4">
         <div className="flex">
           <div className="flex-shrink-0 w-full flex flex-col items-center justify-center px-6 text-center">
-            <h2 className="text-xl font-bold text-green-700 mb-4">
-              ¡Revisa tus Mensajes!
+            <h2 className="text-xl font-bold text-figma-purple mb-4">
+              ¡Revisa los Usuarios!
             </h2>
             <p className="text-gray-700">
-              Aquí puedes ver los <strong>Comunicados Enviados</strong>.<br />
+              Aquí puedes ver los <strong>Usuarios Registrados</strong>.<br />
               <br />
               Haz click en <strong>"Continuar"</strong> para
               <br />
-              buscar y crear comunicados.
+              buscar y crear usuarios.
             </p>
 
             <div className="my-4 w-auto max-w-xs">
@@ -31,14 +31,24 @@ const EducadorComunicadosHome = () => {
               />
             </div>
 
-            <div className="w-full flex justify-center">
+            <div className="w-full flex justify-center mb-2">
               <button
-                className="bg-figma-green text-white w-80 text-lg font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-green-700"
+                className="bg-figma-purple text-white w-80 text-lg font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-purple-700"
                 onClick={() => {
-                  navigate(`${initPathName}/comunicados/listado-comunicados`);
+                  navigate(`${initPathName}/ingresos/listado-apoderados`);
                 }}
               >
-                Continuar
+                Buscar y Crear <strong>Apoderados</strong>
+              </button>
+            </div>
+            <div className="w-full flex justify-center mb-2">
+              <button
+                className="bg-figma-purple text-white w-80 text-lg font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-purple-700"
+                onClick={() => {
+                  navigate(`${initPathName}/ingresos/listado-educadores`);
+                }}
+              >
+                Buscar y Crear <strong>Educadores</strong>
               </button>
             </div>
           </div>
@@ -48,4 +58,4 @@ const EducadorComunicadosHome = () => {
   );
 };
 
-export default EducadorComunicadosHome;
+export default DirectorIngresosHome;
