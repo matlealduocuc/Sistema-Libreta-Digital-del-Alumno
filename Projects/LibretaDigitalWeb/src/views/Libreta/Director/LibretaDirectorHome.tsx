@@ -29,7 +29,7 @@ const LibretaDirectorHome = () => {
     {
       icon: faPenToSquare,
       title: "Ingresos",
-      url: initPathName + "/asistencia",
+      url: initPathName + "/ingresos/home",
       parragraph: (
         <p className="text-sm text-center p-1">
           Ingresa <strong>Educadoras y Apoderados</strong>
@@ -41,7 +41,7 @@ const LibretaDirectorHome = () => {
     {
       icon: faLightbulb,
       title: "Mensajes",
-      url: initPathName + "/comunicados",
+      url: initPathName + "/comunicados/home",
       parragraph: (
         <p className="text-sm text-center p-1">
           Envía <strong>Mensajes y Documentos</strong>

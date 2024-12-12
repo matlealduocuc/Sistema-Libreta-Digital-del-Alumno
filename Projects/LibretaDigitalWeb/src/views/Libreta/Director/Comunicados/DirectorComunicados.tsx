@@ -152,7 +152,7 @@ const DirectorComunicados = () => {
             onClick={() =>
               navigate(`${initPathName}/comunicados/crear-comunicado`)
             }
-            className="bg-blue-600 text-white rounded-full p-2 hover:bg-blue-700"
+            className="bg-purple-600 text-white rounded-full p-2 hover:bg-purple-700"
           >
             <div className="flex justify-center">
               <PlusCircleOutlined className="text-2xl mr-2 text-white" />
@@ -184,7 +184,7 @@ const DirectorComunicados = () => {
           </select>
           <button
             onClick={handleBuscarComunicados}
-            className="bg-blue-600 disabled:bg-blue-300 text-white px-4 py-2 rounded hover:bg-blue-700"
+            className="bg-purple-600 disabled:bg-purple-300 text-white px-4 py-2 rounded hover:bg-purple-700"
             disabled={nivel === ""}
           >
             Buscar
@@ -236,7 +236,7 @@ const DirectorComunicados = () => {
                     className={`px-4 py-2 rounded mb-2 w-full ${
                       comunicadoSeleccionado.estado
                         ? "bg-gray-500"
-                        : "bg-blue-600"
+                        : "bg-purple-600"
                     } text-white`}
                   >
                     {comunicadoSeleccionado.estado ? "Desactivar" : "Activar"}

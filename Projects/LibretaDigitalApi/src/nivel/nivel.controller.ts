@@ -24,6 +24,20 @@ export class NivelController {
     return nivelesDto;
   }
 
+  @Get('getAllNivelesWhereSomeVacuna')
+  @Auth(Rol.DIRECTOR)
+  async getAllNivelesWhereSomeVacuna() {
+    const niveles = await this.nivelService.getAllNivelesWhereSomeVacuna();
+    const nivelesDto = niveles.map((nivel) => {
+      return {
+        idenNivel: nivel.iden_nivel,
+        descNombre: nivel.desc_nombre,
+        cantidadMenores: nivel._count.lda_nivel_menor,
+      };
+    });
+    return nivelesDto;
+  }
+
   @Get('getMenoresByNivel/:idNivel')
   @Auth(Rol.EDUCADOR)
   async getMenoresByNivel(
@@ -34,6 +48,29 @@ export class NivelController {
       +user.idPersona,
       +idNivel,
     );
+    const menoresDto = menores.map((menor) => {
+      return {
+        idenMenor: menor.id,
+        descNombre:
+          menor.per_persona.apellidoM != null
+            ? menor.per_persona.primerNombre +
+              ' ' +
+              menor.per_persona.apellidoP +
+              ' ' +
+              menor.per_persona.apellidoM
+            : menor.per_persona.primerNombre +
+              ' ' +
+              menor.per_persona.apellidoP,
+        autorizado: menor.lda_vacuna_menor[0]?.flag_autorizado,
+      };
+    });
+    return menoresDto;
+  }
+
+  @Get('getMenoresByNivelDirector/:idNivel')
+  @Auth(Rol.DIRECTOR)
+  async getMenoresByNivelDirector(@Param('idNivel') idNivel: number) {
+    const menores = await this.nivelService.getMenoresByNivelDirector(+idNivel);
     const menoresDto = menores.map((menor) => {
       return {
         idenMenor: menor.id,

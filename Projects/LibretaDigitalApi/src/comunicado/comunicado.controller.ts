@@ -131,10 +131,14 @@ export class ComunicadoController {
   @Post('subirComunicadoDirector')
   @Auth(Rol.DIRECTOR)
   async subirComunicadoDirector(
+    @ActiveUser() user,
     @Body()
     body: ComunicadoDataEducador | any,
   ) {
-    return await this.comunicadoService.subirComunicadoDirector(body);
+    return await this.comunicadoService.subirComunicadoDirector(
+      body,
+      +user.idUsuario,
+    );
   }
 
   @Get('getComunicadosByNivel/:idNivel')

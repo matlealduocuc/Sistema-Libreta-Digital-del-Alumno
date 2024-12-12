@@ -119,7 +119,7 @@ const RevisarPaseoMenor = () => {
             </div>
             <button
               onClick={() => navigate(-1)}
-              className="w-full outline outline-1 outline-figma-blue-button text-figma-blue-button bg-white transition-colors py-2 mt-4 font-semibold rounded-lg hover:outline-none hover:bg-figma-blue-button hover:text-white"
+              className="w-full outline outline-1 outline-figma-green text-figma-green bg-white transition-colors py-2 mt-4 font-semibold rounded-lg hover:outline-none hover:bg-figma-green hover:text-white"
             >
               Volver
             </button>

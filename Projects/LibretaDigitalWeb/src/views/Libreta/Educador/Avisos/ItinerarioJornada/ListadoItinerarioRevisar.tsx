@@ -134,7 +134,10 @@ const ListadoItinerarioRevisar = () => {
                 onClick={() => handleItinerarioClick(reunion.idItinerario)}
               >
                 <h2 className="font-semibold">{reunion.tituloActividad}</h2>
-                <p>Fecha: {reunion.fechaItinerario.split(".").join("-")}</p>
+                <p>
+                  Fecha:{" "}
+                  {reunion.fechaItinerario?.split(" ")[0].split(".").join("-")}
+                </p>
               </div>
             ))
           ) : (

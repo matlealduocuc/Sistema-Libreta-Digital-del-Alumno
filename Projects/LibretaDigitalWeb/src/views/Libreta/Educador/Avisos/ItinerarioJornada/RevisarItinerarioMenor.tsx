@@ -166,14 +166,14 @@ const RevisarItinerarioMenor = () => {
             </div>
             <button
               onClick={() => navigate(-1)}
-              className="w-full outline outline-1 outline-figma-blue-button text-figma-blue-button bg-white transition-colors py-2 mt-4 font-semibold rounded-lg hover:outline-none hover:bg-figma-blue-button hover:text-white"
+              className="w-full outline outline-1 outline-figma-green text-figma-green bg-white transition-colors py-2 mt-4 font-semibold rounded-lg hover:outline-none hover:bg-figma-green hover:text-white"
             >
               Volver
             </button>
             {!menor?.realizado ? (
               <button
                 onClick={handleOpenModal}
-                className="w-full outline outline-1 outline-figma-blue-button text-figma-blue-button bg-white transition-colors py-2 mt-4 font-semibold rounded-lg hover:outline-none hover:bg-figma-blue-button hover:text-white"
+                className="w-full outline outline-1 outline-figma-green text-figma-green bg-white transition-colors py-2 mt-4 font-semibold rounded-lg hover:outline-none hover:bg-figma-green hover:text-white"
               >
                 ¿Actividad Realizada?
               </button>
@@ -200,7 +200,7 @@ const RevisarItinerarioMenor = () => {
                     </button>
                     <button
                       onClick={handleAccept}
-                      className="mr-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
+                      className="mr-2 px-4 py-2 bg-green-400 text-white rounded-lg"
                     >
                       Aceptar
                     </button>
@@ -215,7 +215,7 @@ const RevisarItinerarioMenor = () => {
                   <div className="flex justify-end mt-4">
                     <button
                       onClick={handleSecondModalAccept}
-                      className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+                      className="px-4 py-2 bg-green-400 text-white rounded-lg"
                     >
                       Aceptar
                     </button>

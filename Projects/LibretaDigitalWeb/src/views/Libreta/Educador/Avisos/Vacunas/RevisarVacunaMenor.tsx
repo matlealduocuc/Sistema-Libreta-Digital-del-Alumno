@@ -103,7 +103,7 @@ const RevisarVacunaMenor = () => {
             </div>
             <button
               onClick={() => navigate(-1)}
-              className="w-full bg-figma-blue-button text-white py-2 rounded-lg hover:bg-blue-700"
+              className="w-full bg-figma-green text-white py-2 rounded-lg hover:bg-green-700"
             >
               Volver
             </button>

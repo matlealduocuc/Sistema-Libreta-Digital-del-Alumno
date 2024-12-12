@@ -16,6 +16,18 @@ export class VacunaService {
     }
   }
 
+  async getMenorByNivelMenorDirector(idNivel: number, idMenor: number) {
+    try {
+      const response = await api.get(
+        `${path}/getMenorByNivelMenorDirector/${idNivel}/${idMenor}`
+      );
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
   async getNivelesAvisarVacunaByEducador() {
     try {
       const response = await api.get(
@@ -28,10 +40,32 @@ export class VacunaService {
     }
   }
 
+  async getAllNivelesAvisarVacuna() {
+    try {
+      const response = await api.get(`${path}/getAllNivelesAvisarVacuna`);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
   async getNivelVacunaByNivel(idNivel: number) {
     try {
       const response = await api.get(
         `${path}/getNivelVacunaByNivel/${idNivel}`
+      );
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async getNivelVacunaByNivelDirector(idNivel: number) {
+    try {
+      const response = await api.get(
+        `${path}/getNivelVacunaByNivelDirector/${idNivel}`
       );
       console.log(response.data);
       return response.data;
@@ -60,10 +94,42 @@ export class VacunaService {
     }
   }
 
+  async solicitarVacunaNivelDirector(
+    idNivel: number,
+    nombVacuna: string,
+    fechVacuna: Date
+  ) {
+    try {
+      const response = await api.post(
+        `${path}/solicitarVacunaNivelDirector/${idNivel}`,
+        {
+          nombVacuna,
+          fechVacuna,
+        }
+      );
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
   async solicitarVacunaMenoresNivel(idNivel: number, idVacuna: number) {
     try {
       const response = await api.post(
         `${path}/solicitarVacunaMenoresNivel/${idNivel}/${idVacuna}`
+      );
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async solicitarVacunaMenoresNivelDirector(idNivel: number, idVacuna: number) {
+    try {
+      const response = await api.post(
+        `${path}/solicitarVacunaMenoresNivelDirector/${idNivel}/${idVacuna}`
       );
       console.log(response.data);
       return response.data;
