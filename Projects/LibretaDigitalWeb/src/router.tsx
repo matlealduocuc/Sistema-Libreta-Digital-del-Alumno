@@ -23,7 +23,6 @@ import ListadoNivelesAutorizadosVacuna from "./views/Libreta/Educador/Avisos/Vac
 import ListadoMenoresAutorizadosVacunas from "./views/Libreta/Educador/Avisos/Vacunas/ListadoMenoresAutorizadosVacunas";
 import RevisarVacunaMenor from "./views/Libreta/Educador/Avisos/Vacunas/RevisarVacunaMenor";
 import ListadoAvisarNivelesEducador from "./views/Libreta/Educador/Avisos/Vacunas/ListadoAvisarNiveles";
-import SolicitarVacunas from "./views/Libreta/Educador/Avisos/Vacunas/SolicitarVacunasNivel";
 import UnderConstruction from "./views/home/UnderConstruction";
 import LibretaDirectorHome from "./views/Libreta/Director/LibretaDirectorHome";
 import ListadoPaseosRevisar from "./views/Libreta/Educador/Avisos/PaseosVisitas/ListadoPaseosRevisar";
@@ -55,6 +54,27 @@ import EducadorAsistenciaHome from "./views/Libreta/Educador/Asistencia/Educador
 import AsistenciaListadoMenores from "./views/Libreta/Apoderado/Asistencia/AsistenciaListadoMenores";
 import DirectorIngresosHome from "./views/Libreta/Director/Ingresos/DirectorIngresosHome";
 import DirectorIngresosListadoApoderados from "./views/Libreta/Director/Ingresos/DirectorIngresosListadoApoderados";
+import ListadoNivelesAutorizadosVacunaDirector from "./views/Libreta/Director/Avisos/Vacunas/ListadoNivelesAutorizadosVacunaDirector";
+import ListadoMenoresAutorizadosVacunasDirector from "./views/Libreta/Director/Avisos/Vacunas/ListadoMenoresAutorizadosVacunasDirector";
+import RevisarVacunaMenorDirector from "./views/Libreta/Director/Avisos/Vacunas/RevisarVacunaMenorDirector";
+import ListadoAvisarNivelesDirector from "./views/Libreta/Director/Avisos/Vacunas/ListadoAvisarNivelesDirector";
+import SolicitarVacunasNivelDirector from "./views/Libreta/Director/Avisos/Vacunas/SolicitarVacunasNivelDirector";
+import ListadoPaseosRevisarDirector from "./views/Libreta/Director/Avisos/PaseosVisitas/ListadoPaseosRevisarDirector";
+import ListadoNivelesAutorizadosPaseoDirector from "./views/Libreta/Director/Avisos/PaseosVisitas/ListadoNivelesAutorizadosPaseoDirector";
+import ListadoMenoresAutorizadosPaseoDirector from "./views/Libreta/Director/Avisos/PaseosVisitas/ListadoMenoresAutorizadosPaseoDirector";
+import RevisarPaseoMenorDirector from "./views/Libreta/Director/Avisos/PaseosVisitas/RevisarPaseoMenorDirector";
+import CrearPaseoDirector from "./views/Libreta/Director/Avisos/PaseosVisitas/CrearPaseoDirector";
+import ListadoReunionRevisarDirector from "./views/Libreta/Director/Avisos/ReunionesApoderados/ListadoReunionRevisarDirector";
+import ListadoNivelesConfirmadosReunionDirector from "./views/Libreta/Director/Avisos/ReunionesApoderados/ListadoNivelesConfirmadosReunionDirector";
+import ListadoMenoresConfirmadosReunionDirector from "./views/Libreta/Director/Avisos/ReunionesApoderados/ListadoMenoresConfirmadosReunionDirector";
+import RevisarReunionMenorDirector from "./views/Libreta/Director/Avisos/ReunionesApoderados/RevisarReunionMenorDirector";
+import CrearReunionApoderadosDirector from "./views/Libreta/Director/Avisos/ReunionesApoderados/CrearReunionApoderadosDirector";
+import ListadoItinerarioRevisarDirector from "./views/Libreta/Director/Avisos/ItinerarioJornada/ListadoItinerarioRevisarDirector";
+import ListadoNivelesConfirmadosItinerarioDirector from "./views/Libreta/Director/Avisos/ItinerarioJornada/ListadoNivelesConfirmadosItinerarioDirector";
+import ListadoMenoresConfirmadosItinerarioDirector from "./views/Libreta/Director/Avisos/ItinerarioJornada/ListadoMenoresConfirmadosItinerarioDirector";
+import RevisarItinerarioMenorDirector from "./views/Libreta/Director/Avisos/ItinerarioJornada/RevisarItinerarioMenorDirector";
+import CrearItinerarioDirector from "./views/Libreta/Director/Avisos/ItinerarioJornada/CrearItinerarioDirector";
+import CrearApoderadoDirector from "./views/Libreta/Director/Ingresos/CrearApoderadoDirector";
 
 export const Router = () => {
   return (
@@ -80,46 +100,86 @@ export const Router = () => {
             <Route path="vacunas">
               <Route
                 path="revisar-niveles-menores"
-                element={<ListadoNivelesAutorizadosVacuna />}
+                element={<ListadoNivelesAutorizadosVacunaDirector />}
               />
               <Route
-                path="menores-por-nivel/:id"
-                element={<ListadoMenoresAutorizadosVacunas />}
+                path="menores-por-nivel/:idNivel"
+                element={<ListadoMenoresAutorizadosVacunasDirector />}
               />
               <Route
                 path="revisar-menor/:idNivel/:idMenor"
-                element={<RevisarVacunaMenor />}
+                element={<RevisarVacunaMenorDirector />}
               />
               <Route
-                path="solicitar-vacunas/:id"
-                element={<SolicitarVacunas />}
+                path="avisar-niveles-menores"
+                element={<ListadoAvisarNivelesDirector />}
+              />
+              <Route
+                path="solicitar-vacunas/:idNivel"
+                element={<SolicitarVacunasNivelDirector />}
               />
             </Route>
             <Route path="paseos-visitas">
               <Route
-                path="listado-menores"
-                element={<PaseosVisitasListadoMenores />}
+                path="revisar-listado-paseos"
+                element={<ListadoPaseosRevisarDirector />}
               />
-              <Route path="menor/:id" element={<AutorizarPaseoVisitaMenor />} />
+              <Route
+                path="revisar-listado-niveles/:idPaseo"
+                element={<ListadoNivelesAutorizadosPaseoDirector />}
+              />
+              <Route
+                path="revisar-listado-menores/:idPaseo/:idNivel"
+                element={<ListadoMenoresAutorizadosPaseoDirector />}
+              />
+              <Route
+                path="revisar-menor/:idPaseo/:idNivel/:idMenor"
+                element={<RevisarPaseoMenorDirector />}
+              />
+              <Route path="crear-paseo" element={<CrearPaseoDirector />} />
             </Route>
             <Route path="reuniones-apoderados">
               <Route
-                path="listado-menores"
-                element={<ReunionesApoderadosListadoMenores />}
+                path="revisar-listado-reuniones"
+                element={<ListadoReunionRevisarDirector />}
               />
               <Route
-                path="menor/:id"
-                element={<ConfirmarReunionesApoderadosMenor />}
+                path="revisar-listado-niveles/:idReunion"
+                element={<ListadoNivelesConfirmadosReunionDirector />}
+              />
+              <Route
+                path="revisar-listado-menores/:idReunion/:idNivel"
+                element={<ListadoMenoresConfirmadosReunionDirector />}
+              />
+              <Route
+                path="revisar-menor/:idReunion/:idNivel/:idMenor"
+                element={<RevisarReunionMenorDirector />}
+              />
+              <Route
+                path="crear-reunion"
+                element={<CrearReunionApoderadosDirector />}
               />
             </Route>
             <Route path="itinerario-jornada">
               <Route
-                path="listado-menores"
-                element={<ItinerarioJornadaListadoMenores />}
+                path="revisar-listado-itinerario"
+                element={<ListadoItinerarioRevisarDirector />}
               />
               <Route
-                path="menor/:id"
-                element={<ConfirmarItinerarioJornadaMenor />}
+                path="revisar-listado-niveles/:idItinerario"
+                element={<ListadoNivelesConfirmadosItinerarioDirector />}
+              />
+              <Route
+                path="revisar-listado-menores/:idItinerario/:idNivel"
+                element={<ListadoMenoresConfirmadosItinerarioDirector />}
+              />
+              <Route
+                path="revisar-menor/:idItinerario/:idNivel/:idMenor"
+                element={<RevisarItinerarioMenorDirector />}
+              />
+              <Route
+                path="crear-itinerario"
+                element={<CrearItinerarioDirector />}
               />
             </Route>
           </Route>
@@ -138,8 +198,18 @@ export const Router = () => {
           <Route path="ingresos">
             <Route path="" element={<DirectorIngresosHome />} />
             <Route path="home" element={<DirectorIngresosHome />} />
-            <Route path="listado-apoderados" element={<DirectorIngresosListadoApoderados />} />
-            <Route path="listado-educadores" element={<DirectorIngresosHome />} />
+            <Route
+              path="listado-apoderados"
+              element={<DirectorIngresosListadoApoderados />}
+            />
+            <Route
+              path="listado-educadores"
+              element={<DirectorIngresosHome />}
+            />
+            <Route
+              path="crear-apoderado"
+              element={<CrearApoderadoDirector />}
+            />
           </Route>
         </Route>
 

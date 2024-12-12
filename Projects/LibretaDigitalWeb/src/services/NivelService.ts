@@ -13,9 +13,29 @@ export class NivelService {
     }
   }
 
+  async getAllNivelesWhereSomeVacuna() {
+    try {
+      const response = await api.get(`${path}/getAllNivelesWhereSomeVacuna`);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
   async getMenoresByNivel(idNivel: number) {
     try {
       const response = await api.get(`${path}/getMenoresByNivel/${idNivel}`);
+      return response.data;
+    } catch (error) {
+      ifAxiosError(error);
+    }
+  }
+
+  async getMenoresByNivelDirector(idNivel: number) {
+    try {
+      const response = await api.get(
+        `${path}/getMenoresByNivelDirector/${idNivel}`
+      );
       return response.data;
     } catch (error) {
       ifAxiosError(error);

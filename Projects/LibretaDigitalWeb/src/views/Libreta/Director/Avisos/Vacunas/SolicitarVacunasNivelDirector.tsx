@@ -5,7 +5,7 @@ import { Spin } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-const SolicitarVacunasNivel = () => {
+const SolicitarVacunasNivelDirector = () => {
   const { idNivel } = useParams();
   const { isLoading } = useAuth();
   const initPathName = ObtenerInitPathName();
@@ -32,9 +32,8 @@ const SolicitarVacunasNivel = () => {
       setLoading(true);
       if (!isLoading && idNivel) {
         try {
-          const nivelData = await vacunaController.getNivelVacunaByNivel(
-            +idNivel
-          );
+          const nivelData =
+            await vacunaController.getNivelVacunaByNivelDirector(+idNivel);
           if (nivelData) {
             setNivel(nivelData);
           }
@@ -73,14 +72,14 @@ const SolicitarVacunasNivel = () => {
         let isOk = false;
         if (nivel?.solicitado) {
           if (idVacuna) {
-            isOk = await vacunaController.solicitarVacunaMenoresNivel(
+            isOk = await vacunaController.solicitarVacunaMenoresNivelDirector(
               +idNivel,
               idVacuna
             );
           }
         } else {
           if (nombVacuna && fechVacuna) {
-            isOk = await vacunaController.solicitarVacunaNivel(
+            isOk = await vacunaController.solicitarVacunaNivelDirector(
               +idNivel,
               nombVacuna,
               new Date(fechVacuna)
@@ -108,7 +107,7 @@ const SolicitarVacunasNivel = () => {
           {/* Paso 1: Estado de Autorización */}
           {step === 1 && (
             <div className="text-center space-y-2">
-              <h2 className="text-xl font-bold mb-2">Estado de Autorización</h2>
+              <h2 className="text-xl font-bold mb-2">Estado de Solicitud</h2>
               <p className="mb-4">
                 En el recuadro se indica el nombre del nivel,
                 <br />
@@ -145,7 +144,7 @@ const SolicitarVacunasNivel = () => {
                   {nivel?.nmroNoSolicitados}
                 </p>
                 {nivel?.solicitado ? (
-                  <p className="font-bold text-green-700">
+                  <p className="font-bold text-purple-700">
                     <strong>Estado: Vacuna Solicitada</strong>
                   </p>
                 ) : nivel?.solicitado != null && !nivel?.solicitado ? (
@@ -185,7 +184,7 @@ const SolicitarVacunasNivel = () => {
                   {nivel?.nmroMenores && nivel?.nmroMenores > 0 ? (
                     <button
                       onClick={handleNextStep}
-                      className="w-full bg-figma-green text-white py-2 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50"
+                      className="w-full bg-figma-purple text-white py-2 rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50"
                       disabled={
                         !nombVacuna ||
                         !fechVacuna ||
@@ -198,7 +197,7 @@ const SolicitarVacunasNivel = () => {
                     </button>
                   ) : (
                     <button
-                      className="w-full bg-figma-green text-white py-2 rounded-lg transition-colors disabled:opacity-50"
+                      className="w-full bg-figma-purple text-white py-2 rounded-lg transition-colors disabled:opacity-50"
                       disabled={true}
                     >
                       No puede continuar sin menores
@@ -210,13 +209,13 @@ const SolicitarVacunasNivel = () => {
                   {nivel?.nmroMenores && nivel?.nmroMenores > 0 ? (
                     <button
                       onClick={handleNextStep}
-                      className="w-full bg-figma-green text-white py-2 rounded-lg hover:bg-green-700 disabled:opacity-50"
+                      className="w-full bg-figma-purple text-white py-2 rounded-lg hover:bg-purple-700 disabled:opacity-75"
                     >
                       Continuar
                     </button>
                   ) : (
                     <button
-                      className="w-full bg-figma-green text-white py-2 rounded-lg transition-colors disabled:opacity-50"
+                      className="w-full bg-figma-purple text-white py-2 rounded-lg transition-colors disabled:opacity-50"
                       disabled={true}
                     >
                       No puede continuar sin menores
@@ -228,14 +227,13 @@ const SolicitarVacunasNivel = () => {
               )}
               <button
                 onClick={handlePrevStep}
-                className="w-full outline outline-1 outline-figma-green text-figma-green bg-white transition-colors py-2 mt-4 font-semibold rounded-lg hover:outline-none hover:bg-figma-green hover:text-white"
+                className="w-full outline outline-1 outline-figma-purple text-figma-purple bg-white transition-colors py-2 mt-4 font-semibold rounded-lg hover:outline-none hover:bg-figma-purple hover:text-white"
               >
                 Volver
               </button>
             </div>
           )}
 
-          {/* Paso 2: Confirmación para autorizar */}
           {step === 2 && (
             <div className="text-center">
               <h2 className="text-xl font-bold mb-4">¡Listo para Solicitar!</h2>
@@ -250,13 +248,13 @@ const SolicitarVacunasNivel = () => {
               </div>
               <button
                 onClick={() => handleSolicitarVacuna(nivel?.idVacuna)}
-                className="w-full bg-figma-green text-white py-2 font-semibold rounded-lg hover:bg-green-700"
+                className="w-full bg-figma-purple text-white py-2 font-semibold rounded-lg hover:bg-purple-700"
               >
                 Aceptar
               </button>
               <button
                 onClick={() => handlePrevStep()}
-                className="w-full outline outline-1 outline-figma-green text-figma-green bg-white transition-colors py-2 mt-4 font-semibold rounded-lg hover:outline-none hover:bg-figma-green hover:text-white"
+                className="w-full outline outline-1 outline-figma-purple text-figma-purple bg-white transition-colors py-2 mt-4 font-semibold rounded-lg hover:outline-none hover:bg-figma-purple hover:text-white"
               >
                 Volver
               </button>
@@ -297,11 +295,11 @@ const SolicitarVacunasNivel = () => {
                   <p className="text-red-500 font-bold text-lg mb-4 text-center">
                     Error al
                     <br />
-                    Autorizar
+                    Solicitar
                   </p>
                   <button
                     onClick={() => setStep(1)}
-                    className="w-full bg-figma-green text-white py-2 rounded-lg hover:bg-green-700"
+                    className="w-full bg-figma-purple text-white py-2 rounded-lg hover:bg-purple-700"
                   >
                     Volver
                   </button>
@@ -311,7 +309,7 @@ const SolicitarVacunasNivel = () => {
                   <div className="flex items-center justify-center mb-4">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-20 w-20 text-green-500"
+                      className="h-20 w-20 text-purple-500"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -324,14 +322,14 @@ const SolicitarVacunasNivel = () => {
                       />
                     </svg>
                   </div>
-                  <p className="text-green-600 font-bold text-lg mb-4 text-center">
+                  <p className="text-purple-600 font-bold text-lg mb-4 text-center">
                     Vacuna
                     <br />
-                    Autorizada
+                    Solicitada
                   </p>
                   <button
                     onClick={handleNextStep}
-                    className="w-full bg-figma-green text-white py-2 rounded-lg hover:bg-green-700"
+                    className="w-full bg-figma-purple text-white py-2 rounded-lg hover:bg-purple-700"
                   >
                     Aceptar
                   </button>
@@ -345,4 +343,4 @@ const SolicitarVacunasNivel = () => {
   );
 };
 
-export default SolicitarVacunasNivel;
+export default SolicitarVacunasNivelDirector;

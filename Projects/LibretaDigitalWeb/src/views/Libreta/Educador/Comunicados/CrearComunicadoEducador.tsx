@@ -344,7 +344,7 @@ const CrearComunicadoEducador = () => {
             )}
 
             {/* Check de enviar al correo */}
-            <div className="mb-2">
+            <div className="mb-2" style={{ display: "none" }}>
               <del>
                 <label className="flex items-center text-gray-500">
                   <input

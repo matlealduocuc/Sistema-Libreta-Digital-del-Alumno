@@ -372,7 +372,7 @@ const CrearComunicadoDirector = () => {
             )}
 
             {/* Check de enviar al correo */}
-            <div className="mb-2">
+            <div className="mb-2" style={{ display: "none" }}>
               <del>
                 <label className="flex items-center text-gray-500">
                   <input
@@ -538,7 +538,7 @@ const CrearComunicadoDirector = () => {
             {/* Botón enviar comunicado */}
             <button
               onClick={handleNextStep}
-              className="bg-blue-600 disabled:bg-blue-300 text-white px-4 py-2 rounded hover:bg-blue-700 w-full h-12"
+              className="bg-purple-600 disabled:bg-purple-300 text-white px-4 py-2 rounded hover:bg-purple-700 w-full h-12"
               disabled={
                 tipoComunicado == "" ||
                 (!enviarATodosNiveles &&
@@ -568,13 +568,13 @@ const CrearComunicadoDirector = () => {
             </div>
             <button
               onClick={() => handleEnviarComunicado()}
-              className="w-full bg-figma-blue-button text-white py-2 rounded-lg hover:bg-blue-700"
+              className="w-full bg-figma-purple text-white py-2 rounded-lg hover:bg-purple-700"
             >
               Aceptar
             </button>
             <button
               onClick={() => handlePrevStep()}
-              className="w-full outline outline-1 outline-figma-blue-button text-figma-blue-button bg-white transition-colors py-2 mt-4 font-semibold rounded-lg hover:outline-none hover:bg-figma-blue-button hover:text-white"
+              className="w-full outline outline-1 outline-figma-purple text-figma-purple bg-white transition-colors py-2 mt-4 font-semibold rounded-lg hover:outline-none hover:bg-figma-purple hover:text-white"
             >
               Volver
             </button>
@@ -615,7 +615,7 @@ const CrearComunicadoDirector = () => {
                 </p>
                 <button
                   onClick={() => setStep(1)}
-                  className="w-full bg-figma-blue-button text-white py-2 rounded-lg hover:bg-blue-700"
+                  className="w-full bg-figma-purple text-white py-2 rounded-lg hover:bg-purple-700"
                 >
                   Volver
                 </button>
@@ -645,7 +645,7 @@ const CrearComunicadoDirector = () => {
                 </p>
                 <button
                   onClick={handleNextStep}
-                  className="w-full bg-figma-blue-button text-white py-2 rounded-lg hover:bg-blue-700"
+                  className="w-full bg-figma-purple text-white py-2 rounded-lg hover:bg-purple-700"
                 >
                   Aceptar
                 </button>

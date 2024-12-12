@@ -46,12 +46,93 @@ export class VacunaController {
     return menoresDto;
   }
 
+  @Get('getMenorByNivelMenorDirector/:idNivel/:idMenor')
+  @Auth(Rol.DIRECTOR)
+  async getMenorByNivelMenorDirector(
+    @Param('idNivel') idNivel: number,
+    @Param('idMenor') idMenor: number,
+  ) {
+    const menor = await this.vacunaService.getMenorByNivelMenorDirector(
+      +idNivel,
+      +idMenor,
+    );
+    const per = menor.per_persona;
+    const perAp = menor.per_persona_lda_menor_iden_per_apoderadoToper_persona;
+    const menoresDto = {
+      nombreMenor:
+        per.apellidoM != null
+          ? per.primerNombre + ' ' + per.apellidoP + ' ' + per.apellidoM
+          : per.primerNombre + ' ' + per.apellidoP,
+      nombreApoderado:
+        perAp.apellidoM != null
+          ? perAp.primerNombre + ' ' + perAp.apellidoP + ' ' + perAp.apellidoM
+          : perAp.primerNombre + ' ' + perAp.apellidoP,
+      telApoderado: perAp.desc_tel,
+      emailApoderado: perAp.desc_email,
+      nivel: menor.lda_nivel_menor[0]?.lda_nivel?.desc_nombre,
+      nombreVacuna: menor.lda_vacuna_menor[0]?.lda_vacuna?.desc_nombre,
+      fechaVacuna: formatFecha1(
+        menor.lda_vacuna_menor[0]?.lda_vacuna?.fech_vacunacion.toISOString(),
+      ),
+      autorizado: menor.lda_vacuna_menor[0]?.flag_autorizado,
+    };
+
+    return menoresDto;
+  }
+
   @Get('getNivelesAvisarVacunaByEducador')
   @Auth(Rol.EDUCADOR)
   async getNivelesAvisarVacunaByEducador(@ActiveUser() user) {
     const niveles = await this.vacunaService.getNivelesAvisarVacunaByEducador(
       +user.idPersona,
     );
+    const nivelesDto = niveles.map((nivel) => {
+      const fechaVacuna =
+        nivel.lda_nivel_menor[0]?.lda_menor.lda_vacuna_menor[0]?.lda_vacuna
+          .fech_vacunacion;
+      const solilcitado =
+        nivel.lda_nivel_menor[0]?.lda_menor.lda_vacuna_menor != null &&
+        nivel.lda_nivel_menor[0]?.lda_menor.lda_vacuna_menor.filter(
+          (vacMenor) => vacMenor != null || vacMenor.lda_vacuna != null,
+        ).length != 0;
+      return {
+        id: nivel.iden_nivel,
+        nivel: nivel.desc_nombre,
+        nmroSolicitados: nivel.lda_nivel_menor.reduce((count, nivMenor) => {
+          return (
+            count +
+            nivMenor.lda_menor.lda_vacuna_menor.filter(
+              (vacMenor) => vacMenor.flag_autorizado != null,
+            ).length
+          );
+        }, 0),
+        nmroNoSolicitados:
+          solilcitado == false
+            ? nivel._count.lda_nivel_menor
+            : nivel.lda_nivel_menor.reduce((count, nivMenor) => {
+                const vacunaMenor = nivMenor.lda_menor.lda_vacuna_menor;
+                return (
+                  count +
+                  (vacunaMenor.length > 0
+                    ? vacunaMenor.filter(
+                        (vacMenor) => vacMenor.flag_autorizado === null,
+                      ).length
+                    : 1)
+                );
+              }, 0),
+        fechaVacuna:
+          fechaVacuna != null ? formatFecha2(fechaVacuna.toISOString()) : null,
+        solicitado: solilcitado,
+      };
+    });
+
+    return nivelesDto;
+  }
+
+  @Get('getAllNivelesAvisarVacuna')
+  @Auth(Rol.DIRECTOR)
+  async getAllNivelesAvisarVacuna() {
+    const niveles = await this.vacunaService.getAllNivelesAvisarVacuna();
     const nivelesDto = niveles.map((nivel) => {
       const fechaVacuna =
         nivel.lda_nivel_menor[0]?.lda_menor.lda_vacuna_menor[0]?.lda_vacuna
@@ -152,6 +233,58 @@ export class VacunaController {
     return nivelDto;
   }
 
+  @Get('getNivelVacunaByNivelDirector/:idNivel')
+  @Auth(Rol.DIRECTOR)
+  async getNivelVacunaByNivelDirector(@Param('idNivel') idNivel: number) {
+    const nivel =
+      await this.vacunaService.getNivelVacunaByNivelDirector(+idNivel);
+    const fechaVacuna =
+      nivel.lda_nivel_menor[0]?.lda_menor.lda_vacuna_menor[0]?.lda_vacuna
+        .fech_vacunacion;
+    const solilcitado =
+      nivel.lda_nivel_menor[0]?.lda_menor.lda_vacuna_menor != null &&
+      nivel.lda_nivel_menor[0]?.lda_menor.lda_vacuna_menor.filter(
+        (vacMenor) => vacMenor != null || vacMenor.lda_vacuna != null,
+      ).length != 0;
+    const nivelDto = {
+      idVacuna:
+        nivel.lda_nivel_menor[0]?.lda_menor.lda_vacuna_menor[0]?.lda_vacuna
+          .iden_vacuna,
+      nivel: nivel.desc_nombre,
+      nombreVacuna:
+        nivel.lda_nivel_menor[0]?.lda_menor.lda_vacuna_menor[0]?.lda_vacuna
+          .desc_nombre,
+      nmroMenores: nivel._count.lda_nivel_menor,
+      nmroSolicitados: nivel.lda_nivel_menor.reduce((count, nivMenor) => {
+        return (
+          count +
+          nivMenor.lda_menor.lda_vacuna_menor.filter(
+            (vacMenor) => vacMenor.flag_autorizado != null,
+          ).length
+        );
+      }, 0),
+      nmroNoSolicitados:
+        solilcitado == false
+          ? nivel._count.lda_nivel_menor
+          : nivel.lda_nivel_menor.reduce((count, nivMenor) => {
+              const vacunaMenor = nivMenor.lda_menor.lda_vacuna_menor;
+              return (
+                count +
+                (vacunaMenor.length > 0
+                  ? vacunaMenor.filter(
+                      (vacMenor) => vacMenor.flag_autorizado === null,
+                    ).length
+                  : 1)
+              );
+            }, 0),
+      fechaVacuna:
+        fechaVacuna != null ? formatFecha2(fechaVacuna.toISOString()) : null,
+      solicitado: solilcitado,
+    };
+
+    return nivelDto;
+  }
+
   @Post('solicitarVacunaNivel/:idNivel')
   @Auth(Rol.EDUCADOR)
   async solicitarVacunaNivel(
@@ -172,6 +305,24 @@ export class VacunaController {
     );
   }
 
+  @Post('solicitarVacunaNivelDirector/:idNivel')
+  @Auth(Rol.DIRECTOR)
+  async solicitarVacunaNivelDirector(
+    @Param('idNivel') idNivel: number,
+    @Body()
+    body: {
+      nombVacuna: string;
+      fechVacuna: Date;
+    },
+  ) {
+    const { nombVacuna, fechVacuna } = body;
+    return await this.vacunaService.solicitarVacunaNivelDirector(
+      nombVacuna,
+      fechVacuna,
+      +idNivel,
+    );
+  }
+
   @Post('solicitarVacunaMenoresNivel/:idNivel/:idVacuna')
   @Auth(Rol.EDUCADOR)
   async solicitarVacunaMenoresNivel(
@@ -183,6 +334,18 @@ export class VacunaController {
       +idNivel,
       +idVacuna,
       +user.idPersona,
+    );
+  }
+
+  @Post('solicitarVacunaMenoresNivelDirector/:idNivel/:idVacuna')
+  @Auth(Rol.DIRECTOR)
+  async solicitarVacunaMenoresNivelDirector(
+    @Param('idNivel') idNivel: number,
+    @Param('idVacuna') idVacuna: number,
+  ) {
+    return await this.vacunaService.solicitarVacunaMenoresNivelDirector(
+      +idNivel,
+      +idVacuna,
     );
   }
 }

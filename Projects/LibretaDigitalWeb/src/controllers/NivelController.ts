@@ -10,8 +10,16 @@ export class NivelController {
     return await this._nivelService.getNivelesWhereSomeVacuna();
   }
 
+  async getAllNivelesWhereSomeVacuna() {
+    return await this._nivelService.getAllNivelesWhereSomeVacuna();
+  }
+
   async getMenoresByNivel(idNivel: number) {
     return await this._nivelService.getMenoresByNivel(idNivel);
+  }
+
+  async getMenoresByNivelDirector(idNivel: number) {
+    return await this._nivelService.getMenoresByNivelDirector(idNivel);
   }
 
   async getNivelesByEducador() {
